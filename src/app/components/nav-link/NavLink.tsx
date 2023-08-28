@@ -1,8 +1,7 @@
+"use client";
 import { styled } from "@mui/material";
 import clsx from "clsx";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 // styled component
 const StyledLink = styled("a")(({ theme, active_route }: TypeNavLink) => ({
   position: "relative",

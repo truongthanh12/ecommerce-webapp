@@ -187,7 +187,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
       <InnerContainer>
         {/* Category megamenu */}
         <CategoryMenu open={navListOpen || false}>
-          <CategoryMenuButton variant="text">
+          <CategoryMenuButton sx={{height: "40px"}}  variant="text">
             <Category fontSize="small" />
             <Paragraph
               fontWeight="600"

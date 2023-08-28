@@ -41,6 +41,7 @@ const FlashDeal = ({ products }: { products: IProducts[] }) => {
               rating={product.rating || 0}
               thumbnail={product.thumbnail || ""}
               discount={product.discount || 0}
+              images={product.images}
             />
           </Box>
         ))}

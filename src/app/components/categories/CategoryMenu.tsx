@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import CategoryMenuCard from "./CategoryMenuCard";
+import navigations from "@/data/navigations";
 // Define the styled component type
 type TypeProps = {
   children: ReactNode;
@@ -14,12 +15,9 @@ type TypeProps = {
 };
 
 // styled component
-const Wrapper = styled((props: TypeProps, { children }) => (
-  <Box {...props}>{children}</Box>
-))(({ open }) => ({
+const Wrapper = styled(Box)(({ open }: TypeProps) => ({
   cursor: "pointer",
   position: "relative",
-  height: "40px",
   "& .dropdown-icon": {
     transition: "all 250ms ease-in-out",
     transform: `rotate(${open ? "90deg" : "0deg"})`,
@@ -45,6 +43,7 @@ const CategoryMenu: React.FC<TypeProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
+    if (!window) return;
     window.addEventListener("click", handleDocumentClick);
     return () => window.removeEventListener("click", handleDocumentClick);
   }, [handleDocumentClick]);
@@ -57,7 +56,7 @@ const CategoryMenu: React.FC<TypeProps> = ({
         className: `${(children as React.ReactElement).props.className}`,
       })}
 
-      <CategoryMenuCard open={open} />
+      <CategoryMenuCard navigations={navigations} open={open} />
     </Wrapper>
   );
 };

@@ -38,11 +38,11 @@ export interface Type {
 }
 
 export interface IProducts {
-  id: string | number;
-  slug: string;
+  id?: string | number;
+  slug?: string;
   title: string;
   brand?: string | null;
-  price: number;
+  price?: number;
   size?: string[] | null;
   colors?: string[] | null;
   discount?: number;
@@ -50,7 +50,7 @@ export interface IProducts {
   images?: string[];
   categories?: string[] | null;
   status?: string | null;
-  review?: any;
+  reviews?: any;
   rating?: number;
   for?: Type;
   shop?: IShop;

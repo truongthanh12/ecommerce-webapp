@@ -48,8 +48,8 @@ function renderProductCount(
  * @returns - RETURN NEW PRICE
  */
 
-function calculateDiscount(price: number, discount: number) {
-  const afterDiscount = Number((price - price * (discount / 100)).toFixed(2));
+function calculateDiscount(price = 0, discount: number) {
+  const afterDiscount = Number(price - price * (discount / 100));
   return currency(afterDiscount);
 }
 
@@ -60,7 +60,7 @@ function calculateDiscount(price: number, discount: number) {
  * @returns - RETURN PRICE WITH CURRENCY
  */
 
-function currency(price: number, fraction: number = 2) {
+function currency(price = 0, fraction: number = 0) {
   const formatCurrency = new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: "VND",

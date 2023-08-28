@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
 import { Badge, Box, Button, Dialog, Drawer, styled } from "@mui/material";
 import Container from "@mui/material/Container";
-import { useTheme } from "@mui/material/styles";
+import { keyframes, useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Clear, KeyboardArrowDown, PersonOutline } from "@mui/icons-material";
@@ -20,14 +20,33 @@ import { FlexBetween, FlexBox } from "@/components/flex-box";
 import CategoryMenu from "@/components/categories/CategoryMenu";
 import ShoppingBagOutlined from "@/components/icons/ShoppingBagOutlined";
 import Image from "next/image";
+import { debounce } from "lodash";
 
 // styled component
+const slideFromTop = keyframes`
+from { top: -${layoutConstant.headerHeight}px; }
+to { top: 0; }`;
+
 export const HeaderWrapper = styled(Box)(({ theme }) => ({
   zIndex: 3,
   position: "relative",
   height: layoutConstant.headerHeight,
   transition: "height 250ms ease-in-out",
   background: theme.palette.background.paper,
+  "&.fixedHeader": {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 99,
+    background: "white",
+    height: layoutConstant.headerHeight,
+    boxShadow: theme.shadows[2],
+    animation: `${slideFromTop} 250ms ease-in-out`,
+    "& .link": {
+      color: "inherit",
+    },
+  },
   [theme.breakpoints.down("sm")]: {
     height: layoutConstant.mobileHeaderHeight,
   },
@@ -42,14 +61,12 @@ const StyledContainer = styled(Container)({
 
 // ==============================================================
 
-// ==============================================================
-
 type TypeHeader = {
   isFixed?: boolean;
   className?: string;
   searchInput?: any;
 };
-const Header: React.FC<TypeHeader> = ({ isFixed, className, searchInput }) => {
+const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sidenavOpen, setSidenavOpen] = useState(false);
@@ -61,6 +78,17 @@ const Header: React.FC<TypeHeader> = ({ isFixed, className, searchInput }) => {
   };
   const toggleSidenav = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
+
+  const [isFixed, setFixed] = useState(false);
+  useEffect(() => {
+    if (!window) return;
+    const scrollListener = debounce(() => {
+      if (window?.pageYOffset >= layoutConstant.headerHeight) setFixed(true);
+      else setFixed(false);
+    }, 150);
+    window.addEventListener("scroll", scrollListener);
+    return () => window.removeEventListener("scroll", scrollListener);
+  }, []);
 
   // LOGIN AND MINICART DRAWER
   const DIALOG_DRAWER = (
@@ -97,7 +125,12 @@ const Header: React.FC<TypeHeader> = ({ isFixed, className, searchInput }) => {
       fontSize: 20,
     };
     return (
-      <HeaderWrapper className={clsx(className)}>
+      <HeaderWrapper
+        className={clsx({
+          fixedHeader: isFixed,
+          className,
+        })}
+      >
         <StyledContainer>
           <FlexBetween width="100%">
             {/* LEFT CONTENT - NAVIGATION ICON BUTTON */}
@@ -110,8 +143,8 @@ const Header: React.FC<TypeHeader> = ({ isFixed, className, searchInput }) => {
               <Image
                 src="/assets/images/logo2.png"
                 alt="logo"
-                layout="fill"
-                objectFit="contain"
+                width={90}
+                height={65}
                 style={{ marginTop: "12px" }}
               />
             </Link>
@@ -151,7 +184,7 @@ const Header: React.FC<TypeHeader> = ({ isFixed, className, searchInput }) => {
               }}
             >
               <FlexBetween mb={1}>
-                <Paragraph>Search to Bazaar</Paragraph>
+                <Paragraph>Search to Taphoa</Paragraph>
 
                 <IconButton onClick={toggleSearchBar}>
                   <Clear />
@@ -170,7 +203,12 @@ const Header: React.FC<TypeHeader> = ({ isFixed, className, searchInput }) => {
     );
   }
   return (
-    <HeaderWrapper className={clsx(className)}>
+    <HeaderWrapper
+      className={clsx({
+        fixedHeader: isFixed,
+        className,
+      })}
+    >
       <StyledContainer>
         {/* LEFT CONTENT - LOGO AND CATEGORY */}
         <FlexBox mr={2} minWidth="170px" alignItems="center">

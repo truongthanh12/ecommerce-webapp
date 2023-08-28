@@ -1,7 +1,9 @@
 import Car from "@/components/icons/Car";
 import Dress from "@/components/icons/Dress";
-const navigations = [
+import { INavigation } from "../models/Navigation";
+const navigations: INavigation[] = [
   {
+    id: "dress",
     icon: Dress,
     title: "Fashion",
     href: "/fashion",
@@ -42,6 +44,7 @@ const navigations = [
     },
   },
   {
+    id: "car",
     icon: Car,
     title: "Automotive",
     href: "/product/search/automotive",

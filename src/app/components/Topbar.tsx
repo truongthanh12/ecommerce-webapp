@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { memo } from "react";
 import {
-  Add,
   ExpandMore,
   Facebook,
   Instagram,
@@ -78,8 +77,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 // ===========================================
-
-// ===========================================
 type TypePropsTopbar = {
   bgColor?: string;
 };
@@ -122,9 +119,10 @@ const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
           <Menu
             handler={
               <TouchRipple className="handler marginRight">
-                {/* <Span className="menuTitle">
-                  {language === "en" ? "EN" : "DE"}
-                </Span> */}
+                <Span className="menuTitle">
+                  {/* {language === "en" ? "EN" : "DE"} */}
+                  EN
+                </Span>
                 <ExpandMore fontSize="inherit" />
               </TouchRipple>
             }

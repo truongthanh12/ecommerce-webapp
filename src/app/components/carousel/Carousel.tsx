@@ -1,6 +1,11 @@
 import React, { Children } from "react";
 import { StyledSlider, StyledCarouselProvider } from "./styles";
 import { Navigation, Pagination, A11y } from "swiper/modules";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 // ===================================================================
 interface TypeCarouselProps {
@@ -21,7 +26,7 @@ const CarouselSlider = ({
   visibleSlides = 1,
   isArrow = true,
   isDots,
-  spaceBetween,
+  spaceBetween = 12,
 }: TypeCarouselProps) => {
   return (
     <StyledCarouselProvider

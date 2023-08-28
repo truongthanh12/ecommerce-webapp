@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { ArrowRight } from "@mui/icons-material";
 import { H2 } from "./Typography";
@@ -9,9 +9,13 @@ import React from "react";
 interface TypeProps {
   title: string;
   seeMoreLink: string;
-  icon: React.JSX.Element;
+  icon?: React.JSX.Element | string;
 }
-const CategorySectionHeader = ({ title, seeMoreLink, icon }: TypeProps) => {
+const CategorySectionHeader = ({
+  title,
+  seeMoreLink,
+  icon = "",
+}: TypeProps) => {
   return (
     <FlexBetween mb={3}>
       <FlexBox alignItems="center" gap={1}>

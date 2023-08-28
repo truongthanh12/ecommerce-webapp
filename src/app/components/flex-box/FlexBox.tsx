@@ -23,6 +23,13 @@ type TypeFlexbox = {
   sx?: any;
   mx?: number;
   width?: string;
+  mb?: number;
+  overflow?: string;
+  onClick?: any;
+  columnGap?: number;
+  my?: string | number;
+  flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+  maxWidth?: string | number;
 };
 const FlexBox: React.FC<TypeFlexbox> = ({ children, ...props }) => (
   <Box display="flex" {...props}>

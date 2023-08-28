@@ -12,7 +12,7 @@ const SearchInput = () => {
     // const data = await api.searchProducts(searchText);
     setResultList([]);
   };
-  
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     startTransition(() => {
       const value = e.target?.value;
@@ -23,6 +23,7 @@ const SearchInput = () => {
 
   const handleDocumentClick = () => setResultList([]);
   useEffect(() => {
+    if (!window) return;
     window.addEventListener("click", handleDocumentClick);
     return () => window.removeEventListener("click", handleDocumentClick);
   }, []);

@@ -1,4 +1,4 @@
-import { Close } from "@mui/icons-material";
+import { Add, Close, Remove } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -13,9 +13,11 @@ import { FlexBox } from "@/components/flex-box";
 // import Image from "@/components/Image";
 import Rating from "@/components/Rating";
 import Carousel from "@/components/carousel/Carousel";
-import { H1, H2, H6, Paragraph } from "@/components/Typography";
+import { H1, H2, H3, H6, Paragraph } from "@/components/Typography";
 import { currency } from "@/utils/lib";
 import { IProducts } from "@/app/models/Product";
+import Image from "../Image";
+import { useState } from "react";
 
 // styled components
 const ContentWrapper = styled(Box)(({ theme }) => ({
@@ -63,6 +65,16 @@ const ProductViewDialog = ({
   openDialog,
   handleCloseDialog,
 }: TypeProps) => {
+  const [qty, setQty] = useState(0);
+  const handleCartAmountChange = (type: "add" | "minus") => () => {
+    if (type === "add") {
+      setQty(qty + 1);
+      return;
+    }
+    if (qty === 0) return;
+    setQty(qty - 1);
+  };
+
   return (
     <Dialog
       open={openDialog}
@@ -82,7 +94,7 @@ const ProductViewDialog = ({
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <Carousel visibleSlides={1}>
-                {/* {product.imgGroup.map((item, index) => (
+                {(product.images || []).map((item, index) => (
                   <Image
                     key={index}
                     src={item}
@@ -95,8 +107,9 @@ const ProductViewDialog = ({
                         xs: 250,
                       },
                     }}
+                    alt={'image ' + item}
                   />
-                ))} */}
+                ))}
               </Carousel>
             </Grid>
 
@@ -125,19 +138,19 @@ const ProductViewDialog = ({
                   mb: 2,
                 }}
               />
-
-              <Button
-                size="large"
-                color="primary"
-                variant="contained"
-                // onClick={handleCartAmountChange(1)}
-                sx={{
-                  height: 45,
-                }}
-              >
-                Add to Cart
-              </Button>
-              {/* ) : (
+              {!qty ? (
+                <Button
+                  size="large"
+                  color="primary"
+                  variant="contained"
+                  onClick={handleCartAmountChange("add")}
+                  sx={{
+                    height: 45,
+                  }}
+                >
+                  Add to Cart
+                </Button>
+              ) : (
                 <FlexBox alignItems="center">
                   <Button
                     size="small"
@@ -147,13 +160,13 @@ const ProductViewDialog = ({
                       p: ".6rem",
                       height: 45,
                     }}
-                    // onClick={handleCartAmountChange(cartItem?.qty - 1)}
+                    onClick={handleCartAmountChange("minus")}
                   >
                     <Remove fontSize="small" />
                   </Button>
 
                   <H3 fontWeight="600" mx={2.5}>
-                    {(2).toString().padStart(2, "0")}
+                    {qty.toString().padStart(2, "0")}
                   </H3>
 
                   <Button
@@ -164,12 +177,12 @@ const ProductViewDialog = ({
                       p: ".6rem",
                       height: 45,
                     }}
-                    // onClick={handleCartAmountChange}
+                    onClick={handleCartAmountChange("add")}
                   >
                     <Add fontSize="small" />
                   </Button>
                 </FlexBox>
-              )} */}
+              )}
             </Grid>
           </Grid>
         </ContentWrapper>

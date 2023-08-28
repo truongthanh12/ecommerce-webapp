@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import NextImage from "next/image";
 import { styled, bgcolor, compose, spacing, borderRadius } from "@mui/system";
 import React from "react";
@@ -9,7 +9,11 @@ type TypeLazyImage = {
   height?: number;
   alt?: string;
   src?: string;
-  layout?: string
+  layout?: string;
+  objectFit?: string;
+  mx?: string;
+  loading?: "eager" | "lazy" | undefined
+  style?: any
 };
 const LazyImage: React.FC<TypeLazyImage> = styled(
   ({ borderRadius, ...rest }: TypeLazyImage) => (

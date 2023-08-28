@@ -5,14 +5,11 @@ import Header from "@/components/header/Header";
 import SearchInputWithCategory from "@/components/search-box/SearchInputWithCategory";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 import Head from "next/head";
 import OpenGraphTags from "@/utils/OpenGraphTags";
 import MuiTheme from "@/components/theme";
+import { Providers } from "@/redux/provider";
+import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,17 +37,20 @@ export default function RootLayout({
         <title>Bazaar - Next.js Ecommerce Template</title>
       </Head>
       <body className={inter.className}>
-        <MuiTheme>
-          <Topbar />
+        {/* <Providers> */}
+          <MuiTheme>
+            <Topbar />
 
-          <Header searchInput={<SearchInputWithCategory />} />
+            <Header searchInput={<SearchInputWithCategory />} />
 
-          <Navbar />
+            <Navbar />
 
-          <main>{children}</main>
+            <main>{children}</main>
 
-          <Footer />
-        </MuiTheme>
+            <MobileNavigationBar />
+            <Footer />
+          </MuiTheme>
+        {/* </Providers> */}
       </body>
     </html>
   );

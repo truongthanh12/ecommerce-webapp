@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-const useScroller = ref => {
+const useScroller = (ref: any) => {
   const [isFixedHeader, setIsFixedHeader] = useState(false);
 
   // handle window scroller
@@ -20,7 +20,7 @@ const useScroller = ref => {
     return () => window.removeEventListener("scroll", scroller);
   }, [scroller]);
   return {
-    isFixedHeader
+    isFixedHeader,
   };
 };
 export default useScroller;

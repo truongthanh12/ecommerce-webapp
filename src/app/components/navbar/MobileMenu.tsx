@@ -11,28 +11,36 @@ import { H6 } from "@/components/Typography";
 import Scrollbar from "@/components/Scrollbar";
 import { NavLink } from "@/components/nav-link";
 import navbarNavigations from "@/data/navbarNavigations";
+
 const MobileMenu = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   // MODIFY THE NAVIGATION WITH NEW STRUCTURE
-  // const updateNavigations = navbarNavigations.reduce((prev, curr) => {
-  //   const newArr = [...prev];
-  //   if (!curr.child) {
-  //     newArr.push({
-  //       ...curr,
-  //       extLink: true
-  //     });
-  //   } else if (curr.megaMenu || curr.megaMenuWithSub) {
-  //     const flated = curr.child.flat();
-  //     newArr.push({
-  //       title: curr.title,
-  //       child: flated
-  //     });
-  //   } else {
-  //     newArr.push(curr);
-  //   }
-  //   return newArr;
-  // }, []);
+  const updateNavigations = navbarNavigations.reduce((prev: any, curr: any) => {
+    const newArr: any = [...prev];
+
+    if (!curr.child) {
+      newArr.push({
+        ...curr,
+        extLink: true,
+      });
+    } else if (curr.megaMenu || curr.megaMenuWithSub) {
+      const flated = curr.child.flat();
+      newArr.push({
+        title: curr.title,
+        child: flated,
+      });
+    } else {
+      newArr.push(curr);
+    }
+
+    return newArr;
+  }, []);
+  
+  const toggleOpenMenu = () => {
+    setOpenDrawer(!openDrawer)
+  }
+
   const renderLevels = (data: any) => {
     return data.map((item: any, index: any) => {
       if (item.child) {
@@ -90,10 +98,11 @@ const MobileMenu = () => {
       );
     });
   };
+
   return (
     <Fragment>
       <IconButton
-        onClick={() => setOpenDrawer(true)}
+        onClick={toggleOpenMenu}
         sx={{
           flexShrink: 0,
           color: "grey.600",
@@ -105,7 +114,7 @@ const MobileMenu = () => {
       <Drawer
         anchor="left"
         open={openDrawer}
-        onClose={() => setOpenDrawer(false)}
+        onClose={toggleOpenMenu}
         sx={{
           zIndex: 15001,
         }}
@@ -141,7 +150,7 @@ const MobileMenu = () => {
                 <Clear fontSize="small" />
               </IconButton>
 
-              {/* {renderLevels(updateNavigations)} */}
+              {renderLevels(updateNavigations)}
             </Box>
           </Scrollbar>
         </Box>

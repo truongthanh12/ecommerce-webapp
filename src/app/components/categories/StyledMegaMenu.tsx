@@ -30,8 +30,6 @@ const Wrapper = styled(Box)(({ theme }) => ({
 
 // =================================================
 
-// =================================================
-
 const StyledMegaMenu = ({ children }: { children: React.ReactNode }) => {
   return <Wrapper className="mega-menu">{children}</Wrapper>;
 };

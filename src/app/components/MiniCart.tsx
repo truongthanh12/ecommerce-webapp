@@ -13,7 +13,7 @@ import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H5, Paragraph, Tiny } from "@/components/Typography";
 import CartBag from "@/components/icons/CartBag";
 import { currency } from "@/utils/lib";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 // =========================================================
 
@@ -24,15 +24,17 @@ type TypeMinicart = {
 const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
   const { palette } = useTheme();
   const cartList: [] = [];
-  const handleCartAmountChange = (amount: number, product: any) => () => {
-    // dispatch({
-    //   type: "CHANGE_CART_AMOUNT",
-    //   payload: {
-    //     ...product,
-    //     qty: amount
-    //   }
-    // });
+
+  const [qty, setQty] = useState(0);
+  const handleCartAmountChange = (type: "add" | "minus") => () => {
+    if (type === "add") {
+      setQty(qty + 1);
+      return;
+    }
+    if (qty === 0) return;
+    setQty(qty - 1);
   };
+
   const getTotalPrice = () => {
     return cartList.reduce(
       (accum: number, item: { price: number; qty: number }) =>
@@ -99,7 +101,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
               <Button
                 color="primary"
                 variant="outlined"
-                onClick={handleCartAmountChange(item.qty + 1, item)}
+                onClick={handleCartAmountChange("add")}
                 sx={{
                   height: "32px",
                   width: "32px",
@@ -117,7 +119,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
                 color="primary"
                 variant="outlined"
                 disabled={item.qty === 1}
-                onClick={handleCartAmountChange(item.qty - 1, item)}
+                onClick={handleCartAmountChange('minus')}
                 sx={{
                   height: "32px",
                   width: "32px",
@@ -170,7 +172,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
 
             <IconButton
               size="small"
-              onClick={handleCartAmountChange(0, item)}
+              onClick={handleCartAmountChange("add")}
               sx={{
                 marginLeft: 2.5,
               }}

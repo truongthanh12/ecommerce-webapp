@@ -28,7 +28,7 @@ import TodoList from "./TodoList";
 import UserProfile from "./UserProfile";
 import UserTie from "./UserTie";
 import Vest from "./Vest";
-export default {
+const Icon = {
   Apps,
   AdminEcommerce,
   Dashboard,
@@ -59,5 +59,7 @@ export default {
   Shirt,
   Shoe,
   UserTie,
-  Vest
+  Vest,
 };
+
+export default Icon;

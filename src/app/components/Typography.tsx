@@ -8,13 +8,13 @@ type TypePropsTypo = {
   ellipsis?: any;
   textTransform?: string;
   textAlign?: "left" | "right" | "center";
-  mt?: number;
+  mt?: number | string;
   mb?: number;
   ml?: number;
   mr?: number;
   pt?: number;
   pb?: number;
-  pl?: number;
+  pl?: number | string;
   py?: number;
   px?: number;
   fontSize?: number | string;
@@ -32,7 +32,9 @@ type TypePropsTypo = {
   maxWidth?: string;
   mx?: string | number;
   my?: number;
+  p?: number;
   title?: string;
+  sx?: any
 };
 
 type TypeProp = {

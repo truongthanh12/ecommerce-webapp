@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Box, MenuItem, styled } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { ChevronRight } from "@mui/icons-material";
 import React from "react";
 
 //styled component

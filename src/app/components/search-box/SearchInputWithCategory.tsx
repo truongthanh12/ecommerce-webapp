@@ -58,6 +58,7 @@ const SearchInputWithCategory = () => {
   };
   const handleDocumentClick = () => setResultList([]);
   useEffect(() => {
+    if(!window) return
     window.addEventListener("click", handleDocumentClick);
     return () => window.removeEventListener("click", handleDocumentClick);
   }, []);

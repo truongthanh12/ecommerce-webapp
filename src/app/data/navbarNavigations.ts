@@ -111,7 +111,7 @@ const megaMenus = [
         },
         {
           title: "Add/Edit product",
-          url: "/admin/products/create",
+          url: "/admin/product/create",
         },
       ],
     },
@@ -179,14 +179,9 @@ const megaMenus = [
 const navbarNavigations = [
   {
     title: "Home",
+    url: "/",
     megaMenu: false,
     megaMenuWithSub: false,
-    child: [
-      {
-        title: "Market 1",
-        url: "/market-1",
-      },
-    ],
   },
   {
     megaMenu: false,
@@ -199,18 +194,26 @@ const navbarNavigations = [
     megaMenuWithSub: false,
     title: "Pages",
     child: [
+      // {
+      //   title: "Sale Page",
+      //   child: [
+      //     {
+      //       title: "Version 1",
+      //       url: "/sale-page-1",
+      //     },
+      //     {
+      //       title: "Version 2",
+      //       url: "/sale-page-2",
+      //     },
+      //   ],
+      // },
       {
-        title: "Sale Page",
-        child: [
-          {
-            title: "Version 1",
-            url: "/sale-page-1",
-          },
-          {
-            title: "Version 2",
-            url: "/sale-page-2",
-          },
-        ],
+        title: "Shops",
+        url: "/shops",
+      },
+      {
+        title: "Products",
+        url: "/product/search/products",
       },
     ],
   },
@@ -220,17 +223,12 @@ const navbarNavigations = [
     title: "User Account",
     child: [
       {
+        title: "Profile",
+        url: "/profile",
+      },
+      {
         title: "Orders",
-        child: [
-          {
-            title: "Order List",
-            url: "/orders",
-          },
-          {
-            title: "Order Details",
-            url: "/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8",
-          },
-        ],
+        url: "/orders",
       },
       {
         title: "Wishlist",
@@ -246,6 +244,14 @@ const navbarNavigations = [
       {
         title: "Dashboard",
         url: "/vendor/dashboard",
+      },
+      {
+        title: "Products",
+        url: "/vendor/products",
+      },
+      {
+        title: "Orders",
+        url: "/vendor/orders",
       },
       {
         title: "Profile",

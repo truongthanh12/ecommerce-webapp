@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { merge } from "merge";
 import { CssBaseline } from "@mui/material";
 import {
@@ -12,8 +12,6 @@ import { usePathname } from "next/navigation";
 
 // =======================================================
 
-// =======================================================
-
 const MuiTheme = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
@@ -23,7 +21,7 @@ const MuiTheme = ({ children }: { children: React.ReactNode }) => {
       {},
       {
         ...themeOptions,
-        direction: 'ltr'
+        direction: "ltr",
       }
     )
   );

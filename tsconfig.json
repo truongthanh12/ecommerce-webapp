@@ -26,6 +26,7 @@
       "@/data/*": ["./src/app/data/*"],
       "@/hooks/*": ["./src/app/hooks/*"],
       "@/models/*": ["./src/app/models/*"],
+      "@/redux/*": ["./src/redux/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

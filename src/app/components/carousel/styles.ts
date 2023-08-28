@@ -41,9 +41,6 @@ const commonArrowBtnStyle = ({
     background: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
   },
-  // [theme.breakpoints.down("xs")]: {
-  //   display: "block !important",
-  // },
 });
 
 // styled components
@@ -56,6 +53,7 @@ const StyledCarouselProvider = styled(Swiper)(
         showArrowOnHover,
         dot_margin_top,
       }),
+      marginTop: "0",
       "&:after": {
         fontSize: "16px",
       },
@@ -67,6 +65,7 @@ const StyledCarouselProvider = styled(Swiper)(
         showArrowOnHover,
         dot_margin_top,
       }),
+      marginTop: "0",
       "&:after": {
         fontSize: "16px",
       },
