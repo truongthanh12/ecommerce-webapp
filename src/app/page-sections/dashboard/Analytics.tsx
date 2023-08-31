@@ -80,14 +80,12 @@ const Analytics = () => {
         </StyledSelect>
       </FlexBetween>
 
-      {typeof window !== "undefined" && (
-        <ReactApexChart
-          type="bar"
-          height={300}
-          series={series}
-          options={analyticsChartOptions(theme, categories)}
-        />
-      )}
+      <ReactApexChart
+        type="bar"
+        height={300}
+        series={series}
+        options={analyticsChartOptions(theme, categories)}
+      />
     </Card>
   );
 };

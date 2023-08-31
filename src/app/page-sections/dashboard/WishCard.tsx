@@ -19,14 +19,14 @@ const WishCard = () => {
         Good Morning, Maruf!
       </H5>
       <Paragraph color="grey.600">
-        Here’s what happening with your store today!
+        Here's what happening with your store today!
       </Paragraph>
 
       <H3 mt={3}>15,350.25</H3>
-      <Paragraph color="grey.600">Today’s Visit</Paragraph>
+      <Paragraph color="grey.600">Today's Visit</Paragraph>
 
       <H3 mt={1.5}>{currency(10360.66)}</H3>
-      <Paragraph color="grey.600">Today’s total sales</Paragraph>
+      <Paragraph color="grey.600">Today's total sales</Paragraph>
 
       <Box
         sx={{

@@ -32,16 +32,12 @@ const Wrapper = styled(Box)(({ theme }) => ({
 
 // =============================================================
 
-// =============================================================
-
-const CategoryMenuItem = (props: any) => {
-  const { href, title, caret, children, ...rest } = props;
-
+const CategoryMenuItem = ({ href, title, caret, children, ...rest }: any) => {
   return (
     <Wrapper>
-      <Link href={href} passHref>
+      <Link href={href}>
         <MenuItem className="category-dropdown-link">
-          {/* {rest.icon && <rest.icon fontSize="small" color="inherit" />} */}
+          {rest.icon && <rest.icon fontSize="small" color="inherit" />}
           <span className="title">{title}</span>
           {caret && <ChevronRight fontSize="small" />}
         </MenuItem>

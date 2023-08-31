@@ -15,7 +15,7 @@ type TypeLazyImage = {
   loading?: "eager" | "lazy" | undefined
   style?: any
 };
-const LazyImage: React.FC<TypeLazyImage> = styled(
+const LazyImage: React.FC<Partial<TypeLazyImage>> = styled(
   ({ borderRadius, ...rest }: TypeLazyImage) => (
     <NextImage src={""} alt={""} {...rest} />
   )

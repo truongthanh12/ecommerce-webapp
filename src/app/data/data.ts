@@ -248,7 +248,7 @@ export const categories: Array<ICategory> = [
 ];
 
 // products
-export const products: IProducts[] = [
+export const products: Partial<IProducts>[] = [
   {
     id: "8ac53dd8-6418-454f-bbb5-29f0b26ac5a5",
     slug: "nikecourt-zoom-vapor-cage",

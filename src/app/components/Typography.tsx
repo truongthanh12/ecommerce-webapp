@@ -3,38 +3,38 @@ import { Box, styled } from "@mui/material";
 import clsx from "clsx";
 import React from "react";
 type TypePropsTypo = {
-  children?: React.ReactNode;
-  className?: string;
-  ellipsis?: any;
-  textTransform?: string;
-  textAlign?: "left" | "right" | "center";
-  mt?: number | string;
-  mb?: number;
-  ml?: number;
-  mr?: number;
-  pt?: number;
-  pb?: number;
-  pl?: number | string;
-  py?: number;
-  px?: number;
-  fontSize?: number | string;
-  borderBottom?: string;
-  borderColor?: string;
-  display?: string;
-  fontWeight?: string | number;
-  color?: string;
-  lineHeight?: number | string;
-  flex?: string;
-  textTransformStyle?: string;
-  whiteSpace?: any;
-  overflow?: any;
-  textOverflow?: any;
-  maxWidth?: string;
-  mx?: string | number;
-  my?: number;
-  p?: number;
-  title?: string;
-  sx?: any
+  children: React.ReactNode;
+  className: string;
+  ellipsis: any;
+  textTransform: string;
+  textAlign: "left" | "right" | "center";
+  mt: number | string;
+  mb: number;
+  ml: number;
+  mr: number;
+  pt: number;
+  pb: number;
+  pl: number | string;
+  py: number;
+  px: number;
+  fontSize: number | string;
+  borderBottom: string;
+  borderColor: string;
+  display: string;
+  fontWeight: string | number;
+  color: string;
+  lineHeight: number | string;
+  flex: string;
+  textTransformStyle: string;
+  whiteSpace: any;
+  overflow: any;
+  textOverflow: any;
+  maxWidth: string;
+  mx: string | number;
+  my: number;
+  p: number;
+  title: string;
+  sx: any
 };
 
 type TypeProp = {
@@ -55,7 +55,7 @@ const StyledBox = styled(Box, {
 
 // ============================================
 
-export const H1: React.FC<TypePropsTypo> = ({
+export const H1: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -82,7 +82,7 @@ export const H1: React.FC<TypePropsTypo> = ({
   );
 };
 
-export const H2: React.FC<TypePropsTypo> = ({
+export const H2: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -108,7 +108,7 @@ export const H2: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const H3: React.FC<TypePropsTypo> = ({
+export const H3: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -134,7 +134,7 @@ export const H3: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const H4: React.FC<TypePropsTypo> = ({
+export const H4: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -160,7 +160,7 @@ export const H4: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const H5: React.FC<TypePropsTypo> = ({
+export const H5: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -186,7 +186,7 @@ export const H5: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const H6: React.FC<TypePropsTypo> = ({
+export const H6: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -212,7 +212,7 @@ export const H6: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const Paragraph: React.FC<TypePropsTypo> = ({
+export const Paragraph: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -236,7 +236,7 @@ export const Paragraph: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const Small: React.FC<TypePropsTypo> = ({
+export const Small: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -259,7 +259,7 @@ export const Small: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const Span: React.FC<TypePropsTypo> = ({
+export const Span: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,
@@ -281,7 +281,7 @@ export const Span: React.FC<TypePropsTypo> = ({
     </StyledBox>
   );
 };
-export const Tiny: React.FC<TypePropsTypo> = ({
+export const Tiny: React.FC<Partial<TypePropsTypo>> = ({
   children,
   className,
   ellipsis,

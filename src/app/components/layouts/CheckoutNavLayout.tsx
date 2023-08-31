@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Box, Container, Grid } from "@mui/material";
 import Stepper from "@/components/Stepper";
 

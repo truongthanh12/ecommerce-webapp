@@ -28,7 +28,7 @@ const InnerWrapper = styled(Box)(({ theme }) => ({
 
 // ======================================================
 
-const VendorDashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const VendorDashboardLayout = ({ children }: React.PropsWithChildren) => {
   const [sidebarCompact, setSidebarCompact] = useState<any>(0);
   const [showMobileSideBar, setShowMobileSideBar] = useState<any>(0);
 

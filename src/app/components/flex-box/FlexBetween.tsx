@@ -3,21 +3,21 @@ import React, { memo } from "react";
 
 type TypeFlexBetween = {
   children: React.ReactNode;
-  width?: string;
-  mx?: number;
-  px?: number;
-  py?: number;
-  height?: number;
-  mb?: number | string;
-  flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
-  mt?: number;
-  pl?: number;
-  pr?: number;
-  maxHeight?: string | number;
-  justifyContent?: "center" | "space-between";
-  p?: number;
+  width: string;
+  mx: number;
+  px: number;
+  py: number;
+  height: number;
+  mb: number | string;
+  flexWrap: "nowrap" | "wrap" | "wrap-reverse";
+  mt: number;
+  pl: number;
+  pr: number;
+  maxHeight: string | number;
+  justifyContent: "center" | "space-between";
+  p: number;
 };
-const FlexBetween: React.FC<TypeFlexBetween> = ({ children, ...props }) => (
+const FlexBetween: React.FC<Partial<TypeFlexBetween>> = ({ children, ...props }) => (
   <Box
     display="flex"
     justifyContent="space-between"

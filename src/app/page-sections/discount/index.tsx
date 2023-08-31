@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Box } from "@mui/material";

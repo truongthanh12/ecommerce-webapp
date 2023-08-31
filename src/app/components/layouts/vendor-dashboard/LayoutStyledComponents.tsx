@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { alpha, Box, ButtonBase, styled } from "@mui/material";
 import { Paragraph, Span } from "@/components/Typography";
+import Link from "next/link";
 
 // ===============================================================
 
@@ -69,7 +70,7 @@ const ListIconWrapper = styled(Box)(({ theme }) => ({
     color: theme.palette.text.disabled,
   },
 }));
-const ExternalLink = styled("a")({
+const ExternalLink = styled(Link)({
   overflow: "hidden",
   whiteSpace: "pre",
   marginBottom: "8px",

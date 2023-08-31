@@ -35,28 +35,24 @@ const Section = () => {
             percentage="25.25%"
             amount={currency(10240, 0)}
           >
-            {typeof window !== "undefined" && (
               <ReactApexChart
                 type="bar"
                 height={100}
                 series={series}
                 options={options.weeklyChartOptions(theme)}
               />
-            )}
           </Card>
         </Grid>
 
         {/* PRODUCT SHARE CHART */}
         <Grid item xl={3} lg={3} md={6} xs={12}>
           <Card title="Product Share" percentage="10.25%" amount="39.56%">
-            {typeof window !== "undefined" && (
               <ReactApexChart
                 height={130}
                 series={[75]}
                 type="radialBar"
                 options={options.productShareChartOptions(theme)}
               />
-            )}
           </Card>
         </Grid>
 
@@ -67,14 +63,12 @@ const Section = () => {
             percentage="2.65%"
             amount={currency(12260, 0)}
           >
-            {typeof window !== "undefined" && (
               <ReactApexChart
                 type="area"
                 height={80}
                 series={totalOrderseries}
                 options={options.totalOrderChartOptions(theme)}
               />
-            )}
           </Card>
         </Grid>
 
@@ -85,14 +79,12 @@ const Section = () => {
             percentage="2.65%"
             amount={currency(14260, 0)}
           >
-            {typeof window !== "undefined" && (
               <ReactApexChart
                 height={130}
                 type="radialBar"
                 series={[44, 55, 67]}
                 options={options.marketShareChartOptions(theme)}
               />
-            )}
           </Card>
         </Grid>
       </Grid>

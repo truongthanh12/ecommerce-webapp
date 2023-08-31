@@ -14,16 +14,16 @@ const CARD_STYLE = {
 
 // ==================================================
 interface TypeService {
-  id?: string;
-  icon?: keyof typeof appIcons;
-  title?: string;
-  description?: string | null;
-  fontSize?: string
+  id: string;
+  icon: keyof typeof appIcons;
+  title: string;
+  description: string | null;
+  fontSize: string
 }
 type TypeProps = TypeService & {
   serviceList: TypeService[];
 };
-const Services: React.FC<TypeProps | any> = ({ serviceList }) => {
+const Services: React.FC<Partial<TypeProps> | any> = ({ serviceList }) => {
   return (
     <Container
       sx={{

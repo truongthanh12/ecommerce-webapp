@@ -12,7 +12,7 @@ const BannerAds = () => {
     >
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Link href="/" passHref legacyBehavior>
+          <Link href="/" passHref>
             <LazyImage
               width={385}
               height={342}
@@ -25,7 +25,7 @@ const BannerAds = () => {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <Link href="/" passHref legacyBehavior>
+          <Link href="/" passHref>
             <LazyImage
               width={790}
               height={342}

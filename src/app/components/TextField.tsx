@@ -3,19 +3,26 @@ import { Small } from "./Typography";
 import { FC, memo } from "react";
 type TypeTextField = {
   label: string;
-  InputProps?: any;
-  mb?: number;
-  fullWidth?: boolean;
-  name?: string;
-  size?: string;
-  type?: string;
-  variant?: string;
-  // value={values.email}
-  // onChange={handleChange}
-  placeholder?: string;
-  autoComplete?: string;
+  InputProps: any;
+  mb: number;
+  fullWidth: boolean;
+  name: string;
+  size: string;
+  type: string;
+  variant: string;
+  value: any;
+  onChange: any;
+  onBlur: any;
+  placeholder: string;
+  autoComplete: string;
+  autoFocus: boolean;
+  ref: any;
+  helperText: string;
+  error: boolean;
 };
-const TextFieldInput: FC<TypeTextField> = ({ label, InputProps, ...props }) => {
+
+
+const TextFieldInput: FC<Partial<TypeTextField>> = ({ label, InputProps, ...props }) => {
   const boxProps: { [key: string]: any } = {};
   const textFieldProps: { [key: string]: any } = {};
   for (const key in props) {
@@ -25,7 +32,7 @@ const TextFieldInput: FC<TypeTextField> = ({ label, InputProps, ...props }) => {
       textFieldProps[key] = props[key as keyof typeof props];
     }
   }
-  
+
   return (
     <Box {...boxProps}>
       {label && (

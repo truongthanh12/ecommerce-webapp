@@ -25,11 +25,10 @@ const StyledScrollBar = styled(Container)(({ theme }) => ({
 
 // =============================================================
 
-// =============================================================
 type TypeScrollbar = {
   children?: React.ReactNode;
   sx?: any;
-  autoHide?: boolean;
+  autohide?: string;
 };
 const Scrollbar: React.FC<TypeScrollbar> = ({ children, sx, ...props }) => {
   return (

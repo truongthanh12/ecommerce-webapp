@@ -1,9 +1,10 @@
 "use client";
 import { styled } from "@mui/material";
 import clsx from "clsx";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 // styled component
-const StyledLink = styled("a")(({ theme, active_route }: TypeNavLink) => ({
+const StyledLink = styled(Link)(({ theme, active_route }: TypeNavLink) => ({
   position: "relative",
   transition: "color 150ms ease-in-out",
   color: active_route === "active" ? theme.palette.primary.main : "inherit",

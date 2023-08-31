@@ -46,14 +46,16 @@ const themeOptions = (publicRuntimeConfig: any, pathname: string) => {
     publicRuntimeConfig.theme = themeName;
     themeOptions = themesOptions[publicRuntimeConfig.theme];
   };
-  switch (pathname) {
-    case "/":
-      break;
-    default:
-      themeOptions = themesOptions[publicRuntimeConfig.theme];
-      updateTheme(THEMES.DEFAULT);
-      break;
-  }
+  themeOptions = themesOptions[publicRuntimeConfig.theme];
+  updateTheme(THEMES.DEFAULT);
+  // switch (pathname) {
+  //   case "/":
+  //     break;
+  //   default:
+  //     themeOptions = themesOptions[publicRuntimeConfig.theme];
+  //     updateTheme(THEMES.DEFAULT);
+  //     break;
+  // }
 
   return themeOptions;
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, Box, useMediaQuery } from "@mui/material";
 import LayoutDrawer from "../LayoutDrawer";
 import Scrollbar from "@/components/Scrollbar";
@@ -35,17 +35,18 @@ const DashboardSidebar = ({
   setSidebarCompact,
 }: PageProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [onHover, setOnHover] = useState(false);
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
 
   // side hover when side bar is compacted
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
   // handle active current page
-  const activeRoute = (path: string) => (router.pathname === path ? 1 : 0);
+  const activeRoute = (path: string) => (pathname === path ? 1 : 0);
 
   // handle navigate to another route and close sidebar drawer in mobile device
   const handleNavigation = (path: string) => {
-    router.push(path);
+    router.push(path || "");
     setShowMobileSideBar();
   };
   const renderLevels = (data: any) => {
@@ -121,7 +122,7 @@ const DashboardSidebar = ({
   };
   const content = (
     <Scrollbar
-      autoHide
+      autohide="hide"
       sx={{
         overflowX: "hidden",
         maxHeight: `calc(100vh - ${TOP_HEADER_AREA}px)`,

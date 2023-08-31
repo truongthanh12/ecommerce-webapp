@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import React, { Fragment, useCallback, useState } from "react";
 import { Add, Favorite, Remove, RemoveRedEye } from "@mui/icons-material";
