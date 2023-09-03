@@ -12,7 +12,7 @@ import { IProducts } from "@/models/Product";
 
 const FlashDeal = ({ products }: { products: IProducts[] }) => {
   const productsList = useMemo(() => {
-    return products?.filter((item) => item.for?.type === "flash-deals");
+    return products?.filter((item) => item.type === "flash-deals");
   }, [products]);
 
   const [visibleSlides, setVisibleSlides] = useState(4);

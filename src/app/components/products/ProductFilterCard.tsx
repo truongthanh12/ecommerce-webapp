@@ -12,6 +12,7 @@ import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H5, H6, Paragraph, Span } from "@/components/Typography";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import React from "react";
+
 const ProductFilterCard = () => {
   return (
     <Card

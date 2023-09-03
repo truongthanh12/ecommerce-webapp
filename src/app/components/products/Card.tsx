@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React, { Fragment, useCallback, useState } from "react";
 import { Add, Favorite, Remove, RemoveRedEye } from "@mui/icons-material";
-import { Box, Button, Chip, Grid, IconButton, styled } from "@mui/material";
+import { Box, Button, Grid, IconButton } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import LazyImage from "@/components/LazyImage";
 import Card from "@/components/Card";
@@ -12,71 +12,14 @@ import ProductViewDialog from "@/components/products/ViewDialog";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import { calculateDiscount, currency } from "@/utils/lib";
 import HoverBox from "@/components/HoverBox";
-
-// styled components
-const StyledCard = styled(Card)({
-  height: "100%",
-  margin: "auto",
-  display: "flex",
-  overflow: "hidden",
-  borderRadius: "8px",
-  position: "relative",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  transition: "all 250ms ease-in-out",
-  ":hover": {
-    "& .hover-box": {
-      opacity: 1,
-    },
-  },
-});
-const ImageWrapper = styled(Box)(({ theme }) => ({
-  textAlign: "center",
-  position: "relative",
-  display: "inline-block",
-  width: "100%",
-  [theme.breakpoints.down("sm")]: {
-    display: "block",
-  },
-}));
-const StyledChip = styled(Chip)({
-  zIndex: 1,
-  top: "10px",
-  left: "10px",
-  paddingLeft: 3,
-  paddingRight: 3,
-  fontWeight: 600,
-  fontSize: "10px",
-  position: "absolute",
-});
-const HoverIconWrapper = styled(Box)({
-  zIndex: 2,
-  top: "7px",
-  opacity: 0,
-  right: "15px",
-  display: "flex",
-  cursor: "pointer",
-  position: "absolute",
-  flexDirection: "column",
-  transition: "all 0.3s ease-in-out",
-});
-const ContentWrapper = styled(Box)({
-  padding: "1rem",
-  "& .title, & .categories": {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-  },
-});
-
-const StyledChipCategory = styled(Chip)({
-  zIndex: 2,
-  top: "0.875rem",
-  fontSize: "10px",
-  padding: "0 8px",
-  fontWeight: "600",
-  position: "absolute",
-});
+import {
+  ContentWrapper,
+  HoverIconWrapper,
+  ImageWrapper,
+  StyledCard,
+  StyledChip,
+  StyledChipCategory,
+} from "./styles";
 
 // ========================================================
 interface TypeProps {
@@ -263,6 +206,7 @@ const ProductCard = ({
           slug,
           images,
           thumbnail,
+          discount
         }}
       />
       <Grid item alignItems="center" container spacing={1} xs={isInShop}>

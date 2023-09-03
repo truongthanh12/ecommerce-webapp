@@ -1,8 +1,11 @@
 "use client";
 import { Box, styled } from "@mui/material";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
+import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setStatus } from "@/redux/features/adminSlice";
 
 // styled components
 const BodyWrapper = styled(Box)(
@@ -31,6 +34,8 @@ const InnerWrapper = styled(Box)(({ theme }) => ({
 const VendorDashboardLayout = ({ children }: React.PropsWithChildren) => {
   const [sidebarCompact, setSidebarCompact] = useState<any>(0);
   const [showMobileSideBar, setShowMobileSideBar] = useState<any>(0);
+  const pathname = usePathname();
+  const dispatch = useDispatch();
 
   // handle sidebar toggle for desktop device
   const handleCompactToggle = () =>
@@ -38,6 +43,15 @@ const VendorDashboardLayout = ({ children }: React.PropsWithChildren) => {
   // handle sidebar toggle in mobile device
   const handleMobileDrawerToggle = () =>
     setShowMobileSideBar((state: any) => (state ? 0 : 1));
+
+    useEffect(() => {
+    if (pathname.includes("create")) {
+      dispatch(setStatus("create"));
+      return
+    }
+    dispatch(setStatus("edit"));
+  }, [pathname]);
+
   return (
     <Fragment>
       <DashboardSidebar

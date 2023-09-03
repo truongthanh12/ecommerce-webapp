@@ -9,7 +9,7 @@ type TypeProps = {
 };
 const MoreProducts: React.FC<TypeProps> = ({ products }) => {
   const moreItems = useMemo(() => {
-    return products.filter((item) => item.for?.type === "more-products");
+    return products.filter((item) => item.type === "more-products");
   }, [products]);
 
   return (

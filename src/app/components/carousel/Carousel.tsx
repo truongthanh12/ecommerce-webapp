@@ -28,11 +28,13 @@ const CarouselSlider = ({
   isDots,
   spaceBetween = 12,
 }: TypeCarouselProps) => {
+  const showNavigation = Children.count(children) > visibleSlides;
+
   return (
     <StyledCarouselProvider
       sx={sx}
       modules={[Navigation, Pagination, A11y]}
-      navigation={isArrow}
+      navigation={isArrow && showNavigation}
       pagination={isDots ? { clickable: true } : false}
       slidesPerView={visibleSlides}
       loop={infinite}

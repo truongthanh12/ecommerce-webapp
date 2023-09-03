@@ -15,10 +15,10 @@ type TypeProps = {
 };
 const Featured: React.FC<TypeProps> = ({ products, brands }) => {
   const topRatedBrands = useMemo(() => {
-    return brands?.filter((item) => item.for?.type === "featured-brands");
+    return brands?.filter((item) => item.type === "featured-brands");
   }, [brands]);
   const topRatedList = useMemo(() => {
-    return products?.filter((item) => item.for?.type === "top-ratings");
+    return products?.filter((item) => item.type === "top-ratings");
   }, [products]);
 
   return (

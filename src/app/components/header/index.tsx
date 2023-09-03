@@ -19,9 +19,8 @@ import { FlexBetween, FlexBox } from "@/components/flex-box";
 import CategoryMenu from "@/components/categories/CategoryMenu";
 import ShoppingBagOutlined from "@/components/icons/ShoppingBagOutlined";
 import Image from "next/image";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
-// import { IUser } from "@/app/models/User";
 import { useRouter } from "next/navigation";
 import { HeaderWrapper, StyledContainer } from "./styles";
 import Avatar from "./Avatar";
@@ -48,10 +47,9 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
 
   const toggleDialog = useCallback(() => setDialogOpen(!dialogOpen), []);
   const toggleSidenav = useCallback(() => setSidenavOpen(!sidenavOpen), []);
-  const toggleSearchBar = useCallback(
-    () => setSearchBarOpen(!searchBarOpen),
-    []
-  );
+  const toggleSearchBar = () => {
+    setSearchBarOpen(!searchBarOpen);
+  };
 
   useEffect(() => {
     if (!window) return;

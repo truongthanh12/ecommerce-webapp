@@ -1,13 +1,21 @@
 "use client";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { Box, MenuItem, TextField, styled, useTheme } from "@mui/material";
 import { KeyboardArrowDownOutlined } from "@mui/icons-material";
 import TouchRipple from "@mui/material/ButtonBase";
 import MenuList from "@/components/Menu";
 import { FlexBox } from "@/components/flex-box";
 import { SearchOutlinedIcon, SearchResultCard } from "./styled";
-// import api from "utils/__api__/products";
+import { useSelector } from "react-redux";
+import { ICategory } from "@/app/models/Category";
 
 const DropDownHandler = styled(FlexBox)(
   ({ theme }: { component: any; theme?: any }) => ({
@@ -28,14 +36,15 @@ const SearchInputWithCategory = () => {
   const [resultList, setResultList] = useState([]);
   const [categoryTitle, setCategoryTitle] = useState("All Categories");
 
+  const { categories } = useSelector((state: any) => state.categories);
   // HANDLE CHANGE THE CATEGORY
   type TypeCateProps = {
-    value: string;
-    title: string;
+    name: string;
+    id: string;
   };
   const handleCategoryChange = (cat: TypeCateProps) => () => {
-    setCategory(cat.value);
-    setCategoryTitle(cat.title);
+    setCategory(cat.id);
+    setCategoryTitle(cat.name);
   };
 
   // FETCH PRODUCTS VIA API
@@ -57,12 +66,17 @@ const SearchInputWithCategory = () => {
     });
   };
   const handleDocumentClick = () => setResultList([]);
+  
   useEffect(() => {
-    if(!window) return
+    if (!window) return;
     window.addEventListener("click", handleDocumentClick);
     return () => window.removeEventListener("click", handleDocumentClick);
   }, []);
 
+  const categoriesData = useMemo(() => {
+    return categories.filter((item: ICategory) => item.type === "categories");
+  }, [categories]);
+  
   // CATEGORY MENU DROPDOWN
   const categoryDropdown = (
     <MenuList
@@ -85,9 +99,9 @@ const SearchInputWithCategory = () => {
         </DropDownHandler>
       }
     >
-      {categories.map((item) => (
-        <MenuItem key={item.value} onClick={handleCategoryChange(item)}>
-          {item.title}
+      {categoriesData.map((item: ICategory) => (
+        <MenuItem key={item.id} onClick={handleCategoryChange(item)}>
+          {item.name}
         </MenuItem>
       ))}
     </MenuList>
@@ -135,38 +149,5 @@ const SearchInputWithCategory = () => {
     </Box>
   );
 };
-const categories = [
-  {
-    title: "All Categories",
-    value: "*",
-  },
-  {
-    title: "Car",
-    value: "car",
-  },
-  {
-    title: "Clothes",
-    value: "clothes",
-  },
-  {
-    title: "Electronics",
-    value: "electronics",
-  },
-  {
-    title: "Laptop",
-    value: "laptop",
-  },
-  {
-    title: "Desktop",
-    value: "desktop",
-  },
-  {
-    title: "Camera",
-    value: "camera",
-  },
-  {
-    title: "Toys",
-    value: "toys",
-  },
-];
+
 export default SearchInputWithCategory;

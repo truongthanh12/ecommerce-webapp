@@ -3,7 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import OpenGraphTags from "@/utils/OpenGraphTags";
 import MuiTheme from "@/components/theme";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, type ReactNode, Suspense } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
 import { login, logout } from "@/redux/features/authSlice";
@@ -51,7 +51,9 @@ export default function RootLayout({ children }: LayoutProps) {
       <body className={inter.className}>
         <Providers>
           <ToastProvider>
-            <MuiTheme>{children}</MuiTheme>
+            <Suspense fallback="Loading...">
+              <MuiTheme>{children}</MuiTheme>
+            </Suspense>
           </ToastProvider>
         </Providers>
       </body>

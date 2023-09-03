@@ -48,7 +48,6 @@ const StyledBox = styled(FlexBetween)(({ theme }) => ({
 
 // ==================================================
 
-// ==================================================
 interface TypeCarouselCardProps {
   title?: string;
   imgUrl?: string;

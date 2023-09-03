@@ -25,7 +25,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
   }, [width]);
 
   const bigDiscountList = useMemo(() => {
-    return products.filter((item) => item.for?.type === "big-discounts");
+    return products.filter((item) => item.type === "big-discounts");
   }, [products]);
 
   return (

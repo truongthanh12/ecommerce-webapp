@@ -1,4 +1,5 @@
 export interface ICategory {
+  type: string;
   id: string;
   name: string;
   icon: null;
@@ -6,10 +7,4 @@ export interface ICategory {
   image: string;
   description: string | null;
   parent: never[];
-  for: Type;
-}
-
-export interface Type {
-  demo: string;
-  type: string;
 }

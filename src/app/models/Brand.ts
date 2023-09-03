@@ -4,9 +4,14 @@ export interface IBrand {
   name: string;
   image?: string;
   type?: string;
-  for?: TypeBrand;
+  featured: boolean;
 }
-interface TypeBrand {
-  demo?: string;
-  type?: string;
+
+export interface ICarouselCard {
+  id: string;
+  title?: string;
+  imgUrl?: string;
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
 }

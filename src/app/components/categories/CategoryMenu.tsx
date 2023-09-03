@@ -7,7 +7,8 @@ import React, {
   useState,
 } from "react";
 import CategoryMenuCard from "./CategoryMenuCard";
-import navigations from "@/data/navigations";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNaviagtions } from "@/redux/features/navigationSlice";
 // Define the styled component type
 type TypeProps = {
   children: ReactNode;
@@ -33,6 +34,11 @@ const CategoryMenu: React.FC<TypeProps> = ({
   const [open, setOpen] = useState<boolean>(isOpen);
   const popoverRef = useRef<boolean>(open);
   popoverRef.current = open;
+
+  const { navigations } = useSelector((state: any) => state.navigations);
+  console.log(navigations)
+  const dispatch: any = useDispatch();
+
   const toggleMenu = (e: MouseEvent) => {
     e.stopPropagation();
     if (!isOpen) setOpen((open) => !open);
@@ -41,6 +47,10 @@ const CategoryMenu: React.FC<TypeProps> = ({
   const handleDocumentClick = useCallback(() => {
     if (popoverRef.current && !isOpen) setOpen(false);
   }, [isOpen]);
+
+  useEffect(() => {
+    dispatch(fetchNaviagtions());
+  }, []);
 
   useEffect(() => {
     if (!window) return;

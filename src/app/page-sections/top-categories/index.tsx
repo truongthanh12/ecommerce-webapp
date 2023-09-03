@@ -7,12 +7,14 @@ import Carousel from "@/components/carousel/Carousel";
 import ProductCard from "@/components/products/Card";
 import CategorySectionCreator from "@/components/CategorySectionCreator";
 import { ICategory } from "@/app/models/Category";
-// =====================================================
+
 type TypeCategory = { categories: ICategory[] };
 const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
   const [visibleSlides, setVisibleSlides] = useState(3);
+  const [isArrow, setArrow] = useState(false);
+
   const categoriesData = useMemo(() => {
-    return categories.filter((item) => item.for?.type === "top-categories");
+    return categories.filter((item) => item.type === "top-categories");
   }, [categories]);
 
   const width = useWindowSize();
@@ -21,6 +23,12 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
     else if (width < 950) setVisibleSlides(2);
     else setVisibleSlides(3);
   }, [width]);
+
+  useEffect(() => {
+    if (categoriesData.length > visibleSlides) {
+      setArrow(true);
+    }
+  }, [isArrow]);
 
   return (
     <CategorySectionCreator
@@ -50,4 +58,5 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
     </CategorySectionCreator>
   );
 };
+
 export default React.memo(TopCategories);

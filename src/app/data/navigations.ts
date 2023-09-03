@@ -1,10 +1,10 @@
-import Car from "@/components/icons/Car";
-import Dress from "@/components/icons/Dress";
+// import Car from "@/components/icons/Car";
+// import Dress from "@/components/icons/Dress";
 import { INavigation } from "../models/Navigation";
 const navigations: INavigation[] = [
   {
     id: "dress",
-    icon: Dress,
+    icon: "dress",
     title: "Fashion",
     href: "/fashion",
     menuComponent: "MegaMenu1",
@@ -13,28 +13,6 @@ const navigations: INavigation[] = [
         {
           title: "Bags",
           href: "/product/search/bags",
-          subCategories: [
-            {
-              title: "Backpack",
-              href: "/product/search/backpack",
-              imgUrl: "/assets/images/products/categories/backpack.png",
-            },
-            {
-              title: "Crossbody Bags",
-              href: "/product/search/Crossbody Bags",
-              imgUrl: "/assets/images/products/categories/bag.png",
-            },
-            {
-              title: "Side Bags",
-              href: "/product/search/Side Bags",
-              imgUrl: "/assets/images/products/categories/mini-bag.png",
-            },
-            {
-              title: "Slides",
-              href: "/product/search/Slides",
-              imgUrl: "/assets/images/products/categories/belt.png",
-            },
-          ],
         },
       ],
       rightImage: {
@@ -45,7 +23,7 @@ const navigations: INavigation[] = [
   },
   {
     id: "car",
-    icon: Car,
+    icon: "car",
     title: "Automotive",
     href: "/product/search/automotive",
     menuComponent: "MegaMenu1",

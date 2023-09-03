@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Box, MenuItem, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import React from "react";
+import { CategoryIcon } from "@/common";
 
 //styled component
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -33,11 +34,12 @@ const Wrapper = styled(Box)(({ theme }) => ({
 // =============================================================
 
 const CategoryMenuItem = ({ href, title, caret, children, ...rest }: any) => {
+
   return (
     <Wrapper>
-      <Link href={href}>
+      <Link href={href || ""}>
         <MenuItem className="category-dropdown-link">
-          {rest.icon && <rest.icon fontSize="small" color="inherit" />}
+          {rest.icon && <>{CategoryIcon[rest.icon]}</>}
           <span className="title">{title}</span>
           {caret && <ChevronRight fontSize="small" />}
         </MenuItem>

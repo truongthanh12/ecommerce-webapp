@@ -7,52 +7,17 @@ import {
   Divider,
   Grid,
   IconButton,
-  styled,
 } from "@mui/material";
 import { FlexBox } from "@/components/flex-box";
 // import Image from "@/components/Image";
 import Rating from "@/components/Rating";
 import Carousel from "@/components/carousel/Carousel";
 import { H1, H2, H3, H6, Paragraph } from "@/components/Typography";
-import { currency } from "@/utils/lib";
+import { calculateDiscount, currency } from "@/utils/lib";
 import { IProducts } from "@/app/models/Product";
 import Image from "../Image";
 import { useState } from "react";
-
-// styled components
-const ContentWrapper = styled(Box)(({ theme }) => ({
-  "& .carousel:hover": {
-    cursor: "pointer",
-    "& .carousel__back-button": {
-      opacity: 1,
-      left: 10,
-    },
-    "& .carousel__next-button": {
-      opacity: 1,
-      right: 10,
-    },
-  },
-  "& .carousel__next-button, & .carousel__back-button": {
-    opacity: 0,
-    boxShadow: "none",
-    transition: "all 0.3s",
-    background: "transparent",
-    color: theme.palette.primary.main,
-    ":disabled": {
-      color: theme.palette.grey[500],
-    },
-    ":hover": {
-      color: theme.palette.primary.main,
-      backgroundColor: "transparent",
-    },
-  },
-  "& .carousel__back-button": {
-    left: 0,
-  },
-  "& .carousel__next-button": {
-    right: 0,
-  },
-}));
+import { ContentWrapperView } from "./styles";
 
 // =====================================================
 interface TypeProps {
@@ -90,7 +55,7 @@ const ProductViewDialog = ({
           width: "100%",
         }}
       >
-        <ContentWrapper>
+        <ContentWrapperView>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <Carousel visibleSlides={1}>
@@ -107,7 +72,7 @@ const ProductViewDialog = ({
                         xs: 250,
                       },
                     }}
-                    alt={'image ' + item}
+                    alt={"image " + item}
                   />
                 ))}
               </Carousel>
@@ -120,7 +85,20 @@ const ProductViewDialog = ({
                 CATEGORY: Cosmetic
               </Paragraph>
 
-              <H1 color="primary.main">{currency(product.price || 0)}</H1>
+              {product.discount ? (
+                <Grid
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <H3 color="grey.600">
+                    <del>{currency(product.price || 0)}</del>
+                  </H3>
+                  <H2 color="primary.main" pl={2}>
+                    {calculateDiscount(product.price, product.discount)}
+                  </H2>
+                </Grid>
+              ) : (
+                ""
+              )}
 
               <FlexBox alignItems="center" gap={1}>
                 <Rating color="warn" fontSize="1.25rem" value={4} readOnly />
@@ -185,7 +163,7 @@ const ProductViewDialog = ({
               )}
             </Grid>
           </Grid>
-        </ContentWrapper>
+        </ContentWrapperView>
 
         <IconButton
           sx={{

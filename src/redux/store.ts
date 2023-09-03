@@ -5,6 +5,12 @@ import thunk from "redux-thunk";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import authSlice from "./features/authSlice";
 import messageSlice from "./features/messageSlice";
+import categorySlice from "./features/categorySlice";
+import navigationSlice from "./features/navigationSlice";
+import bannerSlice from "./features/bannerSlice";
+import productSlice from "./features/productSlice";
+import brandSlice from "./features/brandSlice";
+import adminSlice from "./features/adminSlice";
 
 const authPersistConfig = {
   key: "auth",
@@ -15,13 +21,19 @@ const authPersistConfig = {
 const persistConfig = {
   key: "root",
   storage,
-  stateReconciler: autoMergeLevel2,
-  blacklist: ["message"],
+  // stateReconciler: autoMergeLevel2,
+  whiteList: ["auth"],
 };
 
 const rootReducer: any = combineReducers({
   auth: persistReducer(authPersistConfig, authSlice),
   message: messageSlice,
+  categories: categorySlice,
+  navigations: navigationSlice,
+  banners: bannerSlice,
+  products: productSlice,
+  brands: brandSlice,
+  statusAdmin: adminSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,8 +44,6 @@ export const store = configureStore({
   middleware: [thunk],
 });
 
-export const persistor = persistStore(store, null, () => {
-  store.getState();
-});
+export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

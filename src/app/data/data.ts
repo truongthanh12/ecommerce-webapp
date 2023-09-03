@@ -1,4 +1,3 @@
-import { ICategory } from "../models/Category";
 import { IProducts } from "../models/Product";
 
 // carousel-data
@@ -18,7 +17,7 @@ export const mainCarouselData = [
     buttonLik: "#",
   },
 ];
-export const categories: Array<ICategory> = [
+export const categories = [
   {
     id: "f4c1291a-ff9e-4aa2-aa6c-95eb8b8bcc5e",
     name: "Headphone",
@@ -248,7 +247,7 @@ export const categories: Array<ICategory> = [
 ];
 
 // products
-export const products: Partial<IProducts>[] = [
+export const products: IProducts[] = [
   {
     id: "8ac53dd8-6418-454f-bbb5-29f0b26ac5a5",
     slug: "nikecourt-zoom-vapor-cage",

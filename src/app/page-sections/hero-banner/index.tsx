@@ -2,14 +2,9 @@ import Carousel from "@/components/carousel/Carousel";
 import CarouselCard from "@/components/carousel/Card";
 import { Box, Container } from "@mui/material";
 import React from "react";
+import { ICarouselCard } from "@/app/models/Brand";
 // ======================================================
-interface ICarouselCard {
-  title?: string;
-  imgUrl?: string;
-  description?: string;
-  buttonText?: string;
-  buttonLink?: string;
-}
+
 interface TypeProps {
   carouselData: ICarouselCard[];
 }
