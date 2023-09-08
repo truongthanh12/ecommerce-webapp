@@ -14,11 +14,10 @@ import { H5, Paragraph } from "@/components/Typography";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
 
 interface PageProps {
-  params: { slug: string };
   setView: (view: any) => void;
   view: "grid" | "list" | string;
 }
-const ProductsNavbar = ({ params, setView, view }: PageProps) => {
+const ProductsNavbar = ({ setView, view }: PageProps) => {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v: any) => () => setView(v), [setView]);
   return (
@@ -38,7 +37,7 @@ const ProductsNavbar = ({ params, setView, view }: PageProps) => {
       }}
     >
       <Box>
-        <H5>Searching for “ {params.slug} ”</H5>
+        <H5>Searching for “ {} ”</H5>
         <Paragraph color="grey.600">48 results found</Paragraph>
       </Box>
 

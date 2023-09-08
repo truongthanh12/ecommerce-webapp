@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Add, Close, Remove } from "@mui/icons-material";
 import {
   Avatar,
@@ -16,27 +16,34 @@ import Rating from "@/components/Rating";
 import { H1, H2, H3, H6 } from "@/components/Typography";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import { currency } from "@/utils/lib";
-import productVariants from "@/app/data/product-variants";
 import { IVariant } from "@/app/models/Variant";
 import Chip from "@mui/material/Chip";
+import { IProducts } from "@/app/models/Product";
+import { AnyAaaaRecord } from "dns";
 
 // ================================================================
 type OptionsType = {
-  option: string;
-  type: string;
+  sizes: string;
+  colors: string;
 };
 const ContentWrapper = styled(Box)(() => ({
   borderRadius: "8px",
   padding: "0.5rem",
 }));
 
-const ProductIntro = ({ product }: any) => {
-  const { price, title, images, shop, brand } = product || {};
+const ProductIntro = ({ product }: { product: Partial<IProducts> }) => {
+  const { price, title, images, shop, brands, stock, sizes, colors } =
+    product || {};
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectVariants, setSelectVariants] = useState<OptionsType>({
-    option: "option 1",
-    type: "type 1",
+    sizes: sizes?.[0] || "",
+    colors: colors?.[0] || "",
   });
+
+  const productVariants: any = [
+    { sizes: sizes, title: "Sizes" },
+    { colors: colors, title: "Color" },
+  ];
 
   // HANDLE CHAMGE TYPE AND OPTIONS
   const handleChangeVariant = (variantName: string, value: string) => () => {
@@ -62,13 +69,22 @@ const ProductIntro = ({ product }: any) => {
   };
 
   const handleCartAmountChange = (type: "add" | "minus") => () => {
+    if (!isInStock) return;
+
     if (type === "add") {
-      setQty(qty + 1);
+      if (qty < Number(stock)) {
+        setQty((qty) => qty + 1);
+      }
       return;
     }
+
     if (qty === 0) return;
-    setQty(qty - 1);
+    setQty((qty) => qty - 1);
   };
+
+  const isInStock = useMemo(() => {
+    return Number(stock) > 0;
+  }, [stock]);
 
   return (
     <Box width="100%">
@@ -170,7 +186,7 @@ const ProductIntro = ({ product }: any) => {
 
           <FlexBox alignItems="center" mb={1}>
             <Box>Brand:</Box>
-            <H6>{brand || "Admin Store"}</H6>
+            <H6 pl={1}>{brands}</H6>
           </FlexBox>
 
           <FlexBox alignItems="center" mb={2}>
@@ -181,24 +197,21 @@ const ProductIntro = ({ product }: any) => {
             <H6 lineHeight="1">(50)</H6>
           </FlexBox>
 
-          {productVariants.map((variant: IVariant) => (
-            <Box key={variant.id} mb={2}>
+          {productVariants.map((variant: any) => (
+            <Box key={variant.title} mb={2}>
               <H6 mb={1}>{variant.title}</H6>
 
-              {(variant.values || []).map(({ id, value }) => (
+              {(variant.sizes || variant.colors || []).map((item: any) => (
                 <Chip
-                  key={id}
-                  label={value}
-                  onClick={handleChangeVariant(
-                    String(variant.title),
-                    String(value)
-                  )}
+                  key={item}
+                  label={item}
+                  onClick={handleChangeVariant(String(variant), String(item))}
                   color={
                     selectVariants[
                       String(
-                        variant.title
+                        variant
                       ).toLowerCase() as keyof typeof selectVariants
-                    ] === String(value)
+                    ] === String(item)
                       ? "primary"
                       : "default"
                   }
@@ -213,10 +226,12 @@ const ProductIntro = ({ product }: any) => {
           ))}
 
           <Box pt={1} mb={3}>
-            <H2 color="primary.main" mb={0.5} lineHeight="1">
+            <H2 color="primary.main" mb={2} lineHeight="1">
               {currency(price)}
             </H2>
-            <Box color="inherit">Stock Available</Box>
+            <Box color="inherit">
+              {isInStock ? "Stock Available" : "Stock Unavailable"}
+            </Box>
           </Box>
 
           {!qty ? (
@@ -224,6 +239,7 @@ const ProductIntro = ({ product }: any) => {
               color="primary"
               variant="contained"
               onClick={handleCartAmountChange("add")}
+              disabled={!isInStock}
               sx={{
                 mb: 4.5,
                 px: "1.75rem",
@@ -266,8 +282,8 @@ const ProductIntro = ({ product }: any) => {
 
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>
-            <Link href={`/shops/${shop?.slug}`} passHref>
-              <H6 ml={1}>{shop?.name}</H6>
+            <Link href={`/shops/${shop?.id}`} passHref>
+              <H6 ml={1}>{shop?.displayName}</H6>
             </Link>
           </FlexBox>
         </Grid>

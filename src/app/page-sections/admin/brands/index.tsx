@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import { Avatar } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { Delete, RemoveRedEye } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import SwitchButton from "@/components/Switch";
 import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
 import { useAppDispatch } from "@/redux/hooks";
@@ -72,7 +72,7 @@ const BrandRow = ({ brand, selected }: any) => {
 
       <StyledTableCell align="center">
         <StyledIconButton onClick={handleNavigate}>
-          <RemoveRedEye />
+          <Edit />
         </StyledIconButton>
 
         <StyledIconButton onClick={handleDelete}>

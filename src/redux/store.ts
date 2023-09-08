@@ -21,7 +21,7 @@ const authPersistConfig = {
 const persistConfig = {
   key: "root",
   storage,
-  // stateReconciler: autoMergeLevel2,
+  stateReconciler: autoMergeLevel2,
   whiteList: ["auth"],
 };
 

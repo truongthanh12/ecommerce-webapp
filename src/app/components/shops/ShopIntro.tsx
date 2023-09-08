@@ -1,4 +1,4 @@
-import { Call, Place } from "@mui/icons-material";
+import { Call, InfoRounded, Place } from "@mui/icons-material";
 import { Avatar, Box, Button, Card, Rating } from "@mui/material";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import FacebookFilled from "@/components/icons/FacebookFilled";
@@ -16,6 +16,10 @@ interface CardShops {
   phone: string;
   coverPicture: string;
   profilePicture: string;
+  description: string;
+  facebook: string;
+  youtube: string;
+  email: string;
 }
 const ShopIntroCard = ({
   name,
@@ -23,7 +27,22 @@ const ShopIntroCard = ({
   address,
   coverPicture,
   profilePicture,
+  description,
+  facebook,
+  youtube,
+  email,
 }: CardShops) => {
+  const socialLinks = [
+    {
+      icon: FacebookFilled,
+      url: facebook,
+    },
+    {
+      icon: YoutubeFilled,
+      url: youtube,
+    },
+  ];
+
   return (
     <Card
       sx={{
@@ -100,6 +119,23 @@ const ShopIntroCard = ({
               </FlexBox>
 
               <FlexBox color="grey.600" gap={1} mb={1} maxWidth={270}>
+                <InfoRounded
+                  fontSize="small"
+                  sx={{
+                    fontSize: 18,
+                    mt: "3px",
+                  }}
+                />
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      description
+                        ?.substring(0, 100)
+                        .replace(/(?:\r\n|\r|\n)/g, "<br />") + "...",
+                  }}
+                />
+              </FlexBox>
+              <FlexBox color="grey.600" gap={1} mb={1} maxWidth={270}>
                 <Place
                   fontSize="small"
                   sx={{
@@ -118,11 +154,13 @@ const ShopIntroCard = ({
                     mt: "2px",
                   }}
                 />
-                <Span color="grey.600">{phone}</Span>
+                <Span color="grey.600">
+                  <a href={`tel:${phone}`}>{phone}</a>
+                </Span>
               </FlexBox>
             </Box>
 
-            <a href="mailto:scarletbeauty@xmail.com">
+            <a href={`mailto:${email}`}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -139,22 +177,5 @@ const ShopIntroCard = ({
     </Card>
   );
 };
-const socialLinks = [
-  {
-    icon: FacebookFilled,
-    url: "https://facebook.com",
-  },
-  {
-    icon: TwitterFilled,
-    url: "https://twitter.com",
-  },
-  {
-    icon: YoutubeFilled,
-    url: "https://youtube.com",
-  },
-  {
-    icon: InstagramFilled,
-    url: "https://instagram.com",
-  },
-];
+
 export default React.memo(ShopIntroCard);

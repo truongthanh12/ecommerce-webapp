@@ -107,11 +107,11 @@ const megaMenus = [
       child: [
         {
           title: "All products",
-          url: "/admin/products",
+          url: "/vendor/products",
         },
         {
           title: "Add/Edit product",
-          url: "/admin/product/create",
+          url: "/vendor/product/create",
         },
       ],
     },

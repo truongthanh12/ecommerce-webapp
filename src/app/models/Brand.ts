@@ -14,4 +14,5 @@ export interface ICarouselCard {
   description?: string;
   buttonText?: string;
   buttonLink?: string;
+  type?: string;
 }

@@ -7,5 +7,5 @@ interface PageProps {
 }
 
 export default function ProductSearchResult({ params }: PageProps) {
-  return <ProductsSearch params={params} />;
+  return <ProductsSearch  />;
 }

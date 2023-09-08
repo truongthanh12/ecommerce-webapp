@@ -55,7 +55,6 @@ const FormAuth = ({
   const [isChecked, setChecked] = useState(false);
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector((state: any) => state.auth);
-
   const {
     handleSubmit,
     control,
@@ -80,69 +79,75 @@ const FormAuth = ({
   const handleFormSubmit = async (value: FormValues) => {
     const { Email, Password } = value || {};
     dispatch(loading());
-    if (authType === "signup") {
-      try {
+
+    try {
+      if (authType === "signup") {
         const userAuth = await createUserWithEmailAndPassword(
           auth,
           Email,
           Password
         );
 
-        dispatch(
-          login(
-            userData({ data: userAuth, optionalData: { isVendor: isChecked } })
-          )
-        );
+        // Create the document in Firestore with the docId field
+        const usersCollection = collection(db, "users");
+        const userDataWithOptionalData = userData({
+          data: userAuth,
+          optionalData: { isVendor: isChecked },
+        });
+
+        const docRef = await addDoc(usersCollection, userDataWithOptionalData);
+
+        // Update the local data with the new docId
+        userDataWithOptionalData.docId = docRef.id;
+
+        dispatch(login(userDataWithOptionalData));
         onClosePopup();
         dispatch(setMessage({ message: "Register successfully!" }));
+      } else {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          Email,
+          Password
+        );
+        const user = userCredential.user;
 
+        // Check if the user data already exists in Firestore
         const usersCollection = collection(db, "users");
+        const userQuery = query(usersCollection, where("uid", "==", user.uid));
+        const userQuerySnapshot = await getDocs(userQuery);
 
-        const q = query(
-          usersCollection,
-          where("email", "==", userAuth.user.email)
-        );
+        if (userQuerySnapshot.empty) {
+          dispatch(loginError("User data not found."));
+          dispatch(setMessage("User data not found."));
+        } else {
+          const userDataSnapshot = userQuerySnapshot.docs[0];
+          const userData = userDataSnapshot.data();
 
-        // Perform the query
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.size === 0) {
-          await addDoc(
-            usersCollection,
-            userData({ data: userAuth, optionalData: { isVendor: isChecked } })
-          );
-        }
-      } catch (err: any) {
-        dispatch(loginError(err.message));
-        dispatch(
-          setMessage({
-            message:
-              err.message === "Firebase: Error (auth/email-already-in-use)."
-                ? "Email existed, please try login with this email."
-                : "An error occurred! Please try again.",
-            type: "error",
-          })
-        );
+          userData.docId = userDataSnapshot.id;
 
-        setErrorMessage(
-          err.message === "Firebase: Error (auth/email-already-in-use)."
-            ? "Email existed, please try login with this email."
-            : "An error occurred! Please try again."
-        );
-        throw err;
-      }
-    } else {
-      await signInWithEmailAndPassword(auth, Email, Password)
-        .then((userAuth) => {
-          dispatch(login(userData({ data: userAuth })));
-          onClosePopup();
+          dispatch(login(userData));
+
+          // Handle successful login
           dispatch(setMessage({ message: "Login successfully!" }));
+        }
+      }
+    } catch (err: any) {
+      dispatch(loginError(err.message));
+      dispatch(
+        setMessage({
+          message:
+            err.message === "Firebase: Error (auth/email-already-in-use)."
+              ? "Email existed, please try login with this email."
+              : "An error occurred! Please try again.",
+          type: "error",
         })
-        .catch((err) => {
-          dispatch(loginError(err.message));
-          dispatch(setMessage("Email or Password not match."));
-          setErrorMessage("Email or Password not match.");
-          throw err;
-        });
+      );
+
+      setErrorMessage(
+        err.message === "Firebase: Error (auth/email-already-in-use)."
+          ? "Email existed, please try login with this email."
+          : "An error occurred! Please try again."
+      );
     }
   };
 

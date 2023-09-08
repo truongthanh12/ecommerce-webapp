@@ -7,7 +7,7 @@ import { H5, Small } from "./Typography";
 interface TypeProps {
   onChange: (acceptedFiles: any) => void;
   title: string;
-  imageSize: string;
+  imageSize?: string;
 }
 const DropZone = ({
   onChange,
@@ -21,7 +21,7 @@ const DropZone = ({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    maxFiles: 10,
+    maxFiles: 4,
     multiple: true,
     accept: {
       "image/*": [".png", ".gif", ".jpeg", ".jpg"],

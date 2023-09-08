@@ -36,7 +36,6 @@ const CategoryMenu: React.FC<TypeProps> = ({
   popoverRef.current = open;
 
   const { navigations } = useSelector((state: any) => state.navigations);
-  console.log(navigations)
   const dispatch: any = useDispatch();
 
   const toggleMenu = (e: MouseEvent) => {

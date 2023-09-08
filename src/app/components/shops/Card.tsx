@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { Call, East, Place } from "@mui/icons-material";
 import {
@@ -37,7 +37,7 @@ interface CardShops {
   phone: string;
   coverPicture: string;
   profilePicture: string;
-  slug: string;
+  id: string;
 }
 const ShopCard = ({
   name,
@@ -46,7 +46,7 @@ const ShopCard = ({
   phone,
   coverPicture,
   profilePicture,
-  slug,
+  id,
 }: CardShops) => {
   return (
     <Card>
@@ -98,7 +98,7 @@ const ShopCard = ({
             borderColor: "grey.100",
           }}
         />
-        <Link href={`/shops/${slug}`}>
+        <Link href={`/shops/${id}`}>
           <IconButton
             sx={{
               my: 0.5,
@@ -107,8 +107,7 @@ const ShopCard = ({
             <East
               sx={{
                 fontSize: 19,
-                transform: ({ direction }) =>
-                  `rotate(${direction === "rtl" ? "180deg" : "0deg"})`,
+                transform: () => `rotate("0deg")`,
               }}
             />
           </IconButton>

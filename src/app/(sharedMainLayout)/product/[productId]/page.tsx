@@ -90,7 +90,7 @@ ProductDetailProps) {
         </StyledTabs>
 
         <Box mb={6}>
-          {selectedOption === 0 && <ProductDescription />}
+          {selectedOption === 0 && <ProductDescription product={product} />}
           {selectedOption === 1 && <ProductReview />}
         </Box>
 

@@ -3,14 +3,16 @@ export interface IShop {
   slug?: string;
   user?: User;
   email?: string;
-  name?: string;
-  phone?: string;
+  displayName?: string;
+  phoneNumber?: string;
   address?: string;
   verified?: boolean;
-  coverPicture?: string;
-  profilePicture?: string;
+  pictureCover?: string;
+  photoURL?: string;
   rating?: number;
-  socialLinks?: SocialLinks;
+  facebook: string;
+  youtube: string;
+  description: string;
 }
 
 export interface User {
@@ -21,17 +23,5 @@ export interface User {
   password: string;
   dateOfBirth: string;
   verified: boolean;
-  name?: Name;
-}
-
-export interface Name {
-  firstName: string;
-  lastName: string;
-}
-
-export interface SocialLinks {
-  facebook: any;
-  youtube: any;
-  twitter: any;
-  instagram: any;
+  displayName?: string;
 }

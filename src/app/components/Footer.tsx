@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
                     height={50}
                     style={{ marginBottom: "12px" }}
                     src="/assets/images/logo.png"
-                    alt="logo"
+                    alt="logo taphoa"
                   />
                 </Link>
 

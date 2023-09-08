@@ -74,17 +74,27 @@ const StatusWrapper = styled(Box)(({ theme, status }: any) => {
     display: "inline-flex",
   };
 });
-const UploadImageBox = styled(Box)(({ theme }) => ({
-  width: "50%",
-  maxHeight: 370,
-  display: "flex",
-  overflow: "hidden",
-  borderRadius: "8px",
-  position: "relative",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: alpha(theme.palette.info.light, 0.1),
-}));
+const UploadImageBox = styled(Box)(
+  ({ theme, size }: { theme?: any; size: "small" | "medium" | undefined }) => {
+    let width: string | number = "50%";
+    let maxHeight = 370;
+    if (size === "small") {
+      width = 100;
+      maxHeight = 100;
+    }
+    return {
+      width,
+      maxHeight,
+      display: "flex",
+      overflow: "hidden",
+      borderRadius: "8px",
+      position: "relative",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: alpha(theme.palette.info.light, 0.1),
+    };
+  }
+);
 const StyledClear = styled(Clear)({
   top: 5,
   right: 5,
@@ -93,6 +103,7 @@ const StyledClear = styled(Clear)({
   position: "absolute",
   color: "white",
 });
+
 export {
   CategoryWrapper,
   StyledIconButton,

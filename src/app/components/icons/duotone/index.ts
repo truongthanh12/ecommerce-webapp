@@ -28,7 +28,7 @@ import TodoList from "./TodoList";
 import UserProfile from "./UserProfile";
 import UserTie from "./UserTie";
 import Vest from "./Vest";
-const Icon = {
+const Icon: any = {
   Apps,
   AdminEcommerce,
   Dashboard,

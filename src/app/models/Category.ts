@@ -6,5 +6,5 @@ export interface ICategory {
   slug: string;
   image: string;
   description: string | null;
-  parent: never[];
+  parent: string;
 }

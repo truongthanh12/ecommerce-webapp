@@ -62,10 +62,10 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
   }, []);
 
   useEffect(() => {
-    if (user.uid) {
+    if (user?.uid) {
       setDialogOpen(false);
     }
-  }, [user.uid]);
+  }, [user?.uid]);
 
   // LOGIN AND MINICART DRAWER
   const DIALOG_DRAWER = (

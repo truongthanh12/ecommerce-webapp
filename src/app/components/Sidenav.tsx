@@ -1,3 +1,4 @@
+"use client"
 import React, { ReactElement, cloneElement, useEffect, useState } from "react";
 import clsx from "clsx";
 import { Box, Drawer, styled } from "@mui/material";

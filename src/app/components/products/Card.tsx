@@ -61,7 +61,7 @@ const ProductCard = ({
   isFeatured,
   isTopCategory,
   isInShop,
-}: TypeProps) => {
+}: Partial<TypeProps>) => {
   const [openModal, setOpenModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const toggleIsFavorite = () => setIsFavorite((fav) => !fav);

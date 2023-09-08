@@ -23,6 +23,9 @@ export const ImageWrapper = styled(Box)(({ theme }) => ({
   position: "relative",
   display: "inline-block",
   width: "100%",
+  maxHeight: 285,
+  overflow: "hidden",
+  objectFit: "cover",
   [theme.breakpoints.down("sm")]: {
     display: "block",
   },

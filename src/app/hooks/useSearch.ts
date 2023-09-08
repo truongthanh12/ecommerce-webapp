@@ -16,7 +16,11 @@ export const useSearch = (data: any) => {
 
     // Use Array filter to find data matching the search text in lowercase
     const filtered = data.filter((item: any) =>
-      item.name.toLowerCase().includes(lowercaseSearchText)
+      item.name
+        ? item.name.toLowerCase().includes(lowercaseSearchText)
+        : item.email
+        ? item.email.toLowerCase().includes(lowercaseSearchText)
+        : item.title.toLowerCase().includes(lowercaseSearchText)
     );
 
     setFilteredData(filtered);

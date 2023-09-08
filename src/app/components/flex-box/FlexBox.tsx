@@ -28,8 +28,9 @@ type TypeFlexbox = {
   onClick: any;
   columnGap: number;
   my: string | number;
-  flexWrap: 'nowrap' | 'wrap' | 'wrap-reverse';
+  flexWrap: "nowrap" | "wrap" | "wrap-reverse";
   maxWidth: string | number;
+  p: string | number;
 };
 const FlexBox: React.FC<Partial<TypeFlexbox>> = ({ children, ...props }) => (
   <Box display="flex" {...props}>

@@ -1,17 +1,13 @@
 "use client";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { H3 } from "@/components/Typography";
 import BrandForm from "@/page-sections/admin/brands/Form";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
 import { useEffect, useState } from "react";
+import { FlexBox } from "@/app/components/flex-box";
+import Link from "next/link";
+import { ArrowBack } from "@mui/icons-material";
 
 // =============================================================================
 interface TypeProps {
@@ -50,7 +46,21 @@ export default function Editbrand({ params }: TypeProps) {
 
   return (
     <Box py={4}>
-      <H3 mb={2}>Edit brand "{brand?.name}"</H3>
+      <FlexBox mb={2} gap={2} justifyContent="space-between" flexWrap="wrap">
+        <H3 mb={2}>Edit brand "{brand?.name}"</H3>
+        <Link href="/admin/brands">
+          <Button
+            color="info"
+            variant="contained"
+            startIcon={<ArrowBack />}
+            sx={{
+              minHeight: 44,
+            }}
+          >
+            Back
+          </Button>
+        </Link>
+      </FlexBox>
 
       <BrandForm id={id} brand={brand} />
     </Box>

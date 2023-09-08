@@ -161,7 +161,7 @@ export const brandDataForm = (data: Partial<IBrand>) => {
     name: data.name || "",
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase() || "",
     type: data.type || "",
-    featured: true || true,
+    featured: true,
   };
 };
 

@@ -27,11 +27,13 @@ const ProductsGrid: React.FC<TypeProps> = ({ products }) => {
           </Grid>
         ))}
       </Grid>
-
-      <FlexBetween flexWrap="wrap" mt={4}>
-        <Span color="grey.600">Showing 1-9 of 1.3k Products</Span>
-        <Pagination count={10} variant="outlined" color="primary" />
-      </FlexBetween>
+      
+      {products.length > 9 && (
+        <FlexBetween flexWrap="wrap" mt={4}>
+          <Span color="grey.600">Showing 1-9 of 1.3k Products</Span>
+          <Pagination count={10} variant="outlined" color="primary" />
+        </FlexBetween>
+      )}
     </Fragment>
   );
 };

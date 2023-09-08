@@ -1,5 +1,3 @@
-import { IProducts } from "../models/Product";
-
 // carousel-data
 export const mainCarouselData = [
   {
@@ -247,7 +245,7 @@ export const categories = [
 ];
 
 // products
-export const products: IProducts[] = [
+export const products = [
   {
     id: "8ac53dd8-6418-454f-bbb5-29f0b26ac5a5",
     slug: "nikecourt-zoom-vapor-cage",
@@ -3837,5 +3835,87 @@ export const serviceList = [
     icon: "CustomerService",
     title: "24/7 Support",
     description: null,
+  },
+];
+
+// sizes
+export const sizes = [
+  {
+    id: "S",
+    name: "S",
+  },
+  {
+    id: "M",
+    name: "M",
+  },
+  {
+    id: "L",
+    name: "L",
+  },
+  {
+    id: "XL",
+    name: "XL",
+  },
+  {
+    id: "XXL",
+    name: "XXL",
+  },
+  {
+    id: "XXXL",
+    name: "XXXL",
+  },
+];
+
+// colors
+export const colors = [
+  {
+    id: "black",
+    name: "Black",
+    color: "rgb(28, 28, 28)",
+  },
+  {
+    id: "pink",
+    name: "Pink",
+    color: "rgb(255, 122, 122)",
+  },
+  {
+    id: "orange",
+    name: "Orange",
+    color: "rgb(255, 198, 114)",
+  },
+  {
+    id: "white",
+    name: "White",
+    color: "#fff",
+  },
+  {
+    id: "blue",
+    name: "Blue",
+    color: "rgb(112, 246, 255)",
+  },
+  {
+    id: "green",
+    name: "Green",
+    color: "rgb(132, 255, 181)",
+  },
+];
+
+// types
+export const types = [
+  {
+    id: "flash-deals",
+    name: "flash-deals",
+  },
+  {
+    id: "top-ratings",
+    name: "top-ratings",
+  },
+  {
+    id: "new-arrivals",
+    name: "new-arrivals",
+  },
+  {
+    id: "big-discount",
+    name: "big-discount",
   },
 ];

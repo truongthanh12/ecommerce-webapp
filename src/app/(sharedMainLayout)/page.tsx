@@ -1,6 +1,6 @@
 "use client";
 import SEO from "@/components/SEO";
-import { brands, serviceList } from "@/data/data";
+import { serviceList } from "@/data/data";
 import FlashDeal from "@/page-sections/flash-deal";
 import HeroBanner from "@/page-sections/hero-banner";
 import TopCategories from "@/page-sections/top-categories";
@@ -22,6 +22,7 @@ export default function Home() {
   const { categories } = useSelector((state: any) => state.categories);
   const mainCarouselData = useSelector((state: any) => state.banners.banners);
   const { products } = useSelector((state: any) => state.products);
+  const { brands } = useSelector((state: any) => state.brands);
 
   useEffect(() => {
     dispatch(fetchCategories());

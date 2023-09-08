@@ -8,24 +8,23 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  query,
   updateDoc,
-  where,
 } from "firebase/firestore";
 
 interface CategoryState {
   categories: ICategory[];
   loading: boolean;
   error: any;
+  parentCategories: any;
 }
 
 const initialState: CategoryState = {
   categories: [],
   loading: false,
   error: null,
+  parentCategories: [],
 };
 
-// Create an async thunk for adding a category
 export const addCategoryAsync = createAsyncThunk(
   "categories/addCategoryAsync",
   async (categoryData: any) => {
@@ -40,38 +39,21 @@ export const addCategoryAsync = createAsyncThunk(
   }
 );
 
-// Create an async thunk for deleting a category
 export const deleteCategoryAsync = createAsyncThunk(
   "categories/deleteCategoryAsync",
-  async (categoryId, { rejectWithValue }: any) => {
+  async ({ categoryId }: { categoryId: string }, { rejectWithValue }) => {
     try {
-      // Construct a reference to the specific collection
-      const categoriesRef = collection(db, "categories");
+      const cactegoryRef = doc(db, "categories", categoryId);
 
-      // Create a query to filter documents by 'id' field
-      const queryToDelete = query(categoriesRef, where("id", "==", categoryId));
-
-      // Get the documents that match the query
-      const querySnapshot = await getDocs(queryToDelete);
-
-      // Iterate through the matching documents and delete them
-      querySnapshot.forEach(async (docToDelete) => {
-        try {
-          const docRef = doc(db, "categories", docToDelete.id);
-          await deleteDoc(docRef);
-        } catch (error) {
-          console.error("Error deleting document: ", error);
-        }
-      });
+      await deleteDoc(cactegoryRef);
 
       return categoryId;
     } catch (error) {
-      return rejectWithValue("An error occurred while deleting the category.");
+      return rejectWithValue("An error occurred while deleting the banner.");
     }
   }
 );
 
-// Create an async thunk for updating a category
 export const updateCategoryAsync = createAsyncThunk(
   "categories/updateCategoryAsync",
   async (
@@ -97,6 +79,11 @@ const categorySlice = createSlice({
     },
     setCategories: (state, action: PayloadAction<ICategory[]>) => {
       state.categories = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    setParentCategories: (state, action: PayloadAction<any>) => {
+      state.parentCategories = action.payload;
       state.loading = false;
       state.error = null;
     },
@@ -150,7 +137,8 @@ const categorySlice = createSlice({
   },
 });
 
-export const { setLoading, setCategories, setError } = categorySlice.actions;
+export const { setLoading, setCategories, setParentCategories, setError } =
+  categorySlice.actions;
 
 export const fetchCategories = () => async (dispatch: AppDispatch) => {
   try {
@@ -174,14 +162,36 @@ export const fetchCategories = () => async (dispatch: AppDispatch) => {
   }
 };
 
+export const fetchParentCategories = () => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(setLoading(true));
+
+    // Update to use the new query and getDocs function
+    const categoriesRef = collection(db, "parent-categories");
+    const querySnapshot = await getDocs(categoriesRef);
+
+    const categories: any[] = [];
+    querySnapshot.forEach((doc) => {
+      const categoryData = doc.data();
+      categories.push(categoryData);
+    });
+
+    dispatch(setParentCategories(categories));
+  } catch (error) {
+    dispatch(setError("An error occurred while fetching categories."));
+  }
+};
+
 export const categoryDataForm = (data: Partial<ICategory>) => {
   return {
     description: "description",
     icon: null,
-    image: data.image,
-    name: data.name,
+    image: data.image || "",
+    name: data.name || "",
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase(),
-    type: data.type,
+    type: data.type || "",
+    parent: data.parent || "",
+    featured: true,
   };
 };
 

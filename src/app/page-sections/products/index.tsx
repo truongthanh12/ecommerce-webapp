@@ -8,16 +8,28 @@ import ProductsGrid from "@/app/components/products/ProductsGrid";
 import ProductsList from "@/app/components/products/ProductsList";
 import ProductNavbar from "./Navbar";
 import ShopIntro from "@/app/components/shops/ShopIntro";
-import shops from "@/app/data/shops";
+import { IShop } from "@/app/models/Shop";
+import { useSelector } from "react-redux";
 
 interface PageProps {
-  params: { slug: string };
   type?: "shop" | "product";
+  shopData?: Partial<IShop>;
 }
-const ProductsSearch = ({ params, type }: PageProps) => {
+const ProductsSearch = ({ type, shopData }: PageProps) => {
   const [view, setView] = useState("grid");
-  const shopData = shops[0];
-  const { name, address, phone, coverPicture, profilePicture } = shopData || {};
+  const { products } = useSelector((state: any) => state.products);
+  const {
+    displayName,
+    address,
+    phoneNumber,
+    pictureCover,
+    photoURL,
+    facebook,
+    youtube,
+    email,
+    description,
+  } = shopData || {};
+
   return (
     <Container
       sx={{
@@ -28,14 +40,18 @@ const ProductsSearch = ({ params, type }: PageProps) => {
       {/* TOP BAR AREA */}
       {type === "shop" ? (
         <ShopIntro
-          name={name || ""}
+          facebook={facebook || ""}
+          youtube={youtube || ""}
+          email={email || ""}
+          name={displayName || ""}
+          description={description || ""}
           address={address || ""}
-          phone={phone || ""}
-          coverPicture={coverPicture || ""}
-          profilePicture={profilePicture || ""}
+          phone={phoneNumber || ""}
+          coverPicture={pictureCover || ""}
+          profilePicture={photoURL || ""}
         />
       ) : (
-        <ProductNavbar view={view} setView={setView} params={params} />
+        <ProductNavbar view={view} setView={setView} />
       )}
 
       <Grid container spacing={3}>
@@ -56,9 +72,9 @@ const ProductsSearch = ({ params, type }: PageProps) => {
         {/* PRODUCT VIEW AREA */}
         <Grid item md={9} xs={12}>
           {view === "grid" ? (
-            <ProductsGrid products={productDatabase.slice(95, 104)} />
+            <ProductsGrid products={products} />
           ) : (
-            <ProductsList products={productDatabase.slice(95, 104)} />
+            <ProductsList products={products} />
           )}
         </Grid>
       </Grid>

@@ -2,7 +2,7 @@ export interface IShop {
   id: string | number;
   slug?: string;
   email?: string;
-  name?: string;
+  displayName?: string;
   phone?: string;
   address?: string;
   verified?: boolean;
@@ -36,9 +36,9 @@ export interface IProducts {
   id?: string | number;
   slug?: string;
   title: string;
-  brand?: string | null;
+  brands?: string | null;
   price?: number;
-  size?: string[] | null;
+  sizes?: string[] | null;
   colors?: string[] | null;
   discount?: number;
   thumbnail?: string;
@@ -49,5 +49,8 @@ export interface IProducts {
   rating?: number;
   type?: string;
   shop?: IShop;
-  publish?: boolean;
+  published?: boolean;
+  description: string;
+  indexOfImages?: number;
+  stock?: number | string;
 }

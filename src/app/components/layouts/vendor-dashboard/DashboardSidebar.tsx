@@ -145,7 +145,7 @@ const DashboardSidebar = ({
             alt="Logo"
             width={105}
             height={50}
-            src="/assets/images/logo.svg"
+            src="/assets/images/logo.png"
             style={{
               marginLeft: 8,
             }}
@@ -170,8 +170,8 @@ const DashboardSidebar = ({
         <Avatar
           src={
             COMPACT
-              ? "/assets/images/bazaar-white-sm.svg"
-              : "/assets/images/logo.svg"
+              ? "/assets/images/taphoa.svg"
+              : "/assets/images/logo.png"
           }
           sx={{
             borderRadius: 0,

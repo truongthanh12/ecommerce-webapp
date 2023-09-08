@@ -80,7 +80,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
     );
   };
 
-  const handleCreateBrand = async (value: { Name: string; Type: string }) => {
+  const handleBrandForm = async (value: { Name: string; Type: string }) => {
     const { Name, Type } = value;
     if (files[0]?.name) {
       const uploadTask = uploadBytesResumable(
@@ -184,7 +184,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
       }}
     >
       <Suspense fallback="Loading...">
-        <form onSubmit={handleSubmit(handleCreateBrand)}>
+        <form onSubmit={handleSubmit(handleBrandForm)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Controller
@@ -242,14 +242,14 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
               <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
                 {files.map((file: any, index: number) => {
                   return (
-                    <UploadImageBox key={index}>
+                    <UploadImageBox size="medium" key={index}>
                       <Image src={file.preview} width="100%" />
                       <StyledClear onClick={handleFileDelete(file)} />
                     </UploadImageBox>
                   );
                 })}
                 {isEmpty(files) && brand?.image && (
-                  <UploadImageBox>
+                  <UploadImageBox size="medium">
                     <Image src={brand?.image} width="100%" />
                   </UploadImageBox>
                 )}

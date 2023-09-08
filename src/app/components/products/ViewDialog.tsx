@@ -21,7 +21,7 @@ import { ContentWrapperView } from "./styles";
 
 // =====================================================
 interface TypeProps {
-  product: IProducts;
+  product: Partial<IProducts>;
   openDialog: boolean;
   handleCloseDialog: () => void;
 }

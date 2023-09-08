@@ -31,7 +31,7 @@ type TypePropsTypo = {
   textOverflow: any;
   maxWidth: string;
   mx: string | number;
-  my: number;
+  my: number | string;
   p: number;
   title: string;
   sx: any

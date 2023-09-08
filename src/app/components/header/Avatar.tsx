@@ -94,7 +94,7 @@ const AvatarUser = ({ toggleDialog }: AvatarProps) => {
     setAnchorEl(null);
   };
 
-  if (user.uid) {
+  if (user?.uid) {
     return (
       <>
         <StyledBadge
