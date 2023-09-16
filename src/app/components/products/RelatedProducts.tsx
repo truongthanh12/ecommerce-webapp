@@ -22,6 +22,7 @@ const RelatedProducts: React.FC<TypeProps> = ({ products }) => {
               rating={item.rating}
               thumbnail={item.thumbnail}
               discount={item.discount}
+              stock={item.stock}
               hoverEffect
             />
           </Grid>

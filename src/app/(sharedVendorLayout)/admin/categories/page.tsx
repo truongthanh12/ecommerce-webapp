@@ -12,12 +12,9 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
-import Image from "@/components/Image";
 import isEmpty from "lodash/isEmpty";
-import {
-  fetchCategories,
-  fetchParentCategories,
-} from "@/redux/features/categorySlice";
+import { fetchCategories } from "@/redux/features/categorySlice";
+import NotFound from "@/app/components/not-found";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -55,7 +52,7 @@ const tableHeading = [
 
 // =============================================================================
 
-export default function BannerList() {
+export default function CategoriesList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
   const { categories } = useSelector((state: any) => state.categories);
@@ -70,7 +67,6 @@ export default function BannerList() {
 
   useEffect(() => {
     dispatch(fetchCategories());
-    dispatch(fetchParentCategories());
   }, []);
 
   const {
@@ -129,19 +125,7 @@ export default function BannerList() {
                     />
                   ))
                 ) : (
-                  <Box>
-                    <Image
-                      src="/assets/images/illustrations/404.svg"
-                      sx={{
-                        display: "block",
-                        width: "100%",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        my: 3,
-                      }}
-                      alt="404-Not-Found"
-                    />
-                  </Box>
+                  <NotFound />
                 )}
               </TableBody>
             </Table>

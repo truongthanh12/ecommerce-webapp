@@ -9,6 +9,7 @@ import React, {
 import CategoryMenuCard from "./CategoryMenuCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNaviagtions } from "@/redux/features/navigationSlice";
+import { ICategory } from "@/app/models/Category";
 // Define the styled component type
 type TypeProps = {
   children: ReactNode;
@@ -35,7 +36,8 @@ const CategoryMenu: React.FC<TypeProps> = ({
   const popoverRef = useRef<boolean>(open);
   popoverRef.current = open;
 
-  const { navigations } = useSelector((state: any) => state.navigations);
+  const { categories } = useSelector((state: any) => state.categories);
+  const { parentCategories } = useSelector((state: any) => state.categories);
   const dispatch: any = useDispatch();
 
   const toggleMenu = (e: MouseEvent) => {
@@ -65,7 +67,7 @@ const CategoryMenu: React.FC<TypeProps> = ({
         className: `${(children as React.ReactElement).props.className}`,
       })}
 
-      <CategoryMenuCard navigations={navigations} open={open} />
+      <CategoryMenuCard categories={categories} navigations={parentCategories} open={open} />
     </Wrapper>
   );
 };

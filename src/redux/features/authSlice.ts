@@ -71,6 +71,7 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.user = {};
+      state.users = [];
     },
   },
   extraReducers: (builder) => {
@@ -143,7 +144,7 @@ export const userData = ({ data, optionalData }: TypeUserData) => {
     phoneNumber: data.user.phoneNumber || "",
     birthDate: "",
     isVendor: isVendor || false,
-    docId: "",
+    docId: data.user.docId || "",
     address: "",
     isCreatedAt: serverTimestamp(),
   };

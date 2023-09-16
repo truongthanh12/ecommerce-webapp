@@ -6,6 +6,7 @@ import { IProducts } from "@/app/models/Product";
 import ProductCard from "@/components/products/Card";
 import React, { useMemo } from "react";
 import Link from "next/link";
+import { formatToSlug } from "@/app/utils/lib";
 // =======================================================
 type TypeProps = {
   products: IProducts[];
@@ -27,14 +28,15 @@ const NewArrivals: React.FC<TypeProps> = ({ products }) => {
         }}
       >
         <Grid container spacing={3}>
-          {newArrivalsList.map(({ id, title, price, thumbnail, slug }) => (
+          {newArrivalsList.map(({ id, title, price, thumbnail, slug, stock }) => (
             <Grid item lg={2} md={3} sm={4} xs={6} key={id}>
-              <Link href={`/product/${slug}`}>
+              <Link href={`/product/${formatToSlug(slug)}`}>
                 <ProductCard
                   isBasicCard
                   thumbnail={thumbnail}
                   title={title}
                   price={price}
+                  stock={stock}
                 />
               </Link>
             </Grid>

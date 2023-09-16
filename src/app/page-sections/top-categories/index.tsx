@@ -7,6 +7,7 @@ import Carousel from "@/components/carousel/Carousel";
 import ProductCard from "@/components/products/Card";
 import CategorySectionCreator from "@/components/CategorySectionCreator";
 import { ICategory } from "@/app/models/Category";
+import { formatToSlug } from "@/app/utils/lib";
 
 type TypeCategory = { categories: ICategory[] };
 const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
@@ -38,7 +39,11 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
     >
       <Carousel visibleSlides={visibleSlides}>
         {categoriesData.map((item) => (
-          <Link href={`/product/search/${item.slug}`} key={item.id} passHref>
+          <Link
+            href={`/product/search/${formatToSlug(item.slug)}`}
+            key={item.id}
+            passHref
+          >
             <Card
               sx={{
                 p: 2,
@@ -50,6 +55,7 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
                 title={item.name || ""}
                 subtitle={item.description || ""}
                 thumbnail={item.image || ""}
+                stock={item.stock || ""}
               />
             </Card>
           </Link>

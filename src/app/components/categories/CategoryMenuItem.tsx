@@ -3,9 +3,11 @@ import { Box, MenuItem, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import React from "react";
 import { CategoryIcon } from "@/common";
+import { formatToSlug } from "@/app/utils/lib";
 
 //styled component
 const Wrapper = styled(Box)(({ theme }) => ({
+  position: "relative",
   "& .category-dropdown-link": {
     height: 40,
     display: "flex",
@@ -37,7 +39,7 @@ const CategoryMenuItem = ({ href, title, caret, children, ...rest }: any) => {
 
   return (
     <Wrapper>
-      <Link href={href || ""}>
+      <Link href={formatToSlug(href || "")}>
         <MenuItem className="category-dropdown-link">
           {rest.icon && <>{CategoryIcon[rest.icon]}</>}
           <span className="title">{title}</span>

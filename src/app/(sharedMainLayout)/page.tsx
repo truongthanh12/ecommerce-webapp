@@ -11,11 +11,15 @@ import BannerAds from "@/page-sections/banner";
 import MoreProducts from "@/page-sections/more-products";
 import Services from "@/page-sections/services";
 import { useEffect } from "react";
-import { fetchCategories } from "@/redux/features/categorySlice";
+import {
+  fetchCategories,
+  fetchParentCategories,
+} from "@/redux/features/categorySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
 import { fetchBanners } from "@/redux/features/bannerSlice";
 import { fetchProducts } from "@/redux/features/productSlice";
+import { fetchUsers } from "@/redux/features/authSlice";
 
 export default function Home() {
   const dispatch: any = useAppDispatch();
@@ -25,9 +29,17 @@ export default function Home() {
   const { brands } = useSelector((state: any) => state.brands);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchBanners());
-    dispatch(fetchProducts());
+    let isCancelled = false;
+    if (!isCancelled) {
+      dispatch(fetchCategories());
+      dispatch(fetchBanners());
+      dispatch(fetchProducts());
+      dispatch(fetchParentCategories());
+      dispatch(fetchUsers({ isVendor: true }));
+    }
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   return (

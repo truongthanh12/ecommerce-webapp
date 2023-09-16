@@ -1,4 +1,5 @@
 export interface ICategory {
+  stock: string;
   type: string;
   id: string;
   name: string;

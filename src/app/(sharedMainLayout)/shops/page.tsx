@@ -4,19 +4,11 @@ import { H2, Span } from "@/components/Typography";
 import ShopCard from "@/components/shops/Card";
 import { FlexBetween } from "@/components/flex-box";
 import shops from "../../data/shops";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "@/redux/features/authSlice";
+import { useSelector } from "react-redux";
 // =============================================
 
 export default function ShopList() {
-  const dispatch: any = useDispatch();
-
   const { users } = useSelector((state: any) => state.auth);
-
-  useEffect(() => {
-    dispatch(fetchUsers({ isVendor: true }));
-  }, []);
 
   return (
     <Container
@@ -30,7 +22,7 @@ export default function ShopList() {
       {/* ALL SHOP LIST AREA */}
       <Grid container spacing={3}>
         {users.map((item: any) => (
-          <Grid item lg={4} sm={6} xs={12} key={item.id}>
+          <Grid item lg={4} sm={6} xs={12} key={item.docId}>
             <ShopCard
               name={item.displayName || ""}
               id={item.docId || ""}

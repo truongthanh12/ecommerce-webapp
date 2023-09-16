@@ -33,7 +33,7 @@ export interface NameUser {
   lastName?: string;
 }
 export interface IProducts {
-  id?: string | number;
+  id?: string;
   slug?: string;
   title: string;
   brands?: string | null;
@@ -52,5 +52,8 @@ export interface IProducts {
   published?: boolean;
   description: string;
   indexOfImages?: number;
-  stock?: number | string;
+  stock?: string;
+  quantity: number;
+  size: string;
+  color: string;
 }

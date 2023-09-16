@@ -26,6 +26,7 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
 
 interface ProductDetailProps {
   params: { productId: string };
+  searchParams: { [key: string]: string | undefined };
 }
 async function getProductBySlug(productSlug = "") {
   try {
@@ -35,7 +36,9 @@ async function getProductBySlug(productSlug = "") {
 
     if (!querySnapshot.empty) {
       // Assuming that there's only one product with a given slug
-      const productData = querySnapshot.docs[0].data();
+      const productDoc = querySnapshot.docs[0];
+      const productData = { ...productDoc.data(), id: productDoc.id };
+
       return productData;
     } else {
       // Handle the case where no product matches the slug
@@ -49,11 +52,8 @@ async function getProductBySlug(productSlug = "") {
 }
 export default function ProductDetails({
   params,
-}: // relatedProducts,
-// product = {
-//   title: "",
-// },
-ProductDetailProps) {
+  searchParams,
+}: ProductDetailProps) {
   const [selectedOption, setSelectedOption] = useState(0);
   const handleOptionClick = (_: any, value: any) => setSelectedOption(value);
   const [product, setProduct] = useState({});
@@ -77,7 +77,11 @@ ProductDetailProps) {
     >
       <Suspense fallback="Loading...">
         {/* PRODUCT DETAILS INFO AREA */}
-        {product ? <ProductIntro product={product} /> : <H2>Loading...</H2>}
+        {product ? (
+          <ProductIntro searchParams={searchParams} product={product} />
+        ) : (
+          <H2>Loading...</H2>
+        )}
         {/* PRODUCT DESCRIPTION AND REVIEW */}
         <StyledTabs
           textColor="primary"

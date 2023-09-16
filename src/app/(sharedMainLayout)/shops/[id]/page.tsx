@@ -10,6 +10,7 @@ import {} from "react";
 
 interface PageProps {
   params: { id: string };
+  searchParams: { [key: string]: string | undefined };
 }
 async function getShopById(id = "") {
   try {
@@ -26,7 +27,7 @@ async function getShopById(id = "") {
     throw error;
   }
 }
-export default function ShopDetails({ params }: PageProps) {
+export default function ShopDetails({ params, searchParams }: PageProps) {
   const [shop, setShop] = useState({});
 
   useEffect(() => {
@@ -46,7 +47,11 @@ export default function ShopDetails({ params }: PageProps) {
           mb: 6,
         }}
       >
-        <ProductsSearch shopData={shop} type="shop" />
+        <ProductsSearch
+          searchParams={searchParams}
+          shopData={shop}
+          type="shop"
+        />
       </Container>
     </Suspense>
   );

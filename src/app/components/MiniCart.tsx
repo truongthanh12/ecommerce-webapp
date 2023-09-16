@@ -7,41 +7,49 @@ import {
   IconButton,
   useTheme,
 } from "@mui/material";
-import { Add, Clear, Close, Remove } from "@mui/icons-material";
+import { Clear, Close } from "@mui/icons-material";
 import LazyImage from "@/components/LazyImage";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H5, Paragraph, Tiny } from "@/components/Typography";
 import CartBag from "@/components/icons/CartBag";
 import { currency } from "@/utils/lib";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
+import CartAction from "./products/CartAction";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "@/redux/features/cartSlice";
+import { IProducts } from "../models/Product";
 
 // =========================================================
 
-// =========================================================
 type TypeMinicart = {
   toggleSidenav: () => void;
+  cartList: any;
 };
-const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
+const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
   const { palette } = useTheme();
-  const cartList: [] = [];
-
-  const [qty, setQty] = useState(0);
-  const handleCartAmountChange = (type: "add" | "minus") => () => {
-    if (type === "add") {
-      setQty(qty + 1);
-      return;
-    }
-    if (qty === 0) return;
-    setQty(qty - 1);
-  };
+  const dispatch: any = useDispatch();
+  const { user } = useSelector((state: any) => state.auth);
 
   const getTotalPrice = () => {
     return cartList.reduce(
-      (accum: number, item: { price: number; qty: number }) =>
-        accum + item.price * item.qty,
+      (accum: number, item: any) => accum + item.product.price * item.quantity,
       0
     );
   };
+
+  const removeItemFromCart = ({ product }: { product: Partial<IProducts> }) => {
+    dispatch(
+      removeFromCart({
+        product,
+        userId: user.docId,
+        quantity: 0,
+        stock: Number(product.stock),
+        size: product.size,
+        color: product.color
+      })
+    );
+  };
+
   return (
     <Box width={320} maxWidth={380}>
       <Box
@@ -53,7 +61,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
             <CartBag color="inherit" />
 
             <Paragraph lineHeight={0} fontWeight={600}>
-              {cartList.length} item
+              {cartList.length} item{cartList.length < 2 ? "" : "s"}
             </Paragraph>
           </FlexBox>
 
@@ -64,7 +72,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
 
         <Divider />
 
-        {cartList.length <= 0 && (
+        {cartList.length < 1 && (
           <FlexBox
             alignItems="center"
             flexDirection="column"
@@ -89,98 +97,72 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav }) => {
           </FlexBox>
         )}
 
-        {cartList.map((item: any) => (
-          <FlexBox
-            py={2}
-            px={2.5}
-            key={item.id}
-            alignItems="center"
-            borderBottom={`1px solid ${palette.divider}`}
-          >
-            <FlexBox alignItems="center" flexDirection="column">
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={handleCartAmountChange("add")}
-                sx={{
-                  height: "32px",
-                  width: "32px",
-                  borderRadius: "300px",
-                }}
-              >
-                <Add fontSize="small" />
-              </Button>
-
-              <Box fontWeight={600} fontSize="15px" my="3px">
-                {item.qty}
-              </Box>
-
-              <Button
-                color="primary"
-                variant="outlined"
-                disabled={item.qty === 1}
-                onClick={handleCartAmountChange('minus')}
-                sx={{
-                  height: "32px",
-                  width: "32px",
-                  borderRadius: "300px",
-                }}
-              >
-                <Remove fontSize="small" />
-              </Button>
-            </FlexBox>
-
-            <Link href={`/product/${item.id}`}>
-              <Avatar
-                alt={item.name}
-                src={item.imgUrl}
-                sx={{
-                  mx: 2,
-                  width: 76,
-                  height: 76,
-                }}
-              />
-            </Link>
-
-            <Box
-              flex="1"
-              sx={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
+        {cartList.map((item: any, index: number) => {
+          const { product } = item || {};
+          return (
+            <FlexBox
+              py={2}
+              px={2.5}
+              key={product.id + index}
+              alignItems="center"
+              borderBottom={`1px solid ${palette.divider}`}
             >
-              <Link href={`/product/${item.slug}`}>
-                <H5 ellipsis fontSize="14px" className="title">
-                  {item.name}
-                </H5>
+              <CartAction isIncludeBtnAdd product={product} />
+
+              <Link href={`/product/${product.id}`}>
+                <Avatar
+                  alt={product.title}
+                  src={product.thumbnail}
+                  sx={{
+                    mx: 2,
+                    width: 76,
+                    height: 76,
+                  }}
+                />
               </Link>
 
-              <Tiny color="grey.600">
-                {currency(item.price)} x {item.qty}
-              </Tiny>
-
               <Box
-                fontWeight={600}
-                fontSize="14px"
-                color="primary.main"
-                mt={0.5}
+                flex="1"
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
               >
-                {currency(item.qty * item.price)}
-              </Box>
-            </Box>
+                <Link href={`/product/${product.slug}`}>
+                  <H5 ellipsis fontSize="14px" className="title">
+                    {product.title}
+                  </H5>
+                </Link>
 
-            <IconButton
-              size="small"
-              onClick={handleCartAmountChange("add")}
-              sx={{
-                marginLeft: 2.5,
-              }}
-            >
-              <Close fontSize="small" />
-            </IconButton>
-          </FlexBox>
-        ))}
+                <Box>
+                  <Tiny>
+                    {product.size} - {product.color}
+                  </Tiny>
+                </Box>
+
+                <Box
+                  fontWeight={600}
+                  fontSize="14px"
+                  color="primary.main"
+                  mt={0.5}
+                >
+                  {currency(item.quantity * product.price)}
+                </Box>
+              </Box>
+
+              <IconButton
+                size="small"
+                onClick={() => removeItemFromCart({ product })}
+                sx={{
+                  marginLeft: 2.5,
+                }}
+              >
+                <Close fontSize="small" />
+              </IconButton>
+            </FlexBox>
+          );
+        })}
       </Box>
 
       {cartList.length > 0 && (

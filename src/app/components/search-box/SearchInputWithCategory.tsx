@@ -1,21 +1,16 @@
 "use client";
-import Link from "next/link";
-import {
-  ChangeEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { Box, MenuItem, TextField, styled, useTheme } from "@mui/material";
 import { KeyboardArrowDownOutlined } from "@mui/icons-material";
 import TouchRipple from "@mui/material/ButtonBase";
 import MenuList from "@/components/Menu";
 import { FlexBox } from "@/components/flex-box";
-import { SearchOutlinedIcon, SearchResultCard } from "./styled";
+import { SearchOutlinedIcon } from "./styled";
 import { useSelector } from "react-redux";
-import { ICategory } from "@/app/models/Category";
+import { CategoryIcon } from "@/common";
+import { usePathname, useRouter } from "next/navigation";
+import debounce from "lodash/debounce";
+import { objectToQueryString } from "@/app/utils/lib";
 
 const DropDownHandler = styled(FlexBox)(
   ({ theme }: { component: any; theme?: any }) => ({
@@ -31,52 +26,59 @@ const DropDownHandler = styled(FlexBox)(
 const SearchInputWithCategory = () => {
   const parentRef = useRef<HTMLInputElement>();
   const { breakpoints } = useTheme();
-  const [_, startTransition] = useTransition();
-  const [category, setCategory] = useState("*");
-  const [resultList, setResultList] = useState([]);
   const [categoryTitle, setCategoryTitle] = useState("All Categories");
+  const [query, setQuery] = useState("");
+  const router = useRouter();
 
-  const { categories } = useSelector((state: any) => state.categories);
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+  const defaultQuerySearch = params.get("query");
+
+  const { parentCategories } = useSelector((state: any) => state.categories);
   // HANDLE CHANGE THE CATEGORY
   type TypeCateProps = {
-    name: string;
-    id: string;
+    title: string;
+    icon?: string;
   };
   const handleCategoryChange = (cat: TypeCateProps) => () => {
-    setCategory(cat.id);
-    setCategoryTitle(cat.name);
+    setCategoryTitle(cat.title);
   };
 
-  // FETCH PRODUCTS VIA API
-  type TypeSearchTextProps = {
-    searchText: string;
-    category: string;
-  };
-  const getProducts = async ({ searchText, category }: TypeSearchTextProps) => {
-    // const data = await api.searchProducts(searchText, category);
-    setResultList([]);
-  };
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    startTransition(() => {
-      const value = e.target?.value;
-      if (!value) setResultList([]);
-      else if (value && category !== "*")
-        getProducts({ searchText: value, category });
-      else getProducts({ searchText: value, category: "" });
-    });
+    const value = e.target?.value;
+    setQuery(value);
+    if (!value) {
+      const searchParams: any = {};
+      for (const [key, value] of params.entries()) {
+        searchParams[key] = value;
+      }
+      let updatedQuery = { ...searchParams };
+      delete updatedQuery.query;
+      router.push(`?${objectToQueryString(updatedQuery)}`);
+    }
   };
-  const handleDocumentClick = () => setResultList([]);
-  
-  useEffect(() => {
-    if (!window) return;
-    window.addEventListener("click", handleDocumentClick);
-    return () => window.removeEventListener("click", handleDocumentClick);
-  }, []);
 
-  const categoriesData = useMemo(() => {
-    return categories.filter((item: ICategory) => item.type === "categories");
-  }, [categories]);
-  
+  const handleKeyPress = useCallback(
+    debounce((e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const searchParams: any = {};
+        for (const [key, value] of params.entries()) {
+          searchParams[key] = value;
+        }
+
+        const updatedQuery = {
+          ...searchParams,
+          query: query,
+        };
+
+        // Serialize the updated query object into a query string
+        router.push(`?${objectToQueryString(updatedQuery)}`);
+      }
+    }, 400),
+    [query]
+  );
+
   // CATEGORY MENU DROPDOWN
   const categoryDropdown = (
     <MenuList
@@ -99,9 +101,10 @@ const SearchInputWithCategory = () => {
         </DropDownHandler>
       }
     >
-      {categoriesData.map((item: ICategory) => (
-        <MenuItem key={item.id} onClick={handleCategoryChange(item)}>
-          {item.name}
+      {parentCategories.map((item: TypeCateProps) => (
+        <MenuItem key={item.title} onClick={handleCategoryChange(item)}>
+          {item.icon && <>{CategoryIcon[item.icon]}</>}
+          <span style={{ marginLeft: 12 }}>{item.title}</span>
         </MenuItem>
       ))}
     </MenuList>
@@ -121,6 +124,8 @@ const SearchInputWithCategory = () => {
         variant="outlined"
         placeholder="Searching for..."
         onChange={handleSearch}
+        onKeyDown={handleKeyPress}
+        defaultValue={defaultQuerySearch}
         InputProps={{
           sx: {
             height: 44,
@@ -137,7 +142,7 @@ const SearchInputWithCategory = () => {
         }}
       />
 
-      {resultList.length > 0 && (
+      {/* {resultList.length > 0 && (
         <SearchResultCard elevation={2}>
           {resultList.map((item) => (
             <Link href={`/product/search/${item}`} key={item} passHref>
@@ -145,7 +150,7 @@ const SearchInputWithCategory = () => {
             </Link>
           ))}
         </SearchResultCard>
-      )}
+      )} */}
     </Box>
   );
 };

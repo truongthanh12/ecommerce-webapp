@@ -8,11 +8,13 @@ import {
   doc,
   getDocs,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { IProducts } from "@/app/models/Product";
 import { IUser } from "@/app/models/User";
+import { formatToSlug } from "@/app/utils/lib";
 
 interface productstate {
   products: IProducts[];
@@ -170,7 +172,7 @@ export const productDataForm = (
     description: data.description || "",
     thumbnail: data.thumbnail || "",
     title: data.title || "",
-    slug: data.title?.replace(/ +/g, "-")?.toLowerCase(),
+    slug: formatToSlug(data.title || ""),
     type: data.type || "",
     categories: data.categories || [],
     published: data.published || false,
@@ -183,6 +185,7 @@ export const productDataForm = (
     indexOfImages: data.indexOfImages,
     shop: user,
     stock: data.stock || 0,
+    createdAt: serverTimestamp(),
   };
 };
 

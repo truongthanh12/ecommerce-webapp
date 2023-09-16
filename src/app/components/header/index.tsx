@@ -21,9 +21,9 @@ import ShoppingBagOutlined from "@/components/icons/ShoppingBagOutlined";
 import Image from "next/image";
 import debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
 import { HeaderWrapper, StyledContainer } from "./styles";
 import Avatar from "./Avatar";
+import { selectCartItemsForUser, selectTotalQuantityForUser } from "@/redux/features/cartSlice";
 
 // ==============================================================
 
@@ -43,10 +43,11 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
 
   const { user } = useSelector((state: any) => state.auth);
-  const router = useRouter();
+  const userCartItems = useSelector(selectCartItemsForUser(user.docId));
+  const totalQuantity = useSelector(selectTotalQuantityForUser(user.docId));
 
-  const toggleDialog = useCallback(() => setDialogOpen(!dialogOpen), []);
-  const toggleSidenav = useCallback(() => setSidenavOpen(!sidenavOpen), []);
+  const toggleDialog = () => setDialogOpen(!dialogOpen);
+  const toggleSidenav = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => {
     setSearchBarOpen(!searchBarOpen);
   };
@@ -90,7 +91,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
           zIndex: 9999,
         }}
       >
-        <MiniCart toggleSidenav={toggleSidenav} />
+        <MiniCart cartList={userCartItems} toggleSidenav={toggleSidenav} />
       </Drawer>
     </Fragment>
   );
@@ -138,7 +139,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
               </Box>
 
               <Box component={IconButton} onClick={toggleSidenav}>
-                <Badge color="primary">
+                <Badge badgeContent={totalQuantity} color="primary">
                   <Icon.CartBag sx={ICON_STYLE} />
                 </Badge>
               </Box>
@@ -222,7 +223,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
         <FlexBox gap={1.5} alignItems="center">
           <Avatar toggleDialog={toggleDialog} />
 
-          <Badge color="primary">
+          <Badge badgeContent={totalQuantity} color="primary">
             <Box
               p={1.25}
               bgcolor="grey.200"

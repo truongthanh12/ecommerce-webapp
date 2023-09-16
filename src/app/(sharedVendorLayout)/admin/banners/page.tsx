@@ -10,11 +10,11 @@ import useMuiTable from "@/hooks/useMuiTable";
 import BannerRow from "@/page-sections/admin/banners";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearch } from "@/hooks/useSearch";
-import Image from "@/components/Image";
 import isEmpty from "lodash/isEmpty";
 import { fetchBanners } from "@/redux/features/bannerSlice";
+import NotFound from "@/app/components/not-found";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -123,19 +123,7 @@ export default function BannerList() {
                     />
                   ))
                 ) : (
-                  <Box>
-                    <Image
-                      src="/assets/images/illustrations/404.svg"
-                      sx={{
-                        display: "block",
-                        width: "100%",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        my: 3,
-                      }}
-                      alt="404-Not-Found"
-                    />
-                  </Box>
+                  <NotFound />
                 )}
               </TableBody>
             </Table>

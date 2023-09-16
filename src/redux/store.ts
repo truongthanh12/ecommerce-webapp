@@ -11,18 +11,24 @@ import bannerSlice from "./features/bannerSlice";
 import productSlice from "./features/productSlice";
 import brandSlice from "./features/brandSlice";
 import adminSlice from "./features/adminSlice";
+import cartSlice from "./features/cartSlice";
+import wishlistSlice from "./features/wishlistSlice";
 
 const authPersistConfig = {
   key: "auth",
   storage,
   blacklist: ["isLoading"],
 };
+const cartsPersistConfig = {
+  key: "carts",
+  storage,
+};
 
 const persistConfig = {
   key: "root",
   storage,
   stateReconciler: autoMergeLevel2,
-  whiteList: ["auth"],
+  whiteList: ["auth", "carts"],
 };
 
 const rootReducer: any = combineReducers({
@@ -34,6 +40,8 @@ const rootReducer: any = combineReducers({
   products: productSlice,
   brands: brandSlice,
   statusAdmin: adminSlice,
+  carts: persistReducer(cartsPersistConfig, cartSlice),
+  wishlist: wishlistSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

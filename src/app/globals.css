@@ -18,3 +18,14 @@ a {
 .MuiFormHelperText-root {
   margin-left: 0 !important;
 }
+
+.css-color:hover {
+  transition: transform 0.35s ease;
+  transform: translateY(-2px);
+  border: 1px solid #888;
+}
+
+.css-color-active {
+  transform: translateY(-2px);
+  border: 1px solid #888;
+}

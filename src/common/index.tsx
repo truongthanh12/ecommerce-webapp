@@ -1,9 +1,11 @@
+import Carrot from "@/app/components/icons/Carrot";
 import Car from "@/components/icons/Car";
 import Dress from "@/components/icons/Dress";
 
 export const CategoryIcon: any = {
   car: <Car fontSize="small" color="inherit" />,
   dress: <Dress fontSize="small" color="inherit" />,
+  default: <Carrot fontSize="small" color="inherit" />,
 };
 
 // mime type images
@@ -58,12 +60,3 @@ export function loadMime(file: any, callback: any) {
   };
   reader.readAsArrayBuffer(blob);
 }
-
-// //when selecting a file on the input
-// fileInput.onchange = function() {
-//   loadMime(fileInput.files[0], function(mime) {
-
-//       //print the output to the screen
-//       output.innerHTML = mime;
-//   });
-// };

@@ -185,7 +185,7 @@ export const fetchParentCategories = () => async (dispatch: AppDispatch) => {
 export const categoryDataForm = (data: Partial<ICategory>) => {
   return {
     description: "description",
-    icon: null,
+    icon: data.icon,
     image: data.image || "",
     name: data.name || "",
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase(),

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import React, { Fragment, useCallback, useState } from "react";
-import { Add, Favorite, Remove, RemoveRedEye } from "@mui/icons-material";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Add, Favorite, RemoveRedEye } from "@mui/icons-material";
 import { Box, Button, Grid, IconButton } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import LazyImage from "@/components/LazyImage";
@@ -10,7 +10,7 @@ import { H3, H4, Small, Span } from "@/components/Typography";
 import Rating from "@/components/Rating";
 import ProductViewDialog from "@/components/products/ViewDialog";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
-import { calculateDiscount, currency } from "@/utils/lib";
+import { calculateDiscount, currency, formatToSlug } from "@/utils/lib";
 import HoverBox from "@/components/HoverBox";
 import {
   ContentWrapper,
@@ -20,10 +20,12 @@ import {
   StyledChip,
   StyledChipCategory,
 } from "./styles";
+import { useDispatch, useSelector } from "react-redux";
+import { addItemToWishlist, fetchWishlistByUserId } from "@/redux/features/wishlistSlice";
 
 // ========================================================
 interface TypeProps {
-  id?: string | number;
+  id?: string;
   slug?: string;
   title?: string;
   price?: number;
@@ -42,6 +44,7 @@ interface TypeProps {
   sx?: any;
   children?: React.ReactNode;
   isInShop?: boolean;
+  stock?: string;
 }
 const ProductCard = ({
   id,
@@ -61,21 +64,39 @@ const ProductCard = ({
   isFeatured,
   isTopCategory,
   isInShop,
+  stock,
 }: Partial<TypeProps>) => {
   const [openModal, setOpenModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  const toggleIsFavorite = () => setIsFavorite((fav) => !fav);
-  const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
-  const [qty, setQty] = useState(0);
-  const handleCartAmountChange = (type: "add" | "minus") => () => {
-    if (type === "add") {
-      setQty(qty + 1);
-      return;
-    }
-    if (qty === 0) return;
-    setQty(qty - 1);
-  };
+  const dispatch: any = useDispatch();
+  const wishlist = useSelector((state: any) => state.wishlist);
+  const { user } = useSelector((state: any) => state.auth);
 
+  useEffect(() => {
+    dispatch(fetchWishlistByUserId(user.docId));
+  }, [dispatch, user]);
+
+  const toggleIsFavorite = () => {
+    setIsFavorite((fav) => !fav);
+    dispatch(
+      addItemToWishlist({
+        userId: user.docId,
+        product: {
+          slug,
+          title,
+          price,
+          thumbnail,
+          rating,
+          discount,
+          stock,
+          id,
+        },
+      })
+    );
+  };
+  const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
+
+  const formattedSlug = useMemo(() => formatToSlug(slug), [slug]);
   if (isCategoryCard) {
     return (
       <Card
@@ -206,7 +227,8 @@ const ProductCard = ({
           slug,
           images,
           thumbnail,
-          discount
+          discount,
+          stock,
         }}
       />
       <Grid item alignItems="center" container spacing={1} xs={isInShop}>
@@ -234,7 +256,7 @@ const ProductCard = ({
               </IconButton>
             </HoverIconWrapper>
 
-            <Link href={`/product/${slug}`} passHref>
+            <Link href={`/product/${formattedSlug}`} passHref>
               <LazyImage
                 src={thumbnail}
                 width={0}
@@ -249,7 +271,7 @@ const ProductCard = ({
           <ContentWrapper>
             <FlexBox>
               <Box flex="1 1 0" minWidth="0px" mr={1}>
-                <Link href={`/product/${slug}`} passHref>
+                <Link href={`/product/${formattedSlug}`} passHref>
                   <H3
                     mb={1}
                     title={title}
@@ -292,41 +314,20 @@ const ProductCard = ({
                 alignItems="center"
                 className="add-cart"
                 flexDirection="column-reverse"
-                justifyContent={
-                  qty ? "space-between" : isInShop ? "center" : "flex-start"
-                }
+                justifyContent={isInShop ? "center" : "flex-start"}
               >
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  style={{ minWidth: "30px" }}
-                  sx={{
-                    padding: "3px",
-                  }}
-                  onClick={handleCartAmountChange("add")}
-                >
-                  <Add fontSize="small" />
-                </Button>
-
-                {qty !== 0 && (
-                  <Fragment>
-                    <Box color="text.primary" fontWeight="600">
-                      {qty}
-                    </Box>
-
-                    <Button
-                      color="primary"
-                      style={{ minWidth: "30px" }}
-                      variant="outlined"
-                      sx={{
-                        padding: "3px",
-                      }}
-                      onClick={handleCartAmountChange("minus")}
-                    >
-                      <Remove fontSize="small" />
-                    </Button>
-                  </Fragment>
-                )}
+                <Link href={`/product/${formattedSlug}`} passHref>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    style={{ minWidth: "30px" }}
+                    sx={{
+                      padding: "3px",
+                    }}
+                  >
+                    <Add fontSize="small" />
+                  </Button>
+                </Link>
               </FlexBox>
             </FlexBox>
           </ContentWrapper>

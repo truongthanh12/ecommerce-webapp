@@ -26,6 +26,8 @@ import {
   categoryDataForm,
   updateCategoryAsync,
 } from "@/redux/features/categorySlice";
+import { CategoryIcon } from "@/common";
+import Car from "@/app/components/icons/Car";
 
 // ================================================================
 
@@ -39,7 +41,6 @@ export const ErrorMessage = styled("span")(() => ({
 const schema = yup.object().shape({
   Name: yup.string().required(),
   Type: yup.string().required(),
-  Icon: yup.string().required(),
   Parent: yup.string().required(),
 });
 
@@ -79,7 +80,7 @@ const CategoryForm = ({
           ? category.parent
           : "Choose category's parent",
       });
-      setValueSelected(category.parent)
+      setValueSelected(category.parent);
     }
   }, [category]);
 
@@ -175,7 +176,7 @@ const CategoryForm = ({
     const data = {
       name: Name || category?.name,
       type: Type || category?.type,
-      icon: Icon || category?.icon,
+      icon: Icon || category?.icon || "",
       parent: Parent || category?.parent,
     };
     if (status === "create") {
@@ -254,15 +255,31 @@ const CategoryForm = ({
                     value={value || ""}
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
+                    style={{ display: "flex" }}
                   >
                     <MenuItem value="">
-                      <em>Choose category</em>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <>
+                          <Car fontSize="small" />
+                        </>
+                        <em style={{ marginLeft: 12 }}>Choose category</em>
+                      </div>
                     </MenuItem>
-                    {parentCategories[0]?.parent.map(
-                      (item: string[], index: number) => {
+                    {parentCategories.map(
+                      (
+                        item: { title: string; icon: string },
+                        index: number
+                      ) => {
                         return (
-                          <MenuItem key={index} value={item}>
-                            {item}
+                          <MenuItem key={index} value={item.title}>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              {item.icon && <>{CategoryIcon[item.icon]}</>}
+                              <span style={{ marginLeft: 12 }}>
+                                {item.title}
+                              </span>
+                            </div>
                           </MenuItem>
                         );
                       }
@@ -299,7 +316,6 @@ const CategoryForm = ({
                 control={control}
                 render={({
                   field: { onChange, value },
-                  fieldState: { error },
                 }) => (
                   <TextField
                     fullWidth
@@ -307,8 +323,6 @@ const CategoryForm = ({
                     label="Icon..."
                     placeholder="Icon..."
                     onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
                     value={value || ""}
                   />
                 )}
@@ -349,7 +363,8 @@ const CategoryForm = ({
                   (status === "create" && (!isDirty || !isValid)) ||
                   (status === "edit" &&
                     isEmpty(files) &&
-                    (!isDirty || !isValid) && !valueSeclect)
+                    (!isDirty || !isValid) &&
+                    !valueSeclect)
                 }
                 variant="contained"
                 color="info"

@@ -9,6 +9,7 @@ import useWindowSize from "@/hooks/useWindowSize";
 import Carousel from "@/components/carousel/Carousel";
 import CategorySectionCreator from "@/components/CategorySectionCreator";
 import { IProducts } from "@/app/models/Product";
+import { formatToSlug } from "@/app/utils/lib";
 
 // ========================================================
 type TypeProps = {
@@ -37,20 +38,21 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
       <Box my="-0.25rem">
         <Carousel visibleSlides={visibleSlides}>
           {bigDiscountList.map(
-            ({ id, title, thumbnail, price, discount, slug }) => (
+            ({ id, title, thumbnail, price, discount, slug, stock }) => (
               <Box py={0.5} key={id}>
                 <Card
                   sx={{
                     p: "1rem",
                   }}
                 >
-                  <Link href={`/product/${slug}`} passHref>
+                  <Link href={`/product/${formatToSlug(slug)}`} passHref>
                     <ProductCard
                       isBasicCard
                       title={title}
                       thumbnail={thumbnail}
                       price={price}
                       discount={discount}
+                      stock={stock}
                     />
                   </Link>
                 </Card>

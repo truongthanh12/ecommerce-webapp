@@ -117,7 +117,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
       categories,
       discount,
       stock,
-    } = value;
+    } = value || {};
 
     try {
       const uploadPromises = files.map((imageUpload: any, index: number) => {
@@ -137,30 +137,30 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
 
       // Save the download URLs or perform any other action
       const data = {
-        description: description || product.description || "",
+        description: description || product?.description || "",
         thumbnail:
           downloadUrls[(indexOfImages || 0) - 1 || 0] ||
-          product.images[(indexOfImages || 0) - 1 || 0] ||
+          product?.images[(indexOfImages || 0) - 1 || 0] ||
           "",
-        title: title || product.title || "",
-        type: type || product.type || "",
-        categories: categories || product.categories || "",
-        price: price || product.price || 0,
-        colors: colors || product.colors || [],
-        sizes: sizes || product.sizes || [],
-        brands: brands || product.brands || "",
-        discount: discount || product.discount || 0,
+        title: title || product?.title || "",
+        type: type || product?.type || "",
+        categories: categories || product?.categories || "",
+        price: price || product?.price || 0,
+        colors: colors || product?.colors || [],
+        sizes: sizes || product?.sizes || [],
+        brands: brands || product?.brands || "",
+        discount: discount || product?.discount || 0,
         images:
           status === "create"
             ? !isEmpty(downloadUrls)
               ? downloadUrls
-              : product.images || []
+              : product?.images || []
             : !isEmpty(filesUpdate)
             ? filesUpdate
-            : product.images,
-        indexOfImages: indexOfImages || product.indexOfImages,
-        stock: stock || product.stock,
-        published: product.published || false,
+            : product?.images,
+        indexOfImages: indexOfImages || product?.indexOfImages,
+        stock: stock || product?.stock,
+        published: product?.published || false,
       };
 
       if (status === "create") {

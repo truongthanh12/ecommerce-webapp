@@ -1,10 +1,9 @@
 import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
-import { Add, Close, Remove } from "@mui/icons-material";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
+import { Close } from "@mui/icons-material";
 import {
   Avatar,
   Box,
-  Button,
   Dialog,
   DialogContent,
   Grid,
@@ -13,45 +12,35 @@ import {
 } from "@mui/material";
 import LazyImage from "@/components/LazyImage";
 import Rating from "@/components/Rating";
-import { H1, H2, H3, H6 } from "@/components/Typography";
+import { H1, H2, H6 } from "@/components/Typography";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import { currency } from "@/utils/lib";
-import { IVariant } from "@/app/models/Variant";
 import Chip from "@mui/material/Chip";
 import { IProducts } from "@/app/models/Product";
-import { AnyAaaaRecord } from "dns";
+import CartAction from "./CartAction";
 
-// ================================================================
-type OptionsType = {
-  sizes: string;
-  colors: string;
-};
 const ContentWrapper = styled(Box)(() => ({
   borderRadius: "8px",
   padding: "0.5rem",
 }));
 
-const ProductIntro = ({ product }: { product: Partial<IProducts> }) => {
+const ProductIntro = ({
+  product,
+  searchParams,
+}: {
+  product: Partial<IProducts>;
+  searchParams: { [key: string]: string | undefined };
+}) => {
   const { price, title, images, shop, brands, stock, sizes, colors } =
     product || {};
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectVariants, setSelectVariants] = useState<OptionsType>({
-    sizes: sizes?.[0] || "",
-    colors: colors?.[0] || "",
-  });
 
-  const productVariants: any = [
-    { sizes: sizes, title: "Sizes" },
-    { colors: colors, title: "Color" },
-  ];
+  const selectedSize = (searchParams?.size || sizes?.[0]) as string;
+  const selectedColor = (searchParams?.color || colors?.[0]) as string;
 
-  // HANDLE CHAMGE TYPE AND OPTIONS
-  const handleChangeVariant = (variantName: string, value: string) => () => {
-    setSelectVariants((state) => ({
-      ...state,
-      [variantName.toLowerCase()]: value,
-    }));
-  };
+  const productData = useMemo(() => {
+    return { ...product, size: selectedSize, color: selectedColor };
+  }, [product, selectedSize, selectedColor]);
 
   useEffect(() => {
     setSelectedImage(0);
@@ -61,25 +50,10 @@ const ProductIntro = ({ product }: { product: Partial<IProducts> }) => {
   const handleImageClick = (ind: number) => () => setSelectedImage(ind);
 
   // HANDLE CHANGE CART
-  const [qty, setQty] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
 
   const toggleDialog = () => {
     setOpenDialog(!openDialog);
-  };
-
-  const handleCartAmountChange = (type: "add" | "minus") => () => {
-    if (!isInStock) return;
-
-    if (type === "add") {
-      if (qty < Number(stock)) {
-        setQty((qty) => qty + 1);
-      }
-      return;
-    }
-
-    if (qty === 0) return;
-    setQty((qty) => qty - 1);
   };
 
   const isInStock = useMemo(() => {
@@ -114,39 +88,41 @@ const ProductIntro = ({ product }: { product: Partial<IProducts> }) => {
               height: "auto",
             }}
           >
-            <DialogContent
-              sx={{
-                maxWidth: 900,
-                width: "100%",
-              }}
-            >
-              <ContentWrapper>
-                {images && images.length > 0 ? (
-                  <LazyImage
-                    alt={title}
-                    width={0}
-                    height={0}
-                    layout="responsive"
-                    loading="eager"
-                    objectFit="cover"
-                    src={images[selectedImage]}
-                  />
-                ) : (
-                  <div>No Images Available</div>
-                )}
-              </ContentWrapper>
-
-              <IconButton
+            <Suspense fallback="Loading...">
+              <DialogContent
                 sx={{
-                  position: "absolute",
-                  top: 3,
-                  right: 3,
+                  maxWidth: 900,
+                  width: "100%",
                 }}
-                onClick={toggleDialog}
               >
-                <Close fontSize="small" color="secondary" />
-              </IconButton>
-            </DialogContent>
+                <ContentWrapper>
+                  {images && images.length > 0 ? (
+                    <LazyImage
+                      alt={title}
+                      width={0}
+                      height={0}
+                      layout="responsive"
+                      loading="eager"
+                      objectFit="cover"
+                      src={images[selectedImage]}
+                    />
+                  ) : (
+                    <div>No Images Available</div>
+                  )}
+                </ContentWrapper>
+
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: 3,
+                    right: 3,
+                  }}
+                  onClick={toggleDialog}
+                >
+                  <Close fontSize="small" color="secondary" />
+                </IconButton>
+              </DialogContent>
+            </Suspense>
           </Dialog>
 
           <FlexBox overflow="auto">
@@ -197,33 +173,55 @@ const ProductIntro = ({ product }: { product: Partial<IProducts> }) => {
             <H6 lineHeight="1">(50)</H6>
           </FlexBox>
 
-          {productVariants.map((variant: any) => (
-            <Box key={variant.title} mb={2}>
-              <H6 mb={1}>{variant.title}</H6>
-
-              {(variant.sizes || variant.colors || []).map((item: any) => (
-                <Chip
-                  key={item}
-                  label={item}
-                  onClick={handleChangeVariant(String(variant), String(item))}
-                  color={
-                    selectVariants[
-                      String(
-                        variant
-                      ).toLowerCase() as keyof typeof selectVariants
-                    ] === String(item)
-                      ? "primary"
-                      : "default"
-                  }
-                  sx={{
-                    borderRadius: "4px",
-                    mr: 1,
-                    cursor: "pointer",
-                  }}
-                />
+          {sizes && (
+            <Box mb={2}>
+              <H6 mb={1}>Sizes</H6>
+              {(sizes || []).map((size: any) => (
+                <Link
+                  key={size}
+                  href={`?${new URLSearchParams({
+                    size,
+                    color: selectedColor,
+                  })}`}
+                >
+                  <Chip
+                    key={size}
+                    label={size}
+                    color={selectedSize === size ? "primary" : "default"}
+                    sx={{
+                      borderRadius: "4px",
+                      mr: 1,
+                      cursor: "pointer",
+                    }}
+                  />
+                </Link>
               ))}
             </Box>
-          ))}
+          )}
+          {colors && (
+            <Box mb={2}>
+              <H6 mb={1}>Colors</H6>
+              {(colors || []).map((color: any) => (
+                <Link
+                  key={color}
+                  href={`?${new URLSearchParams({
+                    color,
+                    size: selectedSize,
+                  })}`}
+                >
+                  <Chip
+                    label={color}
+                    color={selectedColor === color ? "primary" : "default"}
+                    sx={{
+                      borderRadius: "4px",
+                      mr: 1,
+                      cursor: "pointer",
+                    }}
+                  />
+                </Link>
+              ))}
+            </Box>
+          )}
 
           <Box pt={1} mb={3}>
             <H2 color="primary.main" mb={2} lineHeight="1">
@@ -234,51 +232,7 @@ const ProductIntro = ({ product }: { product: Partial<IProducts> }) => {
             </Box>
           </Box>
 
-          {!qty ? (
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handleCartAmountChange("add")}
-              disabled={!isInStock}
-              sx={{
-                mb: 4.5,
-                px: "1.75rem",
-                height: 40,
-              }}
-            >
-              Add to Cart
-            </Button>
-          ) : (
-            <FlexBox alignItems="center" mb={4.5}>
-              <Button
-                size="small"
-                sx={{
-                  p: 1,
-                }}
-                color="primary"
-                variant="outlined"
-                onClick={handleCartAmountChange("minus")}
-              >
-                <Remove fontSize="small" />
-              </Button>
-
-              <H3 fontWeight="600" mx={2.5}>
-                {qty.toString().padStart(2, "0")}
-              </H3>
-
-              <Button
-                size="small"
-                sx={{
-                  p: 1,
-                }}
-                color="primary"
-                variant="outlined"
-                onClick={handleCartAmountChange("add")}
-              >
-                <Add fontSize="small" />
-              </Button>
-            </FlexBox>
-          )}
+          <CartAction product={productData} />
 
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>

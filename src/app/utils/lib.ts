@@ -70,3 +70,54 @@ function currency(price = 0, fraction: number = 0) {
   return formatCurrency.format(price);
 }
 export { renderProductCount, calculateDiscount, currency, getDateDifference };
+
+export function formatToSlug(str = "") {
+  // Chuyển hết sang chữ thường và xóa dấu
+  const formatStr = str
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .split(",")
+    .join("");
+
+  return formatStr;
+}
+
+// Function to remove accents from Vietnamese text
+export function removeAccents(str = "") {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+export function captitalizeStr(str = "") {
+  const arr = str.split(" ");
+
+  //loop through each element of the array and capitalize the first letter.
+
+  for (var i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+  }
+}
+
+export function objectToQueryString(obj: any, isMulti = false) {
+  if (isMulti)
+    return Object.keys(obj)
+      .map((key) => {
+        const value = obj[key];
+        if (Array.isArray(value)) {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(
+            value.join(",")
+          )}`;
+        } else {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        }
+      })
+      .join("&");
+  return Object.keys(obj)
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]))
+    .join("&");
+}

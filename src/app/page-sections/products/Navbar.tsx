@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Apps, FilterList, ViewList } from "@mui/icons-material";
 import {
   Box,
@@ -12,14 +12,71 @@ import Sidenav from "@/components/Sidenav";
 import { FlexBox } from "@/components/flex-box";
 import { H5, Paragraph } from "@/components/Typography";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
+import { useRouter } from "next/navigation";
+import { objectToQueryString } from "@/app/utils/lib";
+
+const sortOptions = [
+  {
+    label: "Default",
+    value: "Default",
+  },
+  {
+    label: "Rating",
+    value: "Rating",
+  },
+  {
+    label: "Date",
+    value: "Date",
+  },
+  {
+    label: "Price Low to High",
+    value: "Price Low to High",
+  },
+  {
+    label: "Price High to Low",
+    value: "Price High to Low",
+  },
+];
 
 interface PageProps {
   setView: (view: any) => void;
   view: "grid" | "list" | string;
+  searchParams: { [key: string]: string | undefined };
 }
-const ProductsNavbar = ({ setView, view }: PageProps) => {
+const ProductsNavbar = ({ setView, view, searchParams }: PageProps) => {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v: any) => () => setView(v), [setView]);
+  const { query, orderBy } = searchParams || {};
+  const router = useRouter();
+  const [selectedValue, setSelectedValue] = useState(
+    orderBy || sortOptions[0].value
+  );
+
+  const handleSortChange = (event: any) => {
+    const newValue = event.target.value;
+    setSelectedValue(newValue);
+
+    let updatedQuery: any = { ...searchParams };
+
+    if (newValue !== sortOptions[0].value) {
+      updatedQuery.orderBy = newValue;
+    } else {
+      delete updatedQuery.orderBy;
+    }
+
+    // Serialize the updated query object into a query string
+    router.push(`?${objectToQueryString(updatedQuery)}`);
+  };
+
+  const showFilter = query ? (
+    <Box>
+      <H5>Searching for “ {query} ”</H5>
+      <Paragraph color="grey.600">48 results found</Paragraph>
+    </Box>
+  ) : (
+    "Filter"
+  );
+
   return (
     <Card
       elevation={1}
@@ -36,10 +93,7 @@ const ProductsNavbar = ({ setView, view }: PageProps) => {
         },
       }}
     >
-      <Box>
-        <H5>Searching for “ {} ”</H5>
-        <Paragraph color="grey.600">48 results found</Paragraph>
-      </Box>
+      {showFilter}
 
       <FlexBox alignItems="center" columnGap={4} flexWrap="wrap" my="0.5rem">
         <FlexBox alignItems="center" gap={1} flex="1 1 0">
@@ -53,14 +107,15 @@ const ProductsNavbar = ({ setView, view }: PageProps) => {
             size="small"
             variant="outlined"
             placeholder="Short by"
-            defaultValue={sortOptions[0].value}
+            value={selectedValue}
+            onChange={handleSortChange}
             sx={{
               flex: "1 1 0",
               minWidth: "150px",
             }}
           >
             {sortOptions.map((item) => (
-              <MenuItem value={item.value} key={item.value}>
+              <MenuItem key={item.value} value={item.value}>
                 {item.label}
               </MenuItem>
             ))}
@@ -95,7 +150,7 @@ const ProductsNavbar = ({ setView, view }: PageProps) => {
                 </IconButton>
               }
             >
-              <ProductFilterCard />
+              <ProductFilterCard searchParams={searchParams} />
             </Sidenav>
           )}
         </FlexBox>
@@ -104,22 +159,4 @@ const ProductsNavbar = ({ setView, view }: PageProps) => {
   );
 };
 
-const sortOptions = [
-  {
-    label: "Relevance",
-    value: "Relevance",
-  },
-  {
-    label: "Date",
-    value: "Date",
-  },
-  {
-    label: "Price Low to High",
-    value: "Price Low to High",
-  },
-  {
-    label: "Price High to Low",
-    value: "Price High to Low",
-  },
-];
 export default React.memo(ProductsNavbar);

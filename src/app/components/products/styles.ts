@@ -71,6 +71,7 @@ export const StyledChipCategory = styled(Chip)({
 
 // view dialog
 export const ContentWrapperView = styled(Box)(({ theme }) => ({
+  width: "100%",
   "& .carousel:hover": {
     cursor: "pointer",
     "& .carousel__back-button": {

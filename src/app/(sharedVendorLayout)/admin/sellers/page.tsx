@@ -11,9 +11,9 @@ import UserRow from "@/page-sections/admin/users";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
-import Image from "@/components/Image";
 import isEmpty from "lodash/isEmpty";
 import { fetchUsers } from "@/redux/features/authSlice";
+import NotFound from "@/app/components/not-found";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -112,19 +112,7 @@ export default function SellerList() {
                     <UserRow user={user} key={user.id} selected={selected} />
                   ))
                 ) : (
-                  <Box>
-                    <Image
-                      src="/assets/images/illustrations/404.svg"
-                      sx={{
-                        display: "block",
-                        width: "100%",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        my: 3,
-                      }}
-                      alt="404-Not-Found"
-                    />
-                  </Box>
+                  <NotFound />
                 )}
               </TableBody>
             </Table>

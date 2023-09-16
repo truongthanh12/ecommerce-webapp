@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchBrands } from "@/redux/features/brandSlice";
 import { useSearch } from "@/hooks/useSearch";
-import Image from "@/components/Image";
 import isEmpty from "lodash/isEmpty";
+import NotFound from "@/app/components/not-found";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -114,19 +114,7 @@ export default function BrandList() {
                     />
                   ))
                 ) : (
-                  <Box>
-                    <Image
-                      src="/assets/images/illustrations/404.svg"
-                      sx={{
-                        display: "block",
-                        width: "100%",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        my: 3,
-                      }}
-                      alt="404-Not-Found"
-                    />
-                  </Box>
+                  <NotFound />
                 )}
               </TableBody>
             </Table>

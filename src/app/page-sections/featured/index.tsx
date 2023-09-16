@@ -8,10 +8,11 @@ import React, { useMemo } from "react";
 import { IProducts } from "@/app/models/Product";
 import Card from "@/app/components/Card";
 import { IBrand } from "@/app/models/Brand";
+import { formatToSlug } from "@/app/utils/lib";
 // ==========================================================
 type TypeProps = {
   products: IProducts[];
-  brands: IBrand[]
+  brands: IBrand[];
 };
 const Featured: React.FC<TypeProps> = ({ products, brands }) => {
   const topRatedBrands = useMemo(() => {
@@ -41,7 +42,7 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
               <Grid container spacing={4}>
                 {topRatedList.map((item) => (
                   <Grid item md={3} sm={6} xs={6} key={item.title}>
-                    <Link href={`/product/${item.slug}`} passHref>
+                    <Link href={`/product/${formatToSlug(item.slug)}`} passHref>
                       <ProductCard
                         isBasicCard
                         isTopCategory
@@ -49,7 +50,8 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
                         price={item.price}
                         rating={item.rating}
                         thumbnail={item.thumbnail}
-                        reviewCount={item.reviews.length}
+                        reviewCount={0 || item?.reviews?.length}
+                        stock={item.stock}
                       />
                     </Link>
                   </Grid>
@@ -74,7 +76,10 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
               <Grid container spacing={4}>
                 {topRatedBrands.map(({ id, name, image, slug }) => (
                   <Grid item sm={6} xs={12} key={id}>
-                    <Link href={`/product/search/${slug}`} passHref>
+                    <Link
+                      href={`/product/search/${formatToSlug(slug)}`}
+                      passHref
+                    >
                       <ProductCard isFeatured title={name} thumbnail={image} />
                     </Link>
                   </Grid>
