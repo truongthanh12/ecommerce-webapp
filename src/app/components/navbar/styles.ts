@@ -2,6 +2,7 @@
 import { Box, Drawer, styled } from "@mui/material";
 import { NavLink } from "@/components/nav-link";
 import { layoutConstant } from "@/utils/constants";
+import { H5 } from "@/components/Typography";
 
 // styled components
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -60,4 +61,13 @@ const iconStyle = {
   alignItems: "center",
   justifyContent: "center",
 };
-export { Wrapper, StyledBox, StyledNavLink, StyledDrawer, iconStyle };
+// Styled components sale navbar
+const Title = styled(H5)(
+  ({ selected, theme }: { selected: boolean; theme?: any }) => ({
+    fontSize: "12px",
+    textAlign: "center",
+    fontWeight: selected ? "600" : "400",
+    color: selected ? theme.palette.primary.main : "inherit",
+  })
+);
+export { Wrapper, StyledBox, StyledNavLink, StyledDrawer, iconStyle, Title };

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 type TypeFlexRowCenter = {
+  sx: any;
   children: React.ReactNode;
   mt: string;
   alignItems: string;
@@ -24,7 +25,10 @@ type TypeFlexRowCenter = {
   flexWrap: "wrap" | "nowrap";
   justifyContent: "flex-start" | "center" | "flex-end";
 };
-const FlexRowCenter: React.FC<Partial<TypeFlexRowCenter>> = ({ children, ...props }) => (
+const FlexRowCenter: React.FC<Partial<TypeFlexRowCenter>> = ({
+  children,
+  ...props
+}) => (
   <Box display="flex" justifyContent="center" alignItems="center" {...props}>
     {children}
   </Box>

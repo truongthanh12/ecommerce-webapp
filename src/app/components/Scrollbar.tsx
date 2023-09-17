@@ -1,7 +1,6 @@
 "use client";
 import { Container, alpha, styled } from "@mui/material";
 import React from "react";
-// import SimpleBar from "simplebar-react";
 const StyledScrollBar = styled(Container)(({ theme }) => ({
   maxHeight: "100%",
   "& .simplebar-scrollbar": {

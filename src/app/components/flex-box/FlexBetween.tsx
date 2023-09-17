@@ -16,6 +16,7 @@ type TypeFlexBetween = {
   maxHeight: string | number;
   justifyContent: "center" | "space-between";
   p: number;
+  my: number;
 };
 const FlexBetween: React.FC<Partial<TypeFlexBetween>> = ({ children, ...props }) => (
   <Box

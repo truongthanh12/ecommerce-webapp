@@ -42,11 +42,17 @@ interface PageProps {
   setView: (view: any) => void;
   view: "grid" | "list" | string;
   searchParams: { [key: string]: string | undefined };
+  productsLength: number;
 }
-const ProductsNavbar = ({ setView, view, searchParams }: PageProps) => {
+const ProductsNavbar = ({
+  setView,
+  view,
+  searchParams,
+  productsLength,
+}: PageProps) => {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v: any) => () => setView(v), [setView]);
-  const { query, orderBy } = searchParams || {};
+  const { query, orderBy, category, subcategory } = searchParams || {};
   const router = useRouter();
   const [selectedValue, setSelectedValue] = useState(
     orderBy || sortOptions[0].value
@@ -68,14 +74,17 @@ const ProductsNavbar = ({ setView, view, searchParams }: PageProps) => {
     router.push(`?${objectToQueryString(updatedQuery)}`);
   };
 
-  const showFilter = query ? (
-    <Box>
-      <H5>Searching for “ {query} ”</H5>
-      <Paragraph color="grey.600">48 results found</Paragraph>
-    </Box>
-  ) : (
-    "Filter"
-  );
+  const showFilter =
+    query || category || subcategory ? (
+      <Box>
+        {query && <H5>Searching for “ {query} ”</H5>}
+        {category && <H5>Searching for “ {category} ”</H5>}
+        {subcategory && <H5>Searching for “ {subcategory} ”</H5>}
+        <Paragraph color="grey.600">{productsLength} results found</Paragraph>
+      </Box>
+    ) : (
+      "Filter"
+    );
 
   return (
     <Card

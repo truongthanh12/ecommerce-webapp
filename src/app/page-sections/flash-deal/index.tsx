@@ -14,6 +14,7 @@ const FlashDeal = ({ products }: { products: IProducts[] }) => {
   const productsList = useMemo(() => {
     return products?.filter((item) => item.type === "flash-deals");
   }, [products]);
+  console.log(productsList)
 
   const [visibleSlides, setVisibleSlides] = useState(4);
   const width = useWindowSize();
@@ -28,7 +29,10 @@ const FlashDeal = ({ products }: { products: IProducts[] }) => {
     <CategorySectionCreator
       icon={<Light color="primary" />}
       title="Flash Deals"
-      seeMoreLink="#"
+      seeMoreLink={`/sale-page?${new URLSearchParams({
+        type: "flash-deals",
+      })}`}
+      length={productsList.length}
     >
       <Carousel visibleSlides={visibleSlides} infinite={true} spaceBetween={16}>
         {productsList?.map((product) => (

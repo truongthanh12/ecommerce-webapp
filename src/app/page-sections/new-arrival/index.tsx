@@ -20,7 +20,10 @@ const NewArrivals: React.FC<TypeProps> = ({ products }) => {
     <CategorySectionCreator
       icon={<NewArrival />}
       title="New Arrivals"
-      seeMoreLink="#"
+      seeMoreLink={`/sale-page?${new URLSearchParams({
+        type: "new-arrivals",
+      })}`}
+      length={newArrivalsList.length}
     >
       <Card
         sx={{

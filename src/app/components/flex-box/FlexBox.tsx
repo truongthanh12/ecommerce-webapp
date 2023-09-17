@@ -31,6 +31,7 @@ type TypeFlexbox = {
   flexWrap: "nowrap" | "wrap" | "wrap-reverse";
   maxWidth: string | number;
   p: string | number;
+  m: string | number;
 };
 const FlexBox: React.FC<Partial<TypeFlexbox>> = ({ children, ...props }) => (
   <Box display="flex" {...props}>

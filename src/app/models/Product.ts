@@ -43,7 +43,7 @@ export interface IProducts {
   discount?: number;
   thumbnail?: string;
   images?: string[] | undefined;
-  categories?: string[] | null;
+  categories?: string | null;
   status?: string | null;
   reviews?: any;
   rating?: number;

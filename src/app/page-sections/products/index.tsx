@@ -23,8 +23,17 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
   const { products } = useSelector((state: any) => state.products);
   const dispatch: any = useDispatch();
   const [searchItems, setSearchItems] = useState(products);
-  const { query, orderBy, minPrice, maxPrice, brand, options, ratings, color } =
-    searchParams || {};
+  const {
+    query,
+    orderBy,
+    minPrice,
+    maxPrice,
+    brand,
+    options,
+    ratings,
+    color,
+    subcategory,
+  } = searchParams || {};
 
   useEffect(
     debounce(() => {
@@ -41,6 +50,14 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
         if (brand && brand.length > 0) {
           filtered = filtered.filter((item: Partial<IProducts>) =>
             brand.includes(item.brands || "")
+          );
+        }
+
+        if (subcategory && subcategory.length > 0) {
+          filtered = filtered.filter((item: Partial<IProducts>) =>
+            subcategory.includes(
+              removeAccents(item.categories?.toLowerCase() || "")
+            )
           );
         }
 
@@ -92,7 +109,17 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
         setSearchItems(sortedProducts);
       }
     }, 400),
-    [products, query, orderBy, minPrice, maxPrice, brand, options, color]
+    [
+      products,
+      query,
+      orderBy,
+      minPrice,
+      maxPrice,
+      brand,
+      options,
+      color,
+      subcategory,
+    ]
   );
 
   const {
@@ -133,6 +160,7 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
         />
       ) : (
         <ProductNavbar
+          productsLength={searchItems?.length}
           searchParams={searchParams}
           view={view}
           setView={setView}

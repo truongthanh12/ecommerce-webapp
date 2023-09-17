@@ -3,9 +3,9 @@ import Car from "@/components/icons/Car";
 import Dress from "@/components/icons/Dress";
 
 export const CategoryIcon: any = {
-  car: <Car fontSize="small" color="inherit" />,
-  dress: <Dress fontSize="small" color="inherit" />,
-  default: <Carrot fontSize="small" color="inherit" />,
+  car: <Car fontSize="inherit" color="inherit" />,
+  dress: <Dress fontSize="inherit" color="inherit" />,
+  default: <Carrot fontSize="inherit" color="inherit" />,
 };
 
 // mime type images

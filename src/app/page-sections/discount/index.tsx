@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Box } from "@mui/material";
@@ -33,7 +33,9 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
     <CategorySectionCreator
       icon={<GiftBox />}
       title="Big Discounts"
-      seeMoreLink="#"
+      seeMoreLink={`/sale-page?${new URLSearchParams({
+        type: "big-discounts",
+      })}`}
     >
       <Box my="-0.25rem">
         <Carousel visibleSlides={visibleSlides}>

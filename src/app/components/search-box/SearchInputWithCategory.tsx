@@ -45,7 +45,12 @@ const SearchInputWithCategory = () => {
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target?.value;
+    let value = e.target?.value;
+    if (value.length > 40) {
+      e.preventDefault(); // Prevent further input
+      return;
+    }
+
     setQuery(value);
     if (!value) {
       const searchParams: any = {};
@@ -54,14 +59,14 @@ const SearchInputWithCategory = () => {
       }
       let updatedQuery = { ...searchParams };
       delete updatedQuery.query;
-      router.push(`?${objectToQueryString(updatedQuery)}`);
+      router.push(`/product/search/products?${objectToQueryString(updatedQuery)}`);
     }
   };
 
   const handleKeyPress = useCallback(
     debounce((e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
-        e.preventDefault();
+      e.preventDefault();
         const searchParams: any = {};
         for (const [key, value] of params.entries()) {
           searchParams[key] = value;
@@ -73,7 +78,7 @@ const SearchInputWithCategory = () => {
         };
 
         // Serialize the updated query object into a query string
-        router.push(`?${objectToQueryString(updatedQuery)}`);
+        router.push(`/product/search/products?${objectToQueryString(updatedQuery)}`);
       }
     }, 400),
     [query]

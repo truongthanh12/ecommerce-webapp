@@ -2,16 +2,14 @@ import CardComp from "@/components/Card";
 import React from "react";
 import StyledMegaMenu from "./StyledMegaMenu";
 import CategoryMenuItem from "./CategoryMenuItem";
-import { FlexBox } from "../flex-box";
-import { Box, Grid } from "@mui/material";
-import { NavLink } from "../nav-link";
 import { CategoryIcon } from "@/common";
+import { removeAccents } from "@/app/utils/lib";
 
 type TypeProps = {
   data: any;
-  parent: any;
+  parent?: any;
 };
-const MegaMenu: React.FC<TypeProps> = ({ data, parent }) => {
+const MegaMenu: React.FC<TypeProps> = ({ data }) => {
   return (
     <StyledMegaMenu>
       <CardComp
@@ -24,16 +22,18 @@ const MegaMenu: React.FC<TypeProps> = ({ data, parent }) => {
         {data?.map((item: any, ind: number) => {
           const icon = CategoryIcon.hasOwnProperty(item.icon)
             ? item.icon
-            : 'default';
-            
+            : "default";
+
           return (
             <CategoryMenuItem
-              href={parent + "/" + item.slug}
+              href={`/product/search/cate?${new URLSearchParams({
+                subCategory: removeAccents(item.slug),
+              })}`}
               icon={icon}
               key={ind}
               title={item.name}
             >
-              {item.parent === parent && (
+              {/* {item.parent === parent && (
                 <>
                   {item?.categories ? (
                     <StyledMegaMenu>
@@ -53,7 +53,9 @@ const MegaMenu: React.FC<TypeProps> = ({ data, parent }) => {
                                     {item.href ? (
                                       <NavLink
                                         className="title-link"
-                                        href={item.href}
+                                        href={`?${new URLSearchParams({
+                                          category: item.href,
+                                        })}`}
                                       >
                                         {item.title}
                                       </NavLink>
@@ -66,7 +68,9 @@ const MegaMenu: React.FC<TypeProps> = ({ data, parent }) => {
                                       (sub: any, ind: number) => (
                                         <NavLink
                                           className="child-link"
-                                          href={sub.href}
+                                          href={`?${new URLSearchParams({
+                                            category: item.href,
+                                          })}`}
                                           key={ind}
                                         >
                                           {sub.title}
@@ -83,7 +87,7 @@ const MegaMenu: React.FC<TypeProps> = ({ data, parent }) => {
                     </StyledMegaMenu>
                   ) : null}
                 </>
-              )}
+              )} */}
             </CategoryMenuItem>
           );
         })}

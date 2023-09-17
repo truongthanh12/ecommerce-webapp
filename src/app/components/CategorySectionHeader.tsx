@@ -10,11 +10,13 @@ interface TypeProps {
   title: string;
   seeMoreLink: string;
   icon?: React.JSX.Element | string;
+  length: number;
 }
 const CategorySectionHeader = ({
   title,
   seeMoreLink,
   icon = "",
+  length = 0,
 }: TypeProps) => {
   return (
     <FlexBetween mb={3}>
@@ -25,13 +27,15 @@ const CategorySectionHeader = ({
         </H2>
       </FlexBox>
 
-      {seeMoreLink && (
+      {seeMoreLink && (length || 0) > 4 ? (
         <Link href={seeMoreLink}>
           <FlexBox alignItems="center" color="grey.600">
             View all
             <ArrowRight fontSize="small" color="inherit" />
           </FlexBox>
         </Link>
+      ) : (
+        ""
       )}
     </FlexBetween>
   );

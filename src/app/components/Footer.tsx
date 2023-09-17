@@ -107,11 +107,11 @@ const Footer: React.FC = () => {
                 </Box>
 
                 <Box py={0.6} color="grey.500">
-                  70 Washington Square South, New York, NY 10012, United States
+                  01 Taphoa, Cu Chi, Ho Chi Minh city
                 </Box>
 
                 <Box py={0.6} color="grey.500">
-                  Email: uilib.help@gmail.com
+                  Email: taphoa.help@gmail.com
                 </Box>
 
                 <Box py={0.6} mb={2} color="grey.500">

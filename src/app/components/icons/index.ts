@@ -1,3 +1,4 @@
+import React from "react";
 import AlarmClock from "./AlarmClock";
 import Apple from "./Apple";
 import AppleStore from "./AppleStore";
@@ -133,7 +134,11 @@ import YoutubeFilled from "./YoutubeFilled";
 // import OxygenPump from "./health-and-beauty/OxygenPump";
 // import Thermometer from "./health-and-beauty/Thermometer";
 // import HealthBeauty from "./health-and-beauty/HealthBeauty";
-const appIcons = {
+type AppIcons = {
+  [key: string]: React.ElementType<any>;
+};
+
+const appIcons: AppIcons = {
   Beer,
   Milk,
   Snack,
@@ -267,6 +272,6 @@ const appIcons = {
   YoutubeFilled,
   Search,
   User,
-  CartBag
+  CartBag,
 };
 export default appIcons;

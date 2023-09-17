@@ -33,8 +33,11 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
 
   return (
     <CategorySectionCreator
-      seeMoreLink="#"
+      seeMoreLink={`/sale-page?${new URLSearchParams({
+        type: "top-categories",
+      })}`}
       title="Top Categories"
+      length={categoriesData.length}
       icon={<CategoryIcon color="primary" />}
     >
       <Carousel visibleSlides={visibleSlides}>

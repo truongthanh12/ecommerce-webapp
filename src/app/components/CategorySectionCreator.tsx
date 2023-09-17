@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Box, Container } from "@mui/material";
 import CategorySectionHeader from "./CategorySectionHeader";
 import React from "react";
@@ -9,12 +9,14 @@ interface TypeProps {
   title: string;
   children: React.ReactNode;
   seeMoreLink: string;
+  length?: number;
 }
 const CategorySectionCreator = ({
   icon,
   title,
   children,
   seeMoreLink,
+  length,
   ...rest
 }: TypeProps) => {
   return (
@@ -24,12 +26,15 @@ const CategorySectionCreator = ({
           pb: "1rem",
         }}
       >
-        {title && (
+        {title ? (
           <CategorySectionHeader
             title={title}
             seeMoreLink={seeMoreLink}
             icon={icon}
+            length={length || 0}
           />
+        ) : (
+          ""
         )}
 
         {children}

@@ -32,9 +32,12 @@ type TypePropsTypo = {
   maxWidth: string;
   mx: string | number;
   my: number | string;
-  p: number;
+  p: number | string;
   title: string;
-  sx: any
+  sx: any;
+  m: number;
+  borderRadius: string;
+  bgcolor: string
 };
 
 type TypeProp = {

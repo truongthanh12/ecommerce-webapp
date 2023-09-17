@@ -93,6 +93,32 @@ export function removeAccents(str = "") {
     .toLowerCase();
 }
 
+export function addAccents(str = "") {
+  const accentMap = {
+    a: "áàâäã",
+    e: "éèêë",
+    i: "íìîï",
+    o: "óòôöõ",
+    u: "úùûü",
+    c: "ç",
+    n: "ñ",
+    // Add more mappings as needed
+  };
+
+  // Loop through each character in the string
+  return str
+    .split("")
+    .map((char) => {
+      for (const [accent, chars] of Object.entries(accentMap)) {
+        if (chars.includes(char)) {
+          return accent; // Replace accented character with the base character
+        }
+      }
+      return char; // If not accented, keep the character as is
+    })
+    .join("");
+}
+
 export function captitalizeStr(str = "") {
   const arr = str.split(" ");
 

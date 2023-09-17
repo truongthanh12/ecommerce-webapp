@@ -3,6 +3,7 @@ import CategoryMenuItem from "./CategoryMenuItem";
 import { ReactNode, memo } from "react";
 import MegaMenu from "./MegaMenu";
 import { ICategory } from "@/app/models/Category";
+import { removeAccents } from "@/app/utils/lib";
 
 // styled component
 type TypeProps = {
@@ -50,7 +51,9 @@ const CategoryMenuCard: React.FC<TypeProps> = ({
               caret={isCaret}
               key={item.title + index}
               icon={item.icon}
-              href={item.title}
+              // href={`/sale-page?${new URLSearchParams({
+              //   category: removeAccents(item.title),
+              // })}`}
               title={item.title}
             >
               <MegaMenu data={filteredItems} parent={item.title} />

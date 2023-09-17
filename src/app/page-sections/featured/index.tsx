@@ -31,7 +31,13 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
             <CategorySectionHeader
               icon={<RankBadge />}
               title="Top Ratings"
-              seeMoreLink="#"
+              seeMoreLink={
+                topRatedList?.length > 4
+                  ? `/sale-page?${new URLSearchParams({
+                      type: "top-ratings",
+                    })}`
+                  : ""
+              }
             />
 
             <Card
@@ -65,7 +71,13 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
             <CategorySectionHeader
               icon={<DottedStar />}
               title="Featured Brands"
-              seeMoreLink="#"
+              seeMoreLink={
+                topRatedBrands?.length > 4
+                  ? `/sale-page?${new URLSearchParams({
+                      type: "featured-brands",
+                    })}`
+                  : ""
+              }
             />
 
             <Card

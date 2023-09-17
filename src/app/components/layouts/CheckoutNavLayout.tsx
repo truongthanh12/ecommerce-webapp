@@ -1,5 +1,6 @@
+"use client"
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Box, Container, Grid } from "@mui/material";
 import Stepper from "@/components/Stepper";
 
@@ -8,7 +9,7 @@ import Stepper from "@/components/Stepper";
 const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
   const [selectedStep, setSelectedStep] = useState(0);
   const router = useRouter();
-  const { pathname } = router;
+  const pathname = usePathname();
   const handleStepChange = (step: string | number) => {
     switch (step) {
       case 0:
