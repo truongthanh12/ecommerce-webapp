@@ -38,8 +38,8 @@ const tableHeading = [
     align: "center",
   },
   {
-    id: "no-of-orders",
-    label: "No of orders",
+    id: "Package",
+    label: "Package",
     align: "center",
   },
   {
@@ -64,7 +64,7 @@ export default function UserList() {
 
   useEffect(() => {
     dispatch(fetchUsers({ isVendor: false }));
-  }, []);
+  }, [dispatch]);
 
   const {
     order,

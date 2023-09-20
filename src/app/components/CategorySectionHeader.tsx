@@ -10,7 +10,7 @@ interface TypeProps {
   title: string;
   seeMoreLink: string;
   icon?: React.JSX.Element | string;
-  length: number;
+  length?: number;
 }
 const CategorySectionHeader = ({
   title,

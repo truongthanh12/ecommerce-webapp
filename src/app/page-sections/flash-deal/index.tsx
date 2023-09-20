@@ -14,7 +14,6 @@ const FlashDeal = ({ products }: { products: IProducts[] }) => {
   const productsList = useMemo(() => {
     return products?.filter((item) => item.type === "flash-deals");
   }, [products]);
-  console.log(productsList)
 
   const [visibleSlides, setVisibleSlides] = useState(4);
   const width = useWindowSize();

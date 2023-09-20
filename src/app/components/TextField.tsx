@@ -5,6 +5,7 @@ type TypeTextField = {
   label: string;
   InputProps: any;
   mb: number;
+  mr: number;
   fullWidth: boolean;
   name: string;
   size: string;

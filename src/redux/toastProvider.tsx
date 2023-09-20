@@ -20,7 +20,7 @@ export default function ToastProvider({
 
   useEffect(() => {
     setTimeout(() => dispatch(clearMessage()), 3000);
-  }, [message]);
+  }, [dispatch, message]);
 
   return (
     <>

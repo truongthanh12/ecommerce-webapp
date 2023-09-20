@@ -56,7 +56,7 @@ export default function BrandList() {
 
   useEffect(() => {
     dispatch(fetchBrands());
-  }, []);
+  }, [dispatch]);
 
   const {
     order,

@@ -66,7 +66,11 @@ export const navigations = [
       },
       {
         name: "Seller Package",
-        path: "/admin/seller-package",
+        path: "/admin/sellers/package",
+      },
+      {
+        name: "Seller Recharge",
+        path: "/admin/sellers/recharge",
       }
     ],
   },

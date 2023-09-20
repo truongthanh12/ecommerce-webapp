@@ -1,6 +1,19 @@
 import React, { useState } from "react";
-import { Avatar, Box, IconButton, Menu, MenuItem, styled } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  styled,
+} from "@mui/material";
 import { H6, Small } from "@/components/Typography";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
+import { auth } from "@/firebase";
+import { useRouter } from "next/navigation";
+import { setMessage } from "@/redux/features/messageSlice";
 
 // styled components
 const Divider = styled(Box)(({ theme }) => ({
@@ -9,10 +22,30 @@ const Divider = styled(Box)(({ theme }) => ({
 }));
 const AccountPopover = () => {
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
+  const { user } = useSelector((state: any) => state.auth);
+  const dispatch: any = useAppDispatch();
+  const router = useRouter();
+  const { displayName, isVendor } = user || {};
+
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/");
+    // sign out function from firebase
+    auth
+      .signOut()
+      .then(() => {
+        dispatch(setMessage({ message: "Log out successfully." }));
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+
   return (
     <Box>
       <IconButton
@@ -73,8 +106,8 @@ const AccountPopover = () => {
         }}
       >
         <Box px={2} pt={1}>
-          <H6>Gage Paquette</H6>
-          <Small color="grey.500">Admin</Small>
+          <H6>{displayName}</H6>
+          <Small color="grey.500">{isVendor ? "Seller" : "Admin"}</Small>
         </Box>
 
         <Divider />
@@ -83,7 +116,7 @@ const AccountPopover = () => {
         <MenuItem>Settings</MenuItem>
 
         <Divider />
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>
   );

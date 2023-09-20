@@ -40,7 +40,7 @@ const ProductViewDialog = ({
         }}
       >
         <ContentWrapperView>
-          <ProductIntro product={product} />
+          <ProductIntro product={product} searchParams={{}} />
         </ContentWrapperView>
 
         <IconButton

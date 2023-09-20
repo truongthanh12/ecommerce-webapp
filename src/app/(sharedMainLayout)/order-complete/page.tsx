@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { Button, Container, styled } from "@mui/material";
 import SEO from "@/components/SEO";
@@ -43,7 +44,7 @@ const OrderConfirmation = () => {
             You will be receiving confirmation email with order details.
           </Paragraph>
 
-          <Link href="/market-1" passHref>
+          <Link href="/" passHref>
             <StyledButton
               color="primary"
               disableElevation

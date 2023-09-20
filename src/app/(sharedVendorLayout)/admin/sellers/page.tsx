@@ -38,8 +38,8 @@ const tableHeading = [
     align: "center",
   },
   {
-    id: "no-of-orders",
-    label: "No of orders",
+    id: "Package",
+    label: "Package",
     align: "center",
   },
   {
@@ -64,7 +64,7 @@ export default function SellerList() {
 
   useEffect(() => {
     dispatch(fetchUsers({ isVendor: true }));
-  }, []);
+  }, [dispatch]);
 
   const {
     order,
@@ -109,7 +109,7 @@ export default function SellerList() {
               <TableBody>
                 {!isEmpty(filteredList) ? (
                   filteredList.map((user: any) => (
-                    <UserRow user={user} key={user.id} selected={selected} />
+                    <UserRow user={user} key={user.uid} selected={selected} />
                   ))
                 ) : (
                   <NotFound />

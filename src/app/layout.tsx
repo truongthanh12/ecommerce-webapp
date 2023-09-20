@@ -6,6 +6,8 @@ import MuiTheme from "@/components/theme";
 import { type ReactNode, Suspense } from "react";
 import { Providers } from "@/redux/provider";
 import ToastProvider from "@/redux/toastProvider";
+import React from "react";
+import PackageStateChanged from "@/components/auth/PackageStateChanged";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,11 +45,13 @@ export default function RootLayout({ children }: LayoutProps) {
       <OpenGraphTags />
       <body className={inter.className}>
         <Providers>
-          <ToastProvider>
-            <Suspense fallback="Loading...">
-              <MuiTheme>{children}</MuiTheme>
-            </Suspense>
-          </ToastProvider>
+          <PackageStateChanged>
+            <ToastProvider>
+              <Suspense fallback="Loading...">
+                <MuiTheme>{children}</MuiTheme>
+              </Suspense>
+            </ToastProvider>
+          </PackageStateChanged>
         </Providers>
       </body>
     </html>

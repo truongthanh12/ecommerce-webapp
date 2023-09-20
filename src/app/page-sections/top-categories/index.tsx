@@ -29,7 +29,7 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
     if (categoriesData.length > visibleSlides) {
       setArrow(true);
     }
-  }, [isArrow]);
+  }, [categoriesData.length, visibleSlides]);
 
   return (
     <CategorySectionCreator

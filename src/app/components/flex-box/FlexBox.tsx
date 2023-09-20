@@ -22,7 +22,7 @@ type TypeFlexbox = {
   position: "relative" | "absolute" | "fixed";
   sx: any;
   mx: number;
-  width: string;
+  width: string | number;
   mb: number;
   overflow: string;
   onClick: any;
@@ -32,6 +32,7 @@ type TypeFlexbox = {
   maxWidth: string | number;
   p: string | number;
   m: string | number;
+  rowGap: number | string;
 };
 const FlexBox: React.FC<Partial<TypeFlexbox>> = ({ children, ...props }) => (
   <Box display="flex" {...props}>

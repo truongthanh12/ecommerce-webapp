@@ -10,6 +10,7 @@ export interface IShop {
   profilePicture?: string;
   socialLinks?: Social;
   user?: IUser;
+  userType: string;
 }
 export interface Social {
   facebook?: null | string;

@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { Search } from "@mui/icons-material";
-import { Box, Button, styled, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, styled, useMediaQuery } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
@@ -11,6 +11,8 @@ import AccountPopover from "./popovers/AccountPopover";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import NotificationsPopover from "./popovers/NoficationPopover";
 import React from "react";
+import { useSelector } from "react-redux";
+import { Span } from "@/components/Typography";
 
 // custom styled components
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -63,6 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const DashboardNavbar = ({ handleDrawerToggle }: any) => {
   const router = useRouter();
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
+  const { user } = useSelector((state: any) => state.auth);
+
   return (
     <DashboardNavbarRoot position="sticky">
       <Container maxWidth="xl">
@@ -102,6 +106,20 @@ const DashboardNavbar = ({ handleDrawerToggle }: any) => {
             />
 
             <NotificationsPopover />
+            {user.userType !== "None" && (
+              <Typography color="grey.600" letterSpacing="0.2em">
+                <Span
+                  p="6px 10px"
+                  fontSize={12}
+                  lineHeight="1"
+                  borderRadius="3px"
+                  color="primary.main"
+                  bgcolor="primary.light"
+                >
+                  {user.userType !== "None" ? user.userType.toUpperCase() : ""}
+                </Span>
+              </Typography>
+            )}
             <AccountPopover />
           </FlexBox>
         </StyledToolBar>

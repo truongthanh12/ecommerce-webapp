@@ -62,7 +62,7 @@ const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
         ButtonText: banner.buttonText,
       });
     }
-  }, [banner]);
+  }, [reset, banner]);
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files: any) => {
@@ -297,14 +297,14 @@ const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
                 {files.map((file: any, index: number) => {
                   return (
                     <UploadImageBox size="medium" key={index}>
-                      <Image src={file.preview} width="100%" />
+                      <Image alt="Image uploaded" src={file.preview} width="100%" />
                       <StyledClear onClick={handleFileDelete(file)} />
                     </UploadImageBox>
                   );
                 })}
                 {isEmpty(files) && banner?.imgUrl && (
                   <UploadImageBox size="medium">
-                    <Image src={banner?.imgUrl} width="100%" />
+                    <Image alt="Image uploaded" src={banner?.imgUrl} width="100%" />
                   </UploadImageBox>
                 )}
               </FlexBox>

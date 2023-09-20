@@ -100,9 +100,7 @@ const CartAction = ({
             height: 40,
           }}
         >
-          {currentItemInCart && currentItemInCart.quantity === 1
-            ? "Quantity 1"
-            : "Add to Cart"}
+          Add to Cart
         </Button>
       )}
     </FlexBox>

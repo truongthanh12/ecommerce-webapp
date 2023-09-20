@@ -42,10 +42,10 @@ export default function Profile() {
   const formatDate = (dateString: string) => {
     // Check if the date string is valid
     if (!dateString || !isValid(parseISO(dateString))) {
-      return 'Invalid Date';
+      return "Invalid Date";
     }
-    
-    return (format(new Date(dateString), 'dd/MM/yyyy'))
+
+    return format(new Date(dateString), "dd/MM/yyyy");
   };
 
   const infoList = [
@@ -109,7 +109,7 @@ export default function Profile() {
                   </div>
 
                   <Typography color="grey.600" letterSpacing="0.2em">
-                    SILVER USER
+                    {user.userType !== "None" ? user.userType.toUpperCase() + " USER" : ""}
                   </Typography>
                 </FlexBetween>
               </Box>
@@ -158,7 +158,10 @@ export default function Profile() {
         <TableRowItem title="Name" value={user.displayName} />
         <TableRowItem title="Email" value={user.email} />
         <TableRowItem title="Phone" value={user.phoneNumber} />
-        <TableRowItem title="Birth date" value={formatDate(user.birthDate) || ""} />
+        <TableRowItem
+          title="Birth date"
+          value={formatDate(user.birthDate) || ""}
+        />
         <TableRowItem title="Address" value={user.address} />
       </TableRow>
     </Fragment>

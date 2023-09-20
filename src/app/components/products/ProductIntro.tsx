@@ -6,18 +6,23 @@ import {
   Box,
   Dialog,
   DialogContent,
+  Divider,
   Grid,
   IconButton,
+  Typography,
   styled,
 } from "@mui/material";
 import LazyImage from "@/components/LazyImage";
 import Rating from "@/components/Rating";
-import { H1, H2, H6 } from "@/components/Typography";
+import { H1, H2, H4, H6, Span } from "@/components/Typography";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
-import { currency } from "@/utils/lib";
+import { calculateDiscount, currency } from "@/utils/lib";
 import Chip from "@mui/material/Chip";
 import { IProducts } from "@/app/models/Product";
 import CartAction from "./CartAction";
+import { addDays, format } from "date-fns";
+import Card from "../Card";
+import voucherCode from "@/app/data/voucher-code";
 
 const ContentWrapper = styled(Box)(() => ({
   borderRadius: "8px",
@@ -31,9 +36,10 @@ const ProductIntro = ({
   product: Partial<IProducts>;
   searchParams: { [key: string]: string | undefined };
 }) => {
-  const { price, title, images, shop, brands, stock, sizes, colors } =
+  const { price, title, images, shop, stock, sizes, colors, discount } =
     product || {};
   const [selectedImage, setSelectedImage] = useState(0);
+  const [voucher, setVoucher] = useState(0);
 
   const selectedSize = (searchParams?.size || sizes?.[0]) as string;
   const selectedColor = (searchParams?.color || colors?.[0]) as string;
@@ -41,6 +47,14 @@ const ProductIntro = ({
   const productData = useMemo(() => {
     return { ...product, size: selectedSize, color: selectedColor };
   }, [product, selectedSize, selectedColor]);
+  const currentDate = new Date();
+
+  // Add 3 days to the current date
+  const futureDate = addDays(currentDate, 3);
+
+  // Format the current date and future date
+  const formattedFutureDay = format(futureDate, "dd");
+  const formattedFutureMonth = format(futureDate, "MM");
 
   useEffect(() => {
     setSelectedImage(0);
@@ -54,6 +68,11 @@ const ProductIntro = ({
 
   const toggleDialog = () => {
     setOpenDialog(!openDialog);
+  };
+
+  const handleVoucher = (code: number) => {
+    setVoucher(code);
+    console.log(code);
   };
 
   const isInStock = useMemo(() => {
@@ -159,12 +178,11 @@ const ProductIntro = ({
 
         <Grid item md={6} xs={12} alignItems="center">
           <H1 mb={1}>{title}</H1>
-
-          <FlexBox alignItems="center" mb={1}>
-            <Box>Brand:</Box>
-            <H6 pl={1}>{brands}</H6>
-          </FlexBox>
-
+          <Box mb={1.5}>
+            <Box color="inherit">
+              {isInStock ? "Stock Available" : "Stock Unavailable"}
+            </Box>
+          </Box>
           <FlexBox alignItems="center" mb={2}>
             <Box lineHeight="1">Rated:</Box>
             <Box mx={1} lineHeight="1">
@@ -223,14 +241,70 @@ const ProductIntro = ({
             </Box>
           )}
 
-          <Box pt={1} mb={3}>
-            <H2 color="primary.main" mb={2} lineHeight="1">
-              {currency(price)}
-            </H2>
-            <Box color="inherit">
-              {isInStock ? "Stock Available" : "Stock Unavailable"}
+          {discount ? (
+            <Box pt={1} mb={3}>
+              <FlexBox>
+                <H2
+                  color="primary.main"
+                  sx={{ textDecoration: "line-through" }}
+                  mb={2}
+                  mr={2}
+                  lineHeight="1"
+                >
+                  {currency(price)}
+                </H2>
+                <H2 mb={2} lineHeight="1">
+                  {calculateDiscount(price, discount)}
+                </H2>
+              </FlexBox>
             </Box>
-          </Box>
+          ) : (
+            <Box pt={1} mb={3}>
+              <H2 color="primary.main" mb={2} lineHeight="1">
+                {currency(price)}
+              </H2>
+            </Box>
+          )}
+
+          <Card sx={{ padding: 1.5 }}>
+            <H4 pb={1.5}>Shipping</H4>
+            <H6 pb={1}>
+              Estimated delivery {formattedFutureDay},{" "}
+              {Number(formattedFutureDay) + 1} - {formattedFutureMonth}
+            </H6>
+          </Card>
+
+          {shop?.userType !== "None" ? (
+            <>
+              <Divider sx={{ py: 1 }} />
+
+              <Card sx={{ padding: 1.5, marginBottom: 3 }}>
+                <H4 pb={1.5}>Voucher Code</H4>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {voucherCode[shop?.userType || ""]?.map((item: any) => {
+                    return (
+                      <div key={item} onClick={() => handleVoucher(item)}>
+                        <H4
+                          p="6px 10px"
+                          mr={2}
+                          fontSize={14}
+                          lineHeight="1"
+                          borderRadius="3px"
+                          color="primary.main"
+                          sx={{ cursor: "pointer", width: "max-content" }}
+                          bgcolor="primary.light"
+                        >
+                          {item}K
+                        </H4>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            </>
+          ) : (
+            ""
+          )}
 
           <CartAction product={productData} />
 

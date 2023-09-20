@@ -23,7 +23,7 @@ const Stepper = ({ selectedStep = 1, stepperList, onChange }: PageProps) => {
   useEffect(() => {
     setSelected(selectedStep - 1);
   }, [selectedStep]);
-  
+
   return (
     <FlexRowCenter flexWrap="wrap" my="-4px">
       {stepperList.map((step, ind) => (

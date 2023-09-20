@@ -5,14 +5,14 @@ import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCK6pMk5XuNhpdkuTiUSQkvcD_NEWc0VXg",
-  authDomain: "ecommer-nextjs.firebaseapp.com",
-  databaseURL: "https://ecommer-nextjs-default-rtdb.firebaseio.com",
-  projectId: "ecommer-nextjs",
-  storageBucket: "ecommer-nextjs.appspot.com",
-  messagingSenderId: "1081379901139",
-  appId: "1:1081379901139:web:29ea7c406e1c77bb89ce26",
-  measurementId: "G-FP7GHEDSP0",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

@@ -13,7 +13,7 @@ import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H5, Paragraph, Tiny } from "@/components/Typography";
 import CartBag from "@/components/icons/CartBag";
 import { currency } from "@/utils/lib";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import CartAction from "./products/CartAction";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "@/redux/features/cartSlice";
@@ -30,12 +30,18 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
   const dispatch: any = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
 
-  const getTotalPrice = () => {
-    return cartList.reduce(
-      (accum: number, item: any) => accum + item.product.price * item.quantity,
-      0
-    );
-  };
+  const getTotalPrice = useMemo(() => {
+    return cartList.reduce((accum: number, item: any) => {
+      return (
+        accum +
+        Number(
+          item.product.price -
+            item.product.price * (item.product.discount / 100)
+        ) *
+          item.quantity
+      );
+    }, 0);
+  }, [cartList]);
 
   const removeItemFromCart = ({ product }: { product: Partial<IProducts> }) => {
     dispatch(
@@ -45,7 +51,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
         quantity: 0,
         stock: Number(product.stock),
         size: product.size,
-        color: product.color
+        color: product.color,
       })
     );
   };
@@ -147,7 +153,13 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
                   color="primary.main"
                   mt={0.5}
                 >
-                  {currency(item.quantity * product.price)}
+                  {currency(
+                    item.quantity *
+                      Number(
+                        item.product.price -
+                          item.product.price * (item.product.discount / 100)
+                      )
+                  )}
                 </Box>
               </Box>
 
@@ -167,7 +179,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
 
       {cartList.length > 0 && (
         <Box p={2.5}>
-          <Link href="/checkout-alternative" passHref>
+          <Link href="/checkout" passHref>
             <Button
               fullWidth
               color="primary"
@@ -178,7 +190,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
               }}
               onClick={toggleSidenav}
             >
-              Checkout Now ({currency(getTotalPrice())})
+              Checkout Now ({currency(getTotalPrice)})
             </Button>
           </Link>
 

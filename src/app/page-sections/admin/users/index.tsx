@@ -1,24 +1,35 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Avatar } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import {
-  StyledIconButton,
-  StyledTableCell,
-  StyledTableRow,
-} from "../styles";
+import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
 import { useAppDispatch } from "@/redux/hooks";
 import { FlexBox } from "@/app/components/flex-box";
 import { Paragraph } from "@/app/components/Typography";
 import { deleteUserAsync } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
+import { currency } from "@/app/utils/lib";
+import { useSelector } from "react-redux";
 
 // ========================================================================
 
 const UserRow = ({ user, selected }: any) => {
-  const { displayName, phoneNumber, photoURL, uid, email } = user || {};
+  const {
+    displayName,
+    phoneNumber,
+    photoURL,
+    uid,
+    email,
+    wallet,
+    userType,
+    docId,
+  } = user || {};
 
-  const isItemSelected = selected?.indexOf(displayName) !== -1;
+  const isItemSelected = useMemo(
+    () => selected?.indexOf(displayName) !== -1,
+    [selected, displayName]
+  );
+  const currentUser = useSelector((state: any) => state.auth.user)
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {
@@ -43,7 +54,7 @@ const UserRow = ({ user, selected }: any) => {
       .catch((error: any) => {
         console.error("Error:", error);
       });
-  }, [uid]);
+  }, [dispatch, uid]);
 
   return (
     <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
@@ -71,20 +82,20 @@ const UserRow = ({ user, selected }: any) => {
         {email}
       </StyledTableCell>
       <StyledTableCell
-        align="left"
+        align="center"
         sx={{
           fontWeight: 400,
         }}
       >
-        {/* {email} */}
+        {currentUser.docId === docId ? currency(wallet) : '*****'}
       </StyledTableCell>
       <StyledTableCell
-        align="left"
+        align="center"
         sx={{
           fontWeight: 400,
         }}
       >
-        {/* {email} */}
+        {userType || "No"}
       </StyledTableCell>
 
       <StyledTableCell align="center">

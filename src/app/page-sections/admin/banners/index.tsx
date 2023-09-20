@@ -42,7 +42,7 @@ const BannerRow = ({ banner, selected }: any) => {
       .catch((error: any) => {
         console.error("Error:", error);
       });
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>

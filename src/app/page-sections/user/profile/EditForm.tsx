@@ -56,7 +56,7 @@ const EditForm = () => {
         address: user.address,
       });
     }
-  }, [user]);
+  }, [reset, user]);
 
   const handleChangeFiles = (e: any) => {
     setFile(e.target.files[0]);

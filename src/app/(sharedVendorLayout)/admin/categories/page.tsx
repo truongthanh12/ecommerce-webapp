@@ -67,7 +67,7 @@ export default function CategoriesList() {
 
   useEffect(() => {
     dispatch(fetchCategories());
-  }, []);
+  }, [dispatch]);
 
   const {
     order,

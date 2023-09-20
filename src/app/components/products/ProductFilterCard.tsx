@@ -149,7 +149,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     if (arrayOfStringRating && arrayOfStringRating.length > 0) {
       setSelectedOptions(arrayOfStringRating);
     }
-  }, []);
+  }, [arrayOfStringRating, arrayOfStringOptions, arrayOfStringBrands]);
 
   useEffect(
     debounce(() => {

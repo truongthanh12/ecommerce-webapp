@@ -82,7 +82,7 @@ const CategoryForm = ({
       });
       setValueSelected(category.parent);
     }
-  }, [category]);
+  }, [reset, category]);
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files: any) => {
@@ -340,14 +340,14 @@ const CategoryForm = ({
                 {files.map((file: any, index: number) => {
                   return (
                     <UploadImageBox size="medium" key={index}>
-                      <Image src={file.preview} width="100%" />
+                      <Image alt="Image uploaded" src={file.preview} width="100%" />
                       <StyledClear onClick={handleFileDelete(file)} />
                     </UploadImageBox>
                   );
                 })}
                 {isEmpty(files) && category?.image && (
                   <UploadImageBox size="medium">
-                    <Image src={category?.image} width="100%" />
+                    <Image alt="Image uploaded" src={category?.image} width="100%" />
                   </UploadImageBox>
                 )}
               </FlexBox>

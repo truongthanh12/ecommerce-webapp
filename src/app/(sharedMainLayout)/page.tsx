@@ -40,7 +40,7 @@ export default function Home() {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

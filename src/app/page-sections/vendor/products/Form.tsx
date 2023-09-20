@@ -52,7 +52,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchBrands());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (product) {
@@ -72,7 +72,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
         published: product.published || false,
       });
     }
-  }, [product]);
+  }, [product, reset]);
 
   useEffect(() => {
     if (!isEmpty(product?.images)) {
@@ -317,7 +317,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
                 {(files || product?.images).map((file: any, index: number) => {
                   return (
                     <UploadImageBox size="small" key={index}>
-                      <Image src={file.preview || file} width="100%" />
+                      <Image alt="Image uploaded" src={file.preview || file} width="100%" />
                       <StyledClear onClick={handleFileDelete(file)} />
                     </UploadImageBox>
                   );
@@ -327,7 +327,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
                   filesUpdate.map((file: any, index: number) => {
                     return (
                       <UploadImageBox size="small" key={index}>
-                        <Image src={file || ""} width="100%" />
+                        <Image alt="Image uploaded" src={file || ""} width="100%" />
                         <StyledClear onClick={handleFileDeleteByUpdate(file)} />
                       </UploadImageBox>
                     );

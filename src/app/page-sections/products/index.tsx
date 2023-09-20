@@ -136,7 +136,7 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container

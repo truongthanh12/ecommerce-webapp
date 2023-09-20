@@ -51,7 +51,7 @@ const CategoryMenu: React.FC<TypeProps> = ({
 
   useEffect(() => {
     dispatch(fetchNaviagtions());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!window) return;

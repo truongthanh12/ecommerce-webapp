@@ -1,12 +1,45 @@
-"use client"
-import React, { useEffect, useState } from "react";
+"use client";
+import React, { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Box, Container, Grid } from "@mui/material";
 import Stepper from "@/components/Stepper";
+import { useSelector } from "react-redux";
+import { selectCartItemsForUser } from "@/redux/features/cartSlice";
+import isEmpty from "lodash/isEmpty";
 
 // ======================================================
 
+const stepperList = [
+  {
+    title: "Cart",
+    disabled: false,
+  },
+  {
+    title: "Payment",
+    disabled: false,
+  },
+  {
+    title: "Review",
+    disabled: true,
+  },
+];
 const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useSelector((state: any) => state.auth);
+  const userCartItems = useSelector(selectCartItemsForUser(user.docId));
+  const updatedStepper = useMemo(
+    () =>
+      stepperList.map((step) => {
+        if (step.title === "Details" || step.title === "Payment") {
+          return {
+            ...step,
+            disabled: isEmpty(userCartItems), // Disable if userCartItems is falsy
+          };
+        }
+        return step;
+      }),
+    [userCartItems]
+  );
+
   const [selectedStep, setSelectedStep] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
@@ -19,9 +52,6 @@ const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
         router.push("/checkout");
         break;
       case 2:
-        router.push("/payment");
-        break;
-      case 3:
         router.push("/orders");
         break;
       default:
@@ -36,13 +66,11 @@ const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
       case "/checkout":
         setSelectedStep(2);
         break;
-      case "/payment":
-        setSelectedStep(3);
-        break;
       default:
         break;
     }
   }, [pathname]);
+
   return (
     <Container
       sx={{
@@ -59,7 +87,7 @@ const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Stepper
-              stepperList={stepperList}
+              stepperList={updatedStepper}
               selectedStep={selectedStep}
               onChange={handleStepChange}
             />
@@ -72,22 +100,4 @@ const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const stepperList = [
-  {
-    title: "Cart",
-    disabled: false,
-  },
-  {
-    title: "Details",
-    disabled: false,
-  },
-  {
-    title: "Payment",
-    disabled: false,
-  },
-  {
-    title: "Review",
-    disabled: true,
-  },
-];
 export default React.memo(CheckoutNavLayout);

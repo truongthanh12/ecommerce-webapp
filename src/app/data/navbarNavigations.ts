@@ -163,12 +163,8 @@ const megaMenus = [
           url: "/checkout",
         },
         {
-          title: "Alternative Checkout",
-          url: "/checkout-alternative",
-        },
-        {
           title: "Order confirmation",
-          url: "/order-confirmation",
+          url: "/order-complete",
         },
       ],
     },

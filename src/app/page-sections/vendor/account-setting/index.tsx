@@ -70,7 +70,7 @@ const AccountSettingForm = () => {
         description: user.description,
       });
     }
-  }, [user]);
+  }, [reset, user]);
 
   const handleChangeAvatar = (e: any) => {
     const selectedImage: string = e.target.files[0];

@@ -11,7 +11,7 @@ export default function CreateCategories() {
   const dispatch: any = useDispatch();
   useEffect(() => {
     dispatch(fetchParentCategories());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box py={4}>

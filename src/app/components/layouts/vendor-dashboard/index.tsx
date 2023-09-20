@@ -50,7 +50,7 @@ const VendorDashboardLayout = ({ children }: React.PropsWithChildren) => {
       return
     }
     dispatch(setStatus("edit"));
-  }, [pathname]);
+  }, [dispatch, pathname]);
 
   return (
     <Fragment>

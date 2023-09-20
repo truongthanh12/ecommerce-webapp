@@ -146,28 +146,48 @@ export const userData = ({ data, optionalData }: TypeUserData) => {
     isVendor: isVendor || false,
     docId: data.user.docId || "",
     address: "",
-    isCreatedAt: serverTimestamp(),
+    createdAt: serverTimestamp(),
   };
 };
-export const updateUserData = (data: any, isVendor?: boolean) => {
+export const updateUserData = (
+  data: any,
+  isVendor?: boolean,
+  currentUser?: any,
+  isBuyPackage?: boolean
+) => {
+  const currentDate = new Date();
+
+  // Calculate 30 days in milliseconds
+  const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+
+  // Calculate the future timestamp
+  const futureTimestamp = new Date(currentDate.getTime() + thirtyDaysInMillis);
+
   const vendorData = isVendor
     ? {
-        facebook: data.facebook || "",
-        youtube: data.youtube || "",
-        description: data.description || "",
-        shipping: data.shipping || "",
-        pictureCover: data.pictureCover || "",
+        facebook: currentUser.facebook || data.facebook || "",
+        youtube: currentUser.youtube || data.youtube || "",
+        description: currentUser.description || data.description || "",
+        shipping: currentUser.shipping || data.shipping || "",
+        pictureCover: currentUser.pictureCover || data.pictureCover || "",
+        wallet: Number(currentUser.wallet + data.wallet) || 0,
+        userType: data.userType || currentUser.userType,
+        expiredPackage: isBuyPackage
+          ? data.expiredPackage || futureTimestamp
+          : currentUser.expiredPackage,
       }
     : {};
 
   return {
     ...vendorData,
-    email: data.email || "",
-    displayName: data.displayName || "",
-    photoURL: data.photoURL || "",
-    phoneNumber: data.phoneNumber || "",
-    birthDate: data.birthDate || "",
-    address: data.address || "",
+    email: currentUser.email || data.email || "",
+    docId: currentUser.docId || data.docId || "",
+    displayName: currentUser.displayName || data.displayName || "",
+    photoURL: currentUser.photoURL || data.photoURL || "",
+    phoneNumber: currentUser.phoneNumber || data.phoneNumber || "",
+    birthDate: currentUser.birthDate || data.birthDate || "",
+    address: currentUser.address || data.address || "",
+    updatedAt: serverTimestamp(),
   };
 };
 

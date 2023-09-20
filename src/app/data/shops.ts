@@ -1,6 +1,6 @@
 import { IShop } from "../models/Shop";
 
-const shops: IShop[] = [
+const shops = [
   {
     id: "e3700a58-9697-4eeb-92e3-ba6fc16992ed",
     slug: "scarlett-beauty",
