@@ -124,7 +124,11 @@ export default function ProductList() {
                     />
                   ))
                 ) : (
-                  <NotFound />
+                  <tr>
+                    <td>
+                      <NotFound />
+                    </td>
+                  </tr>
                 )}
               </TableBody>
             </Table>

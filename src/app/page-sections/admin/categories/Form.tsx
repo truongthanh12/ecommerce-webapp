@@ -357,7 +357,7 @@ const CategoryForm = ({
               <ErrorMessage>{errorMessage}</ErrorMessage>
             )}
 
-            <Grid item xs={12}>
+            <Grid justifyContent="flex-end" container item xs={12}>
               <Button
                 disabled={
                   (status === "create" && (!isDirty || !isValid)) ||

@@ -9,7 +9,6 @@ import {
   Divider,
   Grid,
   IconButton,
-  Typography,
   styled,
 } from "@mui/material";
 import LazyImage from "@/components/LazyImage";
@@ -23,6 +22,8 @@ import CartAction from "./CartAction";
 import { addDays, format } from "date-fns";
 import Card from "../Card";
 import voucherCode from "@/app/data/voucher-code";
+import { useSelector } from "react-redux";
+import { selectCartItemsForUser } from "@/redux/features/cartSlice";
 
 const ContentWrapper = styled(Box)(() => ({
   borderRadius: "8px",
@@ -36,17 +37,35 @@ const ProductIntro = ({
   product: Partial<IProducts>;
   searchParams: { [key: string]: string | undefined };
 }) => {
-  const { price, title, images, shop, stock, sizes, colors, discount } =
+  const { price, title, images, shop, stock, sizes, colors, discount, id } =
     product || {};
   const [selectedImage, setSelectedImage] = useState(0);
   const [voucher, setVoucher] = useState(0);
 
+  const { user } = useSelector((state: any) => state.auth);
+  const userCartItems = useSelector(selectCartItemsForUser(user.docId));
+
   const selectedSize = (searchParams?.size || sizes?.[0]) as string;
   const selectedColor = (searchParams?.color || colors?.[0]) as string;
 
+  // Get the current quantity of this item in the cart
+  const currentItemInCart = userCartItems
+    ? userCartItems?.find(
+        (item: any) =>
+          item.product.id === id &&
+          item.product.size === selectedSize &&
+          item.product.color === selectedColor
+      )
+    : null;
+
   const productData = useMemo(() => {
-    return { ...product, size: selectedSize, color: selectedColor };
-  }, [product, selectedSize, selectedColor]);
+    return {
+      ...product,
+      size: selectedSize,
+      color: selectedColor,
+      voucherSelected: voucher,
+    };
+  }, [product, selectedSize, selectedColor, voucher]);
   const currentDate = new Date();
 
   // Add 3 days to the current date
@@ -55,10 +74,6 @@ const ProductIntro = ({
   // Format the current date and future date
   const formattedFutureDay = format(futureDate, "dd");
   const formattedFutureMonth = format(futureDate, "MM");
-
-  useEffect(() => {
-    setSelectedImage(0);
-  }, []);
 
   // HANDLE SELECT IMAGE
   const handleImageClick = (ind: number) => () => setSelectedImage(ind);
@@ -72,12 +87,19 @@ const ProductIntro = ({
 
   const handleVoucher = (code: number) => {
     setVoucher(code);
-    console.log(code);
   };
 
   const isInStock = useMemo(() => {
     return Number(stock) > 0;
   }, [stock]);
+
+  const hasVoucher = useMemo(() => {
+    return (price || 0) > 150000 ? true : false;
+  }, [price]);
+
+  useEffect(() => {
+    setSelectedImage(0);
+  }, []);
 
   return (
     <Box width="100%">
@@ -241,44 +263,91 @@ const ProductIntro = ({
             </Box>
           )}
 
-          {discount ? (
-            <Box pt={1} mb={3}>
-              <FlexBox>
-                <H2
-                  color="primary.main"
-                  sx={{ textDecoration: "line-through" }}
-                  mb={2}
-                  mr={2}
-                  lineHeight="1"
-                >
+          <FlexBox alignItems="center" py={2.5}>
+            {discount ? (
+              <Box>
+                <FlexBox>
+                  <H2
+                    color="primary.main"
+                    sx={{ textDecoration: "line-through" }}
+                    mr={2}
+                    lineHeight="1"
+                  >
+                    {currency(price)}
+                  </H2>
+                  <H2 lineHeight="1">
+                    {calculateDiscount(price, discount, voucher * 1000)}
+                  </H2>
+                </FlexBox>
+              </Box>
+            ) : (
+              <Box>
+                <H2 color="primary.main" lineHeight="1">
                   {currency(price)}
                 </H2>
-                <H2 mb={2} lineHeight="1">
-                  {calculateDiscount(price, discount)}
-                </H2>
-              </FlexBox>
-            </Box>
-          ) : (
-            <Box pt={1} mb={3}>
-              <H2 color="primary.main" mb={2} lineHeight="1">
-                {currency(price)}
-              </H2>
-            </Box>
-          )}
+              </Box>
+            )}
+            {voucher ? (
+              <H4
+                p="6px 10px"
+                mx={2}
+                fontSize={14}
+                lineHeight="1"
+                borderRadius="3px"
+                color="primary.main"
+                sx={{ width: "max-content", height: "100%" }}
+                bgcolor="primary.light"
+              >
+                -{voucher}K
+              </H4>
+            ) : (
+              ""
+            )}
+          </FlexBox>
 
-          <Card sx={{ padding: 1.5 }}>
-            <H4 pb={1.5}>Shipping</H4>
+          <Card sx={{ padding: 1.5, position: "relative" }}>
+            <H4 pb={1.5}>
+              Shipping
+              {shop?.userType && shop?.userType !== "None" && (
+                <Span
+                  p="6px 10px"
+                  mx={2}
+                  fontSize={14}
+                  lineHeight="1"
+                  borderRadius="3px"
+                  color="primary.main"
+                  sx={{
+                    width: "max-content",
+                    height: "auto",
+                    position: "absolute",
+                    top: "8px",
+                    right: 0,
+                  }}
+                  bgcolor="primary.light"
+                >
+                  Freeship
+                  {shop?.userType === "Premium"
+                    ? "-20K"
+                    : shop?.userType === "Gold"
+                    ? "-15K"
+                    : "-10K"}
+                </Span>
+              )}
+            </H4>
             <H6 pb={1}>
               Estimated delivery {formattedFutureDay},{" "}
               {Number(formattedFutureDay) + 1} - {formattedFutureMonth}
             </H6>
           </Card>
 
-          {shop?.userType !== "None" ? (
+          {!currentItemInCart &&
+          shop?.userType &&
+          shop?.userType !== "None" &&
+          hasVoucher ? (
             <>
               <Divider sx={{ py: 1 }} />
 
-              <Card sx={{ padding: 1.5, marginBottom: 3 }}>
+              <Card sx={{ padding: 1.5 }}>
                 <H4 pb={1.5}>Voucher Code</H4>
                 <div style={{ display: "flex", alignItems: "center" }}>
                   {voucherCode[shop?.userType || ""]?.map((item: any) => {
@@ -290,7 +359,7 @@ const ProductIntro = ({
                           fontSize={14}
                           lineHeight="1"
                           borderRadius="3px"
-                          color="primary.main"
+                          color={voucher === item ? "primary.main" : ""}
                           sx={{ cursor: "pointer", width: "max-content" }}
                           bgcolor="primary.light"
                         >
@@ -306,7 +375,9 @@ const ProductIntro = ({
             ""
           )}
 
-          <CartAction product={productData} />
+          <div style={{ marginTop: 24 }}>
+            <CartAction product={productData} />
+          </div>
 
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>

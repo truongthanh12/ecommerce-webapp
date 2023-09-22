@@ -32,18 +32,19 @@ interface FormValues {
   phoneNumber: number;
   email: string;
   photoURL: string;
-  birthDate: string;
-  address: string
+  birthDate: any;
+  address: string;
 }
 
 const EditForm = () => {
+  const { user, isLoading } = useSelector((state: any) => state.auth);
+  const [file, setFile] = useState<any>(null);
+  const [imagePreview, setPreview] = useState("");
+  const dispatch: any = useAppDispatch();
+
   const { handleSubmit, control, reset } = useForm<any>({
     resolver: yupResolver(schema),
   });
-  const [file, setFile] = useState<any>(null);
-  const [imagePreview, setPreview] = useState("");
-  const { user, isLoading } = useSelector((state: any) => state.auth);
-  const dispatch: any = useAppDispatch();
 
   useEffect(() => {
     if (user) {
@@ -51,7 +52,7 @@ const EditForm = () => {
         displayName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        birthDate: new Date(user.birthDate || ""),
+        birthDate: new Date(user.birthDate.seconds * 1000 || ""),
         phoneNumber: user.phoneNumber,
         address: user.address,
       });
@@ -96,7 +97,10 @@ const EditForm = () => {
             };
 
             const resultAction = await dispatch(
-              updateUserAsync({ updateUser: updateUserData(data), id: user?.docId })
+              updateUserAsync({
+                updateUser: updateUserData(data, false, user),
+                id: user?.docId,
+              })
             );
 
             if (updateUserAsync.rejected.match(resultAction)) {
@@ -130,7 +134,10 @@ const EditForm = () => {
     };
 
     const resultAction = await dispatch(
-      updateUserAsync({ updateUser: updateUserData(data), id: user?.docId })
+      updateUserAsync({
+        updateUser: updateUserData(data, false, user),
+        id: user?.docId,
+      })
     );
 
     if (updateUserAsync.rejected.match(resultAction)) {
@@ -269,7 +276,6 @@ const EditForm = () => {
               <Controller
                 name="birthDate"
                 control={control}
-                defaultValue={null}
                 render={({ field }) => (
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
@@ -309,7 +315,12 @@ const EditForm = () => {
           </Grid>
         </Box>
 
-        <Button type="submit" variant="contained" color="primary" disabled={isLoading}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+        >
           Save Changes
         </Button>
       </form>

@@ -1,5 +1,11 @@
 import ceil from "lodash/ceil";
-import { differenceInMinutes } from "date-fns";
+import {
+  format,
+  isValid,
+  parseISO,
+  differenceInMinutes,
+  addDays,
+} from "date-fns";
 
 /**
  * GET THE DIFFERENCE DATE FORMAT
@@ -48,8 +54,10 @@ function renderProductCount(
  * @returns - RETURN NEW PRICE
  */
 
-function calculateDiscount(price = 0, discount: number) {
-  const afterDiscount = Number(price - price * (discount / 100));
+function calculateDiscount(price = 0, discount: number, voucher?: number) {
+  const afterDiscount = Number(
+    price - price * (discount / 100) - (voucher || 0)
+  );
   return currency(afterDiscount);
 }
 
@@ -146,4 +154,33 @@ export function objectToQueryString(obj: any, isMulti = false) {
   return Object.keys(obj)
     .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]))
     .join("&");
+}
+
+export const formatDate = (dateString: string) => {
+  // Check if the date string is valid
+  if (!dateString || !isValid(parseISO(dateString))) {
+    return "Invalid Date";
+  }
+
+  return format(new Date(dateString), "dd/MM/yyyy");
+};
+
+export function tryFormatDate(date: any) {
+  try {
+    return format(new Date(date.seconds * 1000), "MMM dd, yyyy");
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "";
+  }
+}
+
+export function calculateFutureDate(baseDate: any) {
+  try {
+    const futureDate = addDays(baseDate, 3);
+    const formattedFutureDate = format(futureDate, "MMM dd, yyyy");
+    return formattedFutureDate;
+  } catch (error) {
+    console.error("Error calculating future date:", error);
+    return "";
+  }
 }

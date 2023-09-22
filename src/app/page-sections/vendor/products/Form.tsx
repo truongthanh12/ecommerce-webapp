@@ -476,7 +476,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
               <ErrorMessage>{errorMessage}</ErrorMessage>
             )}
 
-            <Grid item xs={12}>
+            <Grid justifyContent="flex-end" container item xs={12}>
               <Button
                 variant="contained"
                 color="info"

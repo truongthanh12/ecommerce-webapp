@@ -1,6 +1,6 @@
 import { IProducts } from "@/app/models/Product";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { createSelector } from "reselect";
 interface CartItem {
   product: Partial<IProducts>; // Unique identifier for the product
   userId: string; // Unique identifier for the user
@@ -9,6 +9,7 @@ interface CartItem {
   color?: string;
   stock: number;
   dispatch?: any;
+  voucherSelected?: number;
 }
 
 const initialState = {
@@ -65,10 +66,7 @@ const cartSlice = createSlice({
     },
   },
 });
-import { createSelector } from "reselect";
-import { setMessage } from "./messageSlice";
 
-// Assuming you have a selector to get all cart items
 const selectCartItems = (state: any) => state.carts.items;
 
 // Create a selector to get cart items for a specific user

@@ -22,7 +22,7 @@ const CheckoutMethod = () => {
       <Divider
         sx={{
           mt: 3,
-          mb: 4,
+          mb: 2,
         }}
       />
       <Typography fontWeight="600" mb={4}>
@@ -45,7 +45,7 @@ const CheckoutMethod = () => {
       <Divider
         sx={{
           pb: 1.5,
-          mb: 2
+          mb: 2,
         }}
       />
 
@@ -58,6 +58,7 @@ const CheckoutMethod = () => {
         onChange={handlePaymentMethodChange}
         control={
           <Radio
+            disabled
             checked={paymentMethod === "credit-card"}
             color="primary"
             size="small"
@@ -86,6 +87,7 @@ const CheckoutMethod = () => {
           <Button
             variant="outlined"
             color="primary"
+            disabled
             sx={{
               mb: 4,
             }}

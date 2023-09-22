@@ -7,14 +7,17 @@ import TablePagination from "@/components/data-table/TablePagination";
 import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
-import BrandRow from "@/page-sections/admin/brands";
+import VoucherRow from "@/page-sections/vendor/vouchers";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchBrands } from "@/redux/features/brandSlice";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import NotFound from "@/app/components/not-found";
+import {
+  fetchVouchers,
+  selectVoucherForUser,
+} from "@/redux/features/voucherSlice";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -24,18 +27,23 @@ const tableHeading = [
     align: "center",
   },
   {
-    id: "name",
+    id: "Name",
     label: "Name",
     align: "center",
   },
   {
-    id: "logo",
-    label: "Logo",
+    id: "Condition",
+    label: "Condition",
     align: "center",
   },
   {
-    id: "featured",
-    label: "Featured",
+    id: "Amount",
+    label: "Amount",
+    align: "center",
+  },
+  {
+    id: "Discount",
+    label: "Discount",
     align: "center",
   },
   {
@@ -46,22 +54,24 @@ const tableHeading = [
 ];
 
 // =============================================================================
-
-export default function BrandList() {
+export default function VoucherList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
-  const { brands } = useSelector((state: any) => state.brands);
   const dispatch: any = useDispatch();
-  const { onSearchInputChange, filteredData } = useSearch(brands);
+  const { user } = useSelector((state: any) => state.auth);
+  const vouchers: any = useSelector((state: any) =>
+    selectVoucherForUser(state, user.docId)
+  );
+
+  const { onSearchInputChange, filteredData } = useSearch(vouchers);
 
   useEffect(() => {
-    dispatch(fetchBrands());
+    dispatch(fetchVouchers());
   }, [dispatch]);
 
   const {
     order,
     orderBy,
-    selected,
     rowsPerPage,
     filteredList,
     handleChangePage,
@@ -72,17 +82,17 @@ export default function BrandList() {
   });
 
   const handleButtonClick = () => {
-    router.push("/admin/brands/create");
+    router.push("/vendor/vouchers/create");
   };
 
   return (
     <Box py={4}>
-      <H3 mb={2}>Product Brands</H3>
+      <H3 mb={2}>Vouchers</H3>
 
       <SearchArea
         handleSearch={onSearchInputChange}
-        buttonText="Add Brand"
-        searchPlaceholder="Search Brand..."
+        buttonText="Add voucher"
+        searchPlaceholder="Search voucher..."
         handleBtnClick={handleButtonClick}
       />
 
@@ -99,19 +109,14 @@ export default function BrandList() {
                 hideSelectBtn
                 orderBy={orderBy}
                 heading={tableHeading}
-                numSelected={selected.length}
                 rowCount={filteredList.length}
                 onRequestSort={handleRequestSort}
               />
 
               <TableBody>
                 {!isEmpty(filteredList) ? (
-                  filteredList.map((brand: any) => (
-                    <BrandRow
-                      brand={brand}
-                      key={brand.id}
-                      selected={selected}
-                    />
+                  filteredList.map((voucher: any) => (
+                    <VoucherRow voucher={voucher} key={voucher.id} />
                   ))
                 ) : (
                   <tr>

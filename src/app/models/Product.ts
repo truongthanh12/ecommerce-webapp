@@ -57,4 +57,5 @@ export interface IProducts {
   quantity: number;
   size: string;
   color: string;
+  voucherSelected: number;
 }

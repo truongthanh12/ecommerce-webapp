@@ -115,10 +115,12 @@ const FormAuth = ({
         const usersCollection = collection(db, "users");
         const userQuery = query(usersCollection, where("uid", "==", user.uid));
         const userQuerySnapshot = await getDocs(userQuery);
-
-        if (userQuerySnapshot.empty) {
+        if (userQuerySnapshot?.empty) {
           dispatch(loginError("User data not found."));
-          dispatch(setMessage("User data not found."));
+          setErrorMessage("User data not found.")
+          dispatch(
+            setMessage({ message: "User data not found.", type: "error" })
+          );
         } else {
           const userDataSnapshot = userQuerySnapshot.docs[0];
           const userData = userDataSnapshot.data();

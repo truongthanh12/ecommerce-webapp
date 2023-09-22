@@ -112,7 +112,11 @@ export default function UserList() {
                     <UserRow user={user} key={user.id} selected={selected} />
                   ))
                 ) : (
-                  <NotFound />
+                  <tr>
+                    <td>
+                      <NotFound />
+                    </td>
+                  </tr>
                 )}
               </TableBody>
             </Table>

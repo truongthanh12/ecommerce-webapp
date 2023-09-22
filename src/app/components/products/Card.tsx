@@ -54,7 +54,7 @@ const ProductCard = ({
   thumbnail = "",
   rating = 5,
   hoverEffect,
-  discount = 5,
+  discount = 0,
   showProductSize,
   images,
   isCategoryCard,

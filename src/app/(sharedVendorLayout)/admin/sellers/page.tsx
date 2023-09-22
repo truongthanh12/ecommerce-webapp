@@ -112,7 +112,11 @@ export default function SellerList() {
                     <UserRow user={user} key={user.uid} selected={selected} />
                   ))
                 ) : (
-                  <NotFound />
+                  <tr>
+                    <td>
+                      <NotFound />
+                    </td>
+                  </tr>
                 )}
               </TableBody>
             </Table>

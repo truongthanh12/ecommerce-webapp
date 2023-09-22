@@ -5,4 +5,5 @@ export interface IUser {
   photoURL: string;
   emailVerified: boolean;
   phoneNumber: string;
+  docId?: string;
 }

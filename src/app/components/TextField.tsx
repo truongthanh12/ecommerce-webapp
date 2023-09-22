@@ -20,6 +20,9 @@ type TypeTextField = {
   ref: any;
   helperText: string;
   error: boolean;
+  rows: number
+  multiline: boolean
+  sx: any
 };
 
 

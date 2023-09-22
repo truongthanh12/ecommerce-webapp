@@ -62,7 +62,7 @@ export default function BannerList() {
     return [...new Set(banners)];
   }, [banners]);
   const { onSearchInputChange, filteredData } = useSearch(uniqueArrayBanners);
-  
+
   useEffect(() => {
     dispatch(fetchBanners());
   }, [dispatch]);
@@ -123,7 +123,11 @@ export default function BannerList() {
                     />
                   ))
                 ) : (
-                  <NotFound />
+                  <tr>
+                    <td>
+                      <NotFound />
+                    </td>
+                  </tr>
                 )}
               </TableBody>
             </Table>

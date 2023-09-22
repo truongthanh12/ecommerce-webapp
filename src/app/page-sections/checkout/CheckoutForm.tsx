@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
-  Checkbox,
   FormControl,
   FormLabel,
   Grid,
@@ -17,15 +16,91 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { FlexBox } from "@/app/components/flex-box";
 import { Span } from "@/app/components/Typography";
 import CheckoutMethod from "./CheckoutMethod";
-const CheckoutForm = () => {
-  const [sameAsShipping, setSameAsShipping] = useState(false);
-  const handleCheckboxChange =
-    (values: any, setFieldValue: any) => (e: any, _: any) => {
-      const checked = e.currentTarget.checked;
-      setSameAsShipping(checked);
-      setFieldValue("same_as_shipping", checked);
-      setFieldValue("billing_name", checked ? values.shipping_name : "");
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import TextFieldInput from "@/components/TextField";
+import { IUser } from "@/app/models/User";
+import { serverTimestamp } from "firebase/firestore";
+import { useAppDispatch } from "@/redux/hooks";
+import { setMessage } from "@/redux/features/messageSlice";
+import { useRouter } from "next/navigation";
+import { clearItemsInCart } from "@/redux/features/cartSlice";
+import { IOrder } from "@/app/models/Order";
+import { addOrdersSync } from "@/redux/features/orderSlice";
+
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const schema = yup.object().shape({
+  email: yup.string().email().required("Email is required"),
+  name: yup.string().required("Name is required"),
+  note: yup.string().max(255),
+  address: yup.string().required().max(126),
+  phone: yup
+    .string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("Phone is required"),
+  isInCity: yup.string().required("Please select a city"),
+});
+
+const CheckoutForm = ({
+  user,
+  cartList,
+  total,
+}: {
+  total: number;
+  cartList: Partial<IOrder>;
+  user: IUser;
+}) => {
+  const dispatch: any = useAppDispatch();
+  const router = useRouter();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { isDirty, isValid },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    defaultValues: {
+      name: user.displayName,
+      email: user.email,
+      address: "",
+      phone: "",
+      note: "",
+      isInCity: "yes",
+    },
+  });
+
+  const handleSubmitForm = async (values: Partial<IOrder>) => {
+    const { name, email, phone, note, isInCity, address } = values || {};
+
+    const order = {
+      name,
+      address,
+      email,
+      phone,
+      note,
+      isInCity,
+      userId: user.docId,
+      total,
+      createdAt: serverTimestamp(),
+      status: "processing",
     };
+
+    try {
+      const mergedData = {
+        ...order,
+        cartList,
+      };
+      dispatch(addOrdersSync(mergedData));
+      router.push("/order-complete");
+      dispatch(setMessage({ message: "Your order is successfully!" }));
+      dispatch(clearItemsInCart(user.docId || ""));
+    } catch (error) {
+      dispatch(setMessage({ message: "Your order is fail with " + error }));
+    }
+  };
 
   return (
     <form>
@@ -41,53 +116,122 @@ const CheckoutForm = () => {
 
         <Grid container spacing={2}>
           <Grid item sm={6} xs={12}>
-            <TextField
-              size="medium"
-              fullWidth
-              type="text"
+            <Controller
               name="name"
-              sx={{
-                mb: 3,
-              }}
-              label="Full Name"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextFieldInput
+                  mb={1.5}
+                  fullWidth
+                  variant="outlined"
+                  label="Name"
+                  placeholder="Your Name..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                  autoFocus
+                />
+              )}
             />
-            <TextField
-              size="medium"
-              fullWidth
-              type="text"
+            <Controller
               name="phone"
-              sx={{
-                mb: 3,
-              }}
-              label="Phone"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextFieldInput
+                  mb={1.5}
+                  fullWidth
+                  variant="outlined"
+                  label="Phone"
+                  type="number"
+                  placeholder="Your Phone..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
             />
           </Grid>
 
           <Grid item sm={6} xs={12}>
-            <TextField
-              size="medium"
-              fullWidth
-              type="email"
-              sx={{
-                mb: 3,
-              }}
-              name="shipping_email"
-              label="Email Address"
+            <Controller
+              name="email"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextFieldInput
+                  mb={3.5}
+                  fullWidth
+                  variant="outlined"
+                  label="Email"
+                  placeholder="example@gmail.com"
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
             />
             <FormControl sx={{ width: "100%" }}>
               <FormLabel sx={{ color: "black" }} id="radio-buttons-group-label">
-                Are you in city?
+                Do you want delivery inside or outside the city?
               </FormLabel>
-              <RadioGroup
-                aria-labelledby="radio-buttons-group-label"
+              <Controller
+                name="isInCity"
+                control={control}
                 defaultValue="yes"
-                name="radio-buttons-group"
-                sx={{ flexDirection: "row" }}
-              >
-                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                <FormControlLabel value="No" control={<Radio />} label="No" />
-              </RadioGroup>
+                render={({ field }) => (
+                  <RadioGroup
+                    {...field} // Spread field props
+                    aria-labelledby="radio-buttons-group-label"
+                    name="radio-buttons-group"
+                    sx={{ flexDirection: "row" }}
+                  >
+                    <FormControlLabel
+                      value="yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="no"
+                      control={<Radio />}
+                      label="No"
+                    />
+                  </RadioGroup>
+                )}
+              />
             </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="address"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextFieldInput
+                  mb={2}
+                  fullWidth
+                  variant="outlined"
+                  label="Address"
+                  placeholder="Your address"
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
+            />
           </Grid>
 
           <Grid item xs={12}>
@@ -105,14 +249,26 @@ const CheckoutForm = () => {
                 Note
               </Span>
             </FlexBox>
-            <TextField
-              variant="outlined"
-              rows={6}
-              fullWidth
-              multiline
-              sx={{
-                mb: 2,
-              }}
+            <Controller
+              name="note"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  rows={6}
+                  fullWidth
+                  multiline
+                  variant="outlined"
+                  label="Note"
+                  placeholder="Note...."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
             />
           </Grid>
         </Grid>
@@ -129,7 +285,14 @@ const CheckoutForm = () => {
         </Grid>
 
         <Grid item sm={6} xs={12}>
-          <Button variant="contained" color="primary" type="submit" fullWidth>
+          <Button
+            onClick={handleSubmit(handleSubmitForm)}
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            disabled={!isDirty || !isValid}
+          >
             Proceed to Checkout
           </Button>
         </Grid>

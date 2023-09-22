@@ -24,6 +24,7 @@ const Message = ({
       open={open}
       autoHideDuration={3000}
       onClose={handleClose}
+      sx={{zIndex: '9999'}}
     >
       <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
         {message}

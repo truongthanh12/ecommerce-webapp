@@ -31,7 +31,7 @@ const NewArrivals: React.FC<TypeProps> = ({ products }) => {
         }}
       >
         <Grid container spacing={3}>
-          {newArrivalsList.map(({ id, title, price, thumbnail, slug, stock }) => (
+          {newArrivalsList.map(({ id, title, price, thumbnail, slug, stock, discount }) => (
             <Grid item lg={2} md={3} sm={4} xs={6} key={id}>
               <Link href={`/product/${formatToSlug(slug)}`}>
                 <ProductCard
@@ -40,6 +40,7 @@ const NewArrivals: React.FC<TypeProps> = ({ products }) => {
                   title={title}
                   price={price}
                   stock={stock}
+                  discount={discount}
                 />
               </Link>
             </Grid>

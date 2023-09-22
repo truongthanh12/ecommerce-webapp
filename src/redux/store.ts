@@ -13,6 +13,8 @@ import brandSlice from "./features/brandSlice";
 import adminSlice from "./features/adminSlice";
 import cartSlice from "./features/cartSlice";
 import wishlistSlice from "./features/wishlistSlice";
+import voucherSlice from "./features/voucherSlice";
+import orderSlice from "./features/orderSlice";
 
 const authPersistConfig = {
   key: "auth",
@@ -42,6 +44,8 @@ const rootReducer: any = combineReducers({
   statusAdmin: adminSlice,
   carts: persistReducer(cartsPersistConfig, cartSlice),
   wishlist: wishlistSlice,
+  vouchers: voucherSlice,
+  orders: orderSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

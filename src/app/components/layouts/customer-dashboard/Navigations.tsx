@@ -1,11 +1,14 @@
-"use client"
-import { Fragment } from "react";
+"use client";
+import { Fragment, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Card, styled, Typography } from "@mui/material";
 import { FavoriteBorder, Person } from "@mui/icons-material";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import { FlexBox } from "@/components/flex-box";
 import NavLink from "@/components/nav-link/NavLink";
+import { useSelector } from "react-redux";
+import { fetchOrders } from "@/redux/features/orderSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({
@@ -37,11 +40,61 @@ const StyledNavLink = styled(({ children, isCurrentPath, ...rest }: any) => (
     },
   },
 }));
+
+const LINK_LIST = [
+  {
+    title: "DASHBOARD",
+    list: [
+      {
+        href: "/profile",
+        title: "Profile Info",
+        icon: Person,
+        count: 3,
+      },
+      {
+        href: "/orders",
+        title: "Orders",
+        icon: ShoppingBagOutlined,
+        count: 5,
+      },
+      {
+        href: "/wish-list",
+        title: "Wishlist",
+        icon: FavoriteBorder,
+        count: 19,
+      },
+    ],
+  },
+];
+
 const Navigations = () => {
   const pathname = usePathname();
+  const dispatch: any = useAppDispatch();
+  const { orders } = useSelector((state: any) => state.orders);
+  const { user } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchOrders(user.docId));
+  }, [dispatch]);
+
+  const updatedLinkList = LINK_LIST.map((section) => {
+    if (section.title === "DASHBOARD") {
+      section.list = section.list.map((item) => {
+        if (item.title === "Orders") {
+          return {
+            ...item,
+            count: orders.length,
+          };
+        }
+        return item;
+      });
+    }
+    return section;
+  });
+
   return (
     <MainContainer>
-      {linkList.map((item) => (
+      {updatedLinkList.map((item) => (
         <Fragment key={item.title}>
           <Typography p="26px 30px 1rem" color="grey.600" fontSize="12px">
             {item.title}
@@ -70,29 +123,5 @@ const Navigations = () => {
     </MainContainer>
   );
 };
-const linkList = [
-  {
-    title: "DASHBOARD",
-    list: [
-      {
-        href: "/profile",
-        title: "Profile Info",
-        icon: Person,
-        count: 3,
-      },
-      {
-        href: "/profile/orders",
-        title: "Orders",
-        icon: ShoppingBagOutlined,
-        count: 5,
-      },
-      {
-        href: "/profile/wish-list",
-        title: "Wishlist",
-        icon: FavoriteBorder,
-        count: 19,
-      },
-    ],
-  },
-];
+
 export default Navigations;

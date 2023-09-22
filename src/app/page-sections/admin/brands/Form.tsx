@@ -260,7 +260,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
               <ErrorMessage>{errorMessage}</ErrorMessage>
             )}
 
-            <Grid item xs={12}>
+            <Grid justifyContent="flex-end" container item xs={12}>
               <Button
                 disabled={
                   (status === "create" && (!isDirty || !isValid)) ||
@@ -272,7 +272,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
                 color="info"
                 type="submit"
               >
-                Save category
+                Save
               </Button>
             </Grid>
           </Grid>

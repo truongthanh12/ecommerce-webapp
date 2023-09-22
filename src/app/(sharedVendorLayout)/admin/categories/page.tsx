@@ -125,7 +125,11 @@ export default function CategoriesList() {
                     />
                   ))
                 ) : (
-                  <NotFound />
+                  <tr>
+                    <td>
+                      <NotFound />
+                    </td>
+                  </tr>
                 )}
               </TableBody>
             </Table>

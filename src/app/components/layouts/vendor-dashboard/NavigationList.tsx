@@ -108,8 +108,22 @@ export const navigations = [
   },
   {
     name: "Reviews",
-    icon: duotone.Review,
+    icon: duotone.ElementHub,
     path: "/vendor/reviews",
+  },
+  {
+    name: "Vouchers",
+    icon: duotone.Products,
+    children: [
+      {
+        name: "Voucher List",
+        path: "/vendor/vouchers",
+      },
+      {
+        name: "Create Voucher",
+        path: "/vendor/vouchers/create",
+      },
+    ],
   },
   {
     name: "Support Tickets",

@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { format, isValid, parseISO } from "date-fns";
 import { Person } from "@mui/icons-material";
 import {
   Avatar,
@@ -16,7 +15,7 @@ import { H3, H5, Small } from "@/components/Typography";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
-import { currency } from "@/utils/lib";
+import { currency, tryFormatDate } from "@/utils/lib";
 import { useSelector } from "react-redux";
 import { Fragment } from "react";
 // ============================================================
@@ -39,14 +38,6 @@ export default function Profile() {
       </Button>
     </Link>
   );
-  const formatDate = (dateString: string) => {
-    // Check if the date string is valid
-    if (!dateString || !isValid(parseISO(dateString))) {
-      return "Invalid Date";
-    }
-
-    return format(new Date(dateString), "dd/MM/yyyy");
-  };
 
   const infoList = [
     {
@@ -66,6 +57,7 @@ export default function Profile() {
       subtitle: "Awaiting Delivery",
     },
   ];
+
   return (
     <Fragment>
       {/* TITLE HEADER AREA */}
@@ -109,7 +101,9 @@ export default function Profile() {
                   </div>
 
                   <Typography color="grey.600" letterSpacing="0.2em">
-                    {user.userType !== "None" ? user.userType.toUpperCase() + " USER" : ""}
+                    {user.userType && user.userType !== "None"
+                      ? user.userType?.toUpperCase() + " USER"
+                      : "USER"}
                   </Typography>
                 </FlexBetween>
               </Box>
@@ -160,7 +154,7 @@ export default function Profile() {
         <TableRowItem title="Phone" value={user.phoneNumber} />
         <TableRowItem
           title="Birth date"
-          value={formatDate(user.birthDate) || ""}
+          value={tryFormatDate(user.birthDate) || ""}
         />
         <TableRowItem title="Address" value={user.address} />
       </TableRow>

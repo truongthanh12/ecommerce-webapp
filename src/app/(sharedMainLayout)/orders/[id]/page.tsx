@@ -1,13 +1,11 @@
 "use client";
-import React, { Fragment } from "react";
-import { format } from "date-fns";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Done, ShoppingBag } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
   Card,
-  Divider,
   Grid,
   Typography,
   styled,
@@ -22,7 +20,16 @@ import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "@/components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
 import useWindowSize from "@/hooks/useWindowSize";
-import { currency } from "@/utils/lib";
+import {
+  calculateFutureDate,
+  currency,
+  formatToSlug,
+  tryFormatDate,
+} from "@/utils/lib";
+import { doc, getDoc } from "firebase/firestore";
+import db from "@/firebase";
+import { IOrder } from "@/app/models/Order";
+import Link from "next/link";
 
 // styled components
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
@@ -44,26 +51,77 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   },
 }));
 // =============================================================
+interface OrderProps {
+  params: { id: string };
+}
+async function getOrderById(id = "") {
+  try {
+    const orderDocRef = doc(db, "orders", id);
+    const orderDocSnapshot = await getDoc(orderDocRef);
 
-const OrderDetails = ({ order = {} }: any) => {
+    if (orderDocSnapshot.exists()) {
+      const orderData = orderDocSnapshot.data();
+      return orderData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    return null;
+  }
+}
+const OrderDetails = ({ params }: OrderProps) => {
+  const [order, setOrder] = useState<Partial<IOrder>>({});
+
+  useEffect(() => {
+    // Define an async function
+    async function fetchData() {
+      const getOrder: any = await getOrderById(params.id);
+      setOrder(getOrder);
+    }
+
+    // Call the async function
+    fetchData();
+  }, [params.id]);
   const width = useWindowSize();
-  const orderStatus = "Shipping";
-  const orderStatusList = ["Packaging", "Shipping", "Delivering", "Complete"];
+
+  const orderStatus = useMemo(() => order.status, [order.status]);
+  const orderStatusList = ["shipping", "delivering", "complete"];
   const stepIconList = [PackageBox, TruckFilled, Delivery];
   const breakpoint = 350;
-  const statusIndex = orderStatusList.indexOf(orderStatus);
+  const statusIndex = orderStatusList.indexOf(orderStatus || "processing");
 
   // SECTION TITLE HEADER
   const HEADER_BUTTON = (
-    <Button
-      color="primary"
-      sx={{
-        bgcolor: "primary.light",
-        px: 4,
-      }}
-    >
-      Order Again
-    </Button>
+    <Link href="/orders" passHref>
+      <Button
+        color="primary"
+        sx={{
+          bgcolor: "primary.light",
+          px: 4,
+        }}
+      >
+        Back
+      </Button>
+    </Link>
+  );
+
+  const formattedDate = useMemo(
+    () => (order?.createdAt ? tryFormatDate(order?.createdAt) : ""),
+    [order?.createdAt]
+  );
+
+  const orderDate = useMemo(
+    () =>
+      order?.createdAt?.seconds
+        ? new Date(order.createdAt.seconds * 1000)
+        : null,
+    [order?.createdAt?.seconds]
+  );
+
+  const futureDate = useMemo(
+    () => (orderDate ? calculateFutureDate(orderDate) : ""),
+    [orderDate]
   );
 
   return (
@@ -142,7 +200,7 @@ const OrderDetails = ({ order = {} }: any) => {
             color="primary.main"
             bgcolor="primary.light"
           >
-            Estimated Delivery Date <b>4th October</b>
+            Estimated Delivery Date <b>{futureDate}</b>
           </Typography>
         </FlexBox>
       </Card>
@@ -167,7 +225,11 @@ const OrderDetails = ({ order = {} }: any) => {
               Order ID:
             </Typography>
 
-            <Typography fontSize={14}>{order.id}</Typography>
+            <Typography fontSize={14}>
+              #
+              {order?.id?.substring(0, 10) ||
+                (Math.random() * 9999997).toFixed(0)}
+            </Typography>
           </FlexBox>
 
           <FlexBox className="pre" m={0.75} alignItems="center">
@@ -175,9 +237,7 @@ const OrderDetails = ({ order = {} }: any) => {
               Placed on:
             </Typography>
 
-            <Typography fontSize={14}>
-              {/* {format(new Date(order.createdAt), "dd MMM, yyyy")} */}
-            </Typography>
+            <Typography fontSize={14}>{formattedDate}</Typography>
           </FlexBox>
 
           <FlexBox className="pre" m={0.75} alignItems="center">
@@ -185,14 +245,12 @@ const OrderDetails = ({ order = {} }: any) => {
               Delivered on:
             </Typography>
 
-            <Typography fontSize={14}>
-              {format(new Date(), "dd MMM, yyyy")}
-            </Typography>
+            <Typography fontSize={14}>{futureDate}</Typography>
           </FlexBox>
         </TableRow>
 
         <Box py={1}>
-          {order?.items?.map((item: any, ind: number) => (
+          {order?.cartList?.map((item: any, ind: number) => (
             <FlexBox
               px={2}
               py={1}
@@ -202,31 +260,33 @@ const OrderDetails = ({ order = {} }: any) => {
             >
               <FlexBox flex="2 2 260px" m={0.75} alignItems="center">
                 <Avatar
-                  src={item.product_img}
+                  src={item.product.thumbnail}
                   sx={{
                     height: 64,
                     width: 64,
                   }}
                 />
                 <Box ml={2.5}>
-                  <H6 my="0px">{item.product_name}</H6>
+                  <H6 my="0px">{item.product.name}</H6>
 
                   <Typography fontSize="14px" color="grey.600">
-                    {currency(item.product_price)} x {item.product_quantity}
+                    {currency(item.product.price)} x {item.quantity}
                   </Typography>
                 </Box>
               </FlexBox>
 
               <FlexBox flex="1 1 260px" m={0.75} alignItems="center">
                 <Typography fontSize="14px" color="grey.600">
-                  Product properties: Black, L
+                  Product properties: {item.product.color}, {item.product.size}
                 </Typography>
               </FlexBox>
 
               <FlexBox flex="160px" m={0.75} alignItems="center">
-                <Button variant="text" color="primary">
-                  <Typography fontSize="14px">Write a Review</Typography>
-                </Button>
+                <Link href={`/product/${formatToSlug(item.product.title)}`}>
+                  <Button variant="text" color="primary">
+                    <Typography fontSize="14px">Write a Review</Typography>
+                  </Button>
+                </Link>
               </FlexBox>
             </FlexBox>
           ))}
@@ -246,7 +306,7 @@ const OrderDetails = ({ order = {} }: any) => {
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {order.shippingAddress}
+              {order?.address}
             </Paragraph>
           </Card>
         </Grid>
@@ -257,46 +317,12 @@ const OrderDetails = ({ order = {} }: any) => {
               p: "20px 30px",
             }}
           >
-            <H5 mt={0} mb={2}>
-              Total Summary
-            </H5>
-
-            <FlexBetween mb={1}>
-              <Typography fontSize={14} color="grey.600">
-                Subtotal:
-              </Typography>
-
-              <H6 my="0px">{currency(order.totalPrice)}</H6>
-            </FlexBetween>
-
-            <FlexBetween mb={1}>
-              <Typography fontSize={14} color="grey.600">
-                Shipping fee:
-              </Typography>
-
-              <H6 my="0px">{currency(0)}</H6>
-            </FlexBetween>
-
-            <FlexBetween mb={1}>
-              <Typography fontSize={14} color="grey.600">
-                Discount:
-              </Typography>
-
-              <H6 my="0px">{currency(order.discount)}</H6>
-            </FlexBetween>
-
-            <Divider
-              sx={{
-                mb: 1,
-              }}
-            />
-
             <FlexBetween mb={2}>
               <H6 my="0px">Total</H6>
-              <H6 my="0px">{currency(order.totalPrice)}</H6>
+              <H6 my="0px">{currency(order?.total)}</H6>
             </FlexBetween>
 
-            <Typography fontSize={14}>Paid by Credit/Debit Card</Typography>
+            <Typography fontSize={14}>Cash on Delivery</Typography>
           </Card>
         </Grid>
       </Grid>

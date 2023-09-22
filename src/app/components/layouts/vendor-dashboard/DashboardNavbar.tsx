@@ -116,7 +116,7 @@ const DashboardNavbar = ({ handleDrawerToggle }: any) => {
                   color="primary.main"
                   bgcolor="primary.light"
                 >
-                  {user.userType !== "None" ? user.userType.toUpperCase() : ""}
+                  {user.userType !== "None" ? user.userType?.toUpperCase() : ""}
                 </Span>
               </Typography>
             )}

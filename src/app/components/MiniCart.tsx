@@ -31,16 +31,21 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
   const { user } = useSelector((state: any) => state.auth);
 
   const getTotalPrice = useMemo(() => {
-    return cartList.reduce((accum: number, item: any) => {
-      return (
-        accum +
-        Number(
+    // Calculate the total voucher deduction for the entire cart
+    const totalVoucherDeduction = cartList.reduce(
+      (accum: number, item: any) => accum + item.product.voucherSelected * 1000,
+      0
+    );
+
+    return (
+      cartList.reduce((accum: number, item: any) => {
+        const discountedPrice =
           item.product.price -
-            item.product.price * (item.product.discount / 100)
-        ) *
-          item.quantity
-      );
-    }, 0);
+          item.product.price * (item.product.discount / 100);
+
+        return accum + discountedPrice * item.quantity;
+      }, 0) - totalVoucherDeduction
+    ); // Subtract the total voucher deduction from the total price
   }, [cartList]);
 
   const removeItemFromCart = ({ product }: { product: Partial<IProducts> }) => {

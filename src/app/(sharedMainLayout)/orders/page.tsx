@@ -1,3 +1,4 @@
+"use client"
 import { Pagination } from "@mui/material";
 import { ShoppingBag } from "@mui/icons-material";
 import TableRow from "@/components/TableRow";
@@ -7,11 +8,22 @@ import OrderRow from "@/page-sections/orders/OrderRow";
 import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "@/components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
+import { useAppDispatch } from "@/redux/hooks";
+import { useEffect } from "react";
+import { fetchOrders } from "@/redux/features/orderSlice";
+import { useSelector } from "react-redux";
 
 // ====================================================
 
 const Orders = () => {
-  const orderList: any = [];
+  const dispatch: any = useAppDispatch();
+  const { user } = useSelector((state: any) => state.auth);
+  const { orders } = useSelector((state: any) => state.orders);
+  
+  useEffect(() => {
+    dispatch(fetchOrders(user.docId));
+  }, [dispatch]);
+
   return (
     <CustomerDashboardLayout>
       {/* TITLE HEADER AREA */}
@@ -61,7 +73,7 @@ const Orders = () => {
         />
       </TableRow>
 
-      {orderList.map((order: any) => (
+      {orders.map((order: any) => (
         <OrderRow order={order} key={order.id} />
       ))}
 

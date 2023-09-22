@@ -13,7 +13,7 @@ const CartAction = ({
   isIncludeBtnAdd?: boolean;
   product: any;
 }) => {
-  const { stock, id, size, color } = product || {};
+  const { stock, id, size, color, voucherSelected } = product || {};
 
   const { user } = useSelector((state: any) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
@@ -34,6 +34,7 @@ const CartAction = ({
         size,
         color,
         stock,
+        voucherSelected
       })
     );
   };

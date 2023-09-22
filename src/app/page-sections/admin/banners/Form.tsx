@@ -314,7 +314,7 @@ const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
               <ErrorMessage>{errorMessage}</ErrorMessage>
             )}
 
-            <Grid item xs={12}>
+            <Grid justifyContent="flex-end" container item xs={12}>
               <Button
                 disabled={
                   (status === "create" && (!isDirty || !isValid)) ||
@@ -326,7 +326,7 @@ const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
                 color="info"
                 type="submit"
               >
-                Save category
+                Save
               </Button>
             </Grid>
           </Grid>
