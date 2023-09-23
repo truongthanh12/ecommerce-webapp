@@ -6,6 +6,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -73,6 +74,33 @@ export const updateProductAsync = createAsyncThunk(
   }
 );
 
+export const updateProductQuantities =
+  (productIds: string[], quantityToSubtract: number[]) => async () => {
+    try {
+      const updatePromises = [];
+
+      for (let i = 0; i < productIds.length; i++) {
+        const productId = productIds[i];
+        const productRef = doc(db, "products", productId);
+
+        const productSnapshot = await getDoc(productRef);
+        const productData = productSnapshot.data();
+
+        if (productData) {
+          const newQuantity = productData.stock - quantityToSubtract[i];
+          const updatePromise = updateDoc(productRef, {
+            stock: newQuantity || 0,
+          });
+          updatePromises.push(updatePromise);
+        }
+      }
+
+      await Promise.all(updatePromises);
+    } catch (error) {
+      throw error;
+    }
+  };
+
 const productSlice = createSlice({
   name: "products",
   initialState,
@@ -138,31 +166,35 @@ const productSlice = createSlice({
 
 export const { setLoading, setProducts, setError } = productSlice.actions;
 
-export const fetchProducts = () => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(setLoading(true));
+export const fetchProducts =
+  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
 
-    // Update to use the new query and getDocs function
-    const productsRef = collection(db, "products");
-    const queryPublishProduct = query(
-      productsRef,
-      where("published", "==", true)
-    );
-    const querySnapshot = await getDocs(queryPublishProduct);
+      // Update to use the new query and getDocs function
+      const productsRef = collection(db, "products");
 
-    const products: IProducts[] = [];
-    querySnapshot.forEach((doc) => {
-      const productData = doc.data() as IProducts;
-      const id = doc.id;
-      const productWithId = { ...productData, id };
-      products.push(productWithId);
-    });
+      let queryRef: any = productsRef;
 
-    dispatch(setProducts(products));
-  } catch (error) {
-    dispatch(setError("An error occurred while fetching products."));
-  }
-};
+      if (isFetchByUser) {
+        queryRef = query(productsRef, where("published", "==", isFetchByUser));
+      }
+
+      const querySnapshot = await getDocs(queryRef);
+
+      const products: IProducts[] = [];
+      querySnapshot.forEach((doc) => {
+        const productData = doc.data() as IProducts;
+        const id = doc.id;
+        const productWithId = { ...productData, id };
+        products.push(productWithId);
+      });
+
+      dispatch(setProducts(products));
+    } catch (error) {
+      dispatch(setError("An error occurred while fetching products."));
+    }
+  };
 
 export const productDataForm = (
   data: Partial<IProducts>,
@@ -175,7 +207,7 @@ export const productDataForm = (
     slug: formatToSlug(data.title || ""),
     type: data.type || "",
     categories: data.categories || [],
-    published: data.published || false,
+    published: false,
     price: data.price || 0,
     colors: data.colors || [],
     sizes: data.sizes || [],

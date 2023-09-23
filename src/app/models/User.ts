@@ -6,4 +6,5 @@ export interface IUser {
   emailVerified: boolean;
   phoneNumber: string;
   docId?: string;
+  address?: string;
 }

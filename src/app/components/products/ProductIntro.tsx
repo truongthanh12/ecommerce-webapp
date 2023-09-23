@@ -15,7 +15,7 @@ import LazyImage from "@/components/LazyImage";
 import Rating from "@/components/Rating";
 import { H1, H2, H4, H6, Span } from "@/components/Typography";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
-import { calculateDiscount, currency } from "@/utils/lib";
+import { calculateDiscount, capitalizeStr, currency } from "@/utils/lib";
 import Chip from "@mui/material/Chip";
 import { IProducts } from "@/app/models/Product";
 import CartAction from "./CartAction";
@@ -199,7 +199,7 @@ const ProductIntro = ({
         </Grid>
 
         <Grid item md={6} xs={12} alignItems="center">
-          <H1 mb={1}>{title}</H1>
+          <H1 mb={1}>{capitalizeStr(title)}</H1>
           <Box mb={1.5}>
             <Box color="inherit">
               {isInStock ? "Stock Available" : "Stock Unavailable"}

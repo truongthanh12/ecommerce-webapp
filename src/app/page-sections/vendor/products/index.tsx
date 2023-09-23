@@ -16,16 +16,44 @@ import { Paragraph } from "@/app/components/Typography";
 import { currency } from "@/app/utils/lib";
 import { deleteProductAsync } from "@/redux/features/productSlice";
 import { setMessage } from "@/redux/features/messageSlice";
+import { useSelector } from "react-redux";
+import { updateAsync } from "@/redux/features/rechargeSlice";
+import { ADMIN_ID } from "@/app/constant";
 
 // ========================================================================
-
-const ProductRow = ({ product, selected }: any) => {
+const ProductRow = ({ product }: any) => {
   const { title, published, thumbnail, id, categories, price, brands, stock } =
     product || {};
   const router = useRouter();
-  const [featuredCategory, setFeaturedCategory] = useState(published);
+  const [featured, setFeatured] = useState(published);
+  const { user } = useSelector((state: any) => state.auth);
 
-  const isItemSelected = selected?.indexOf(title) !== -1;
+  const handleChangeStatus = async () => {
+    if (user.docId === ADMIN_ID) {
+      setFeatured((state: boolean) => !state);
+      const resultAction = await dispatch(
+        updateAsync({ id: id || "", docs: "products", newStatus: !featured })
+      );
+
+      if (updateAsync.rejected.match(resultAction)) {
+        const errorPayload = resultAction.payload;
+        dispatch(
+          setMessage({
+            message: `Error: ${errorPayload}`,
+            type: "error",
+          })
+        );
+      } else {
+        dispatch(
+          setMessage({
+            message: "Successfully!",
+            type: "success",
+          })
+        );
+      }
+    }
+  };
+
   const handleNavigate = () => router.push(`/vendor/products/${id}`);
   const dispatch: any = useAppDispatch();
 
@@ -54,10 +82,14 @@ const ProductRow = ({ product, selected }: any) => {
   }, [dispatch, id]);
 
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
+    <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
-          <Avatar sx={{borderRadius: "4px", width: 80, height: 80}} src={thumbnail} alt={title} />
+          <Avatar
+            sx={{ borderRadius: "4px", width: 80, height: 80 }}
+            src={thumbnail}
+            alt={title}
+          />
           <Paragraph>{title}</Paragraph>
         </FlexBox>
       </StyledTableCell>
@@ -72,8 +104,9 @@ const ProductRow = ({ product, selected }: any) => {
       <StyledTableCell align="center">
         <SwitchButton
           color="info"
-          checked={featuredCategory}
-          onChange={() => setFeaturedCategory((state: any) => !state)}
+          disabled={user.docId !== ADMIN_ID}
+          checked={featured}
+          onChange={handleChangeStatus}
         />
       </StyledTableCell>
 
@@ -82,7 +115,10 @@ const ProductRow = ({ product, selected }: any) => {
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton onClick={handleDelete}>
+        <StyledIconButton
+          onClick={handleDelete}
+          disabled={user.docId !== ADMIN_ID}
+        >
           <Delete />
         </StyledIconButton>
       </StyledTableCell>

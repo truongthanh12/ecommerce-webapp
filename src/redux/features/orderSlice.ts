@@ -1,6 +1,16 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  FieldValue,
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import db from "@/firebase";
 import { IOrder } from "@/app/models/Order";
 
@@ -23,6 +33,29 @@ export const addOrdersSync = createAsyncThunk(
       const docRef = await addDoc(orderRef, orderData);
       const id = docRef.id;
       return { ...orderData, id };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const updateAsync = createAsyncThunk(
+  "orders/updateStatus",
+  async ({ orderId, newStatus }: { orderId: string; newStatus: string }) => {
+    try {
+      const orderDocRef = doc(collection(db, "orders"), orderId);
+      const updateData: { status: string; updatedDeliveredAt?: FieldValue } = {
+        status: newStatus,
+      };
+
+      // Check if the new status is "delivered" and add updatedDeliveredAt with serverTimestamp if true
+      if (newStatus === "delivered") {
+        updateData.updatedDeliveredAt = serverTimestamp();
+      }
+
+      await setDoc(orderDocRef, updateData, { merge: true });
+
+      return { id: orderId, status: newStatus };
     } catch (error) {
       throw error;
     }
@@ -70,10 +103,14 @@ export const fetchOrders =
       dispatch(setLoading(true));
 
       const ordersRef = collection(db, "orders");
-      const queryPublishOrder = query(ordersRef, where("userId", "==", userId));
-      const querySnapshot = await getDocs(
-        userId ? queryPublishOrder : ordersRef
-      );
+
+      let queryRef: any = ordersRef;
+
+      if (userId) {
+        queryRef = query(ordersRef, where("userId", "==", userId));
+      }
+
+      const querySnapshot = await getDocs(queryRef);
 
       const orders: any = [];
       querySnapshot.forEach((doc) => {
@@ -88,4 +125,5 @@ export const fetchOrders =
       dispatch(setError("An error occurred while fetching orders."));
     }
   };
+
 export default orderslice.reducer;

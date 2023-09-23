@@ -13,20 +13,50 @@ import {
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
 import { deleteCategoryAsync } from "@/redux/features/categorySlice";
+import { ADMIN_ID } from "@/app/constant";
+import { useSelector } from "react-redux";
+import { updateAsync } from "@/redux/features/rechargeSlice";
+import { ICategory } from "@/app/models/Category";
 
 // ========================================================================
 
-const CategoryRow = ({ category, selected }: any) => {
-  const { name, featured, image, id, parent } = category || {};
+const CategoryRow = ({ category }: {category: Partial<ICategory>}) => {
+  const { name, published, image, id, parent } = category || {};
   const router = useRouter();
-  const [featuredCategory, setFeaturedCategory] = useState(featured);
+  const [featuredCategory, setFeaturedCategory] = useState(published);
+  const { user } = useSelector((state: any) => state.auth);
 
-  const isItemSelected = selected?.indexOf(name) !== -1;
+  const handleChangeStatus = async () => {
+    if (user.docId === ADMIN_ID) {
+      setFeaturedCategory((state) => !state);
+      const resultAction = await dispatch(
+        updateAsync({ id: id || "", docs: "categories", newStatus: !featuredCategory })
+      );
+
+      if (updateAsync.rejected.match(resultAction)) {
+        const errorPayload = resultAction.payload;
+        dispatch(
+          setMessage({
+            message: `Error: ${errorPayload}`,
+            type: "error",
+          })
+        );
+      } else {
+        dispatch(
+          setMessage({
+            message: "Successfully!",
+            type: "success",
+          })
+        );
+      }
+    }
+  };
+
   const handleNavigate = () => router.push(`/admin/categories/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {
-    dispatch(deleteCategoryAsync({ categoryId: id }))
+    dispatch(deleteCategoryAsync({ categoryId: id || "" }))
       .then((resultAction: any) => {
         if (deleteCategoryAsync.fulfilled.match(resultAction)) {
           dispatch(
@@ -50,7 +80,7 @@ const CategoryRow = ({ category, selected }: any) => {
   }, [dispatch, id]);
 
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
+    <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">#{id?.split("-")[0]}</StyledTableCell>
 
       <StyledTableCell align="left">
@@ -75,7 +105,8 @@ const CategoryRow = ({ category, selected }: any) => {
         <SwitchButton
           color="info"
           checked={featuredCategory}
-          onChange={() => setFeaturedCategory((state: any) => !state)}
+          disabled={user.docId !== ADMIN_ID}
+          onChange={handleChangeStatus}
         />
       </StyledTableCell>
 
@@ -84,7 +115,10 @@ const CategoryRow = ({ category, selected }: any) => {
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton onClick={handleDelete}>
+        <StyledIconButton
+          onClick={handleDelete}
+          disabled={user.docId !== ADMIN_ID}
+        >
           <Delete />
         </StyledIconButton>
       </StyledTableCell>

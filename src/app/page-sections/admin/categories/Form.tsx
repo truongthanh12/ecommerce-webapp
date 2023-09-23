@@ -55,7 +55,7 @@ const CategoryForm = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [valueSeclect, setValueSelected] = useState("");
   const dispatch: any = useDispatch();
-  const { error } = useSelector((state: any) => state.categories);
+  const { error, loading } = useSelector((state: any) => state.categories);
   const { status } = useSelector((state: any) => state.statusAdmin);
   const { parentCategories } = useSelector((state: any) => state.categories);
   const router = useRouter();
@@ -109,6 +109,7 @@ const CategoryForm = ({
   }) => {
     const { Name, Type, Icon, Parent } = value;
     if (files[0]?.name) {
+      console.log("first");
       const uploadTask = uploadBytesResumable(
         storageRef(`categories/${files[0]?.name}`),
         files[0]
@@ -314,9 +315,7 @@ const CategoryForm = ({
               <Controller
                 name="Icon"
                 control={control}
-                render={({
-                  field: { onChange, value },
-                }) => (
+                render={({ field: { onChange, value } }) => (
                   <TextField
                     fullWidth
                     variant="outlined"
@@ -340,14 +339,22 @@ const CategoryForm = ({
                 {files.map((file: any, index: number) => {
                   return (
                     <UploadImageBox size="medium" key={index}>
-                      <Image alt="Image uploaded" src={file.preview} width="100%" />
+                      <Image
+                        alt="Image uploaded"
+                        src={file.preview}
+                        width="100%"
+                      />
                       <StyledClear onClick={handleFileDelete(file)} />
                     </UploadImageBox>
                   );
                 })}
                 {isEmpty(files) && category?.image && (
                   <UploadImageBox size="medium">
-                    <Image alt="Image uploaded" src={category?.image} width="100%" />
+                    <Image
+                      alt="Image uploaded"
+                      src={category?.image}
+                      width="100%"
+                    />
                   </UploadImageBox>
                 )}
               </FlexBox>
@@ -364,7 +371,8 @@ const CategoryForm = ({
                   (status === "edit" &&
                     isEmpty(files) &&
                     (!isDirty || !isValid) &&
-                    !valueSeclect)
+                    !valueSeclect) ||
+                  loading
                 }
                 variant="contained"
                 color="info"

@@ -50,8 +50,8 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
   });
 
   useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchBrands());
+    dispatch(fetchCategories(true));
+    dispatch(fetchBrands(true));
   }, [dispatch]);
 
   useEffect(() => {

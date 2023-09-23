@@ -8,20 +8,50 @@ import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
 import { deleteBannerAsync } from "@/redux/features/bannerSlice";
+import { useSelector } from "react-redux";
+import { ADMIN_ID } from "@/app/constant";
+import { updateAsync } from "@/redux/features/rechargeSlice";
+import { ICarouselCard } from "@/app/models/Brand";
 
 // ========================================================================
 
-const BannerRow = ({ banner, selected }: any) => {
-  const { title, featured, imgUrl, id, description } = banner || {};
+const BannerRow = ({ banner }: {banner: Partial<ICarouselCard>}) => {
+  const { title, published, imgUrl, id, description } = banner || {};
   const router = useRouter();
-  const [featuredCategory, setFeaturedCategory] = useState(featured);
+  const [featured, setFeatured] = useState(published);
+  const { user } = useSelector((state: any) => state.auth);
 
-  const isItemSelected = selected?.indexOf(title) !== -1;
   const handleNavigate = () => router.push(`/admin/banners/${id}`);
   const dispatch: any = useAppDispatch();
 
+  const handleChangeStatus = async () => {
+    if (user.docId === ADMIN_ID) {
+      setFeatured((state) => !state);
+      const resultAction = await dispatch(
+        updateAsync({ id: id || "", docs: "banners", newStatus: !featured })
+      );
+
+      if (updateAsync.rejected.match(resultAction)) {
+        const errorPayload = resultAction.payload;
+        dispatch(
+          setMessage({
+            message: `Error: ${errorPayload}`,
+            type: "error",
+          })
+        );
+      } else {
+        dispatch(
+          setMessage({
+            message: "Successfully!",
+            type: "success",
+          })
+        );
+      }
+    }
+  };
+
   const handleDelete = useCallback(() => {
-    dispatch(deleteBannerAsync({ bannerId: id }))
+    dispatch(deleteBannerAsync({ bannerId: id || "" }))
       .then((resultAction: any) => {
         if (deleteBannerAsync.fulfilled.match(resultAction)) {
           dispatch(
@@ -45,7 +75,7 @@ const BannerRow = ({ banner, selected }: any) => {
   }, [dispatch, id]);
 
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
+    <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="center">#{id?.split("-")[0]}</StyledTableCell>
 
       <StyledTableCell align="center">{title}</StyledTableCell>
@@ -65,8 +95,9 @@ const BannerRow = ({ banner, selected }: any) => {
       <StyledTableCell align="center">
         <SwitchButton
           color="info"
-          checked={featuredCategory}
-          onChange={() => setFeaturedCategory((state: any) => !state)}
+          checked={featured}
+          disabled={user.docId !== ADMIN_ID}
+          onChange={handleChangeStatus}
         />
       </StyledTableCell>
 
@@ -75,7 +106,10 @@ const BannerRow = ({ banner, selected }: any) => {
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton onClick={handleDelete}>
+        <StyledIconButton
+          onClick={handleDelete}
+          disabled={user.docId !== ADMIN_ID}
+        >
           <Delete />
         </StyledIconButton>
       </StyledTableCell>

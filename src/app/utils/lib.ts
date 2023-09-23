@@ -127,14 +127,16 @@ export function addAccents(str = "") {
     .join("");
 }
 
-export function captitalizeStr(str = "") {
-  const arr = str.split(" ");
+export function capitalizeStr(str = "") {
+  const arr = str?.split(" ");
 
-  //loop through each element of the array and capitalize the first letter.
-
+  // Loop through each element of the array and capitalize the first letter.
   for (var i = 0; i < arr.length; i++) {
     arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
   }
+
+  // Join the array back into a string and return it.
+  return arr.join(" ");
 }
 
 export function objectToQueryString(obj: any, isMulti = false) {
@@ -174,9 +176,9 @@ export function tryFormatDate(date: any) {
   }
 }
 
-export function calculateFutureDate(baseDate: any) {
+export function calculateFutureDate(baseDate: any, date = 3) {
   try {
-    const futureDate = addDays(baseDate, 3);
+    const futureDate = addDays(baseDate, date);
     const formattedFutureDate = format(futureDate, "MMM dd, yyyy");
     return formattedFutureDate;
   } catch (error) {

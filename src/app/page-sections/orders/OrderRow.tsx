@@ -1,21 +1,26 @@
 import Link from "next/link";
-import { format } from "date-fns";
 import { East } from "@mui/icons-material";
 import { Box, Chip, IconButton, Typography } from "@mui/material";
 import TableRow from "@/components/TableRow";
 import { H5 } from "@/components/Typography";
-import { currency, tryFormatDate } from "@/utils/lib";
+import { capitalizeStr, currency, tryFormatDate } from "@/utils/lib";
+import { IOrder } from "@/app/models/Order";
 // =================================================
 
-const OrderRow = ({ order }: any) => {
-  console.log(order);
-  const getColor = (status: "Pending" | "Delivered" | "Cancelled") => {
+const OrderRow = ({
+  order,
+  isSeller,
+}: {
+  order: IOrder;
+  isSeller?: boolean;
+}) => {
+  const getColor = (status: string) => {
     switch (status) {
-      case "Pending":
+      case "processing":
         return "secondary";
-      case "Delivered":
+      case "delivered":
         return "success";
-      case "Cancelled":
+      case "cancelled":
         return "error";
       default:
         return "";
@@ -25,7 +30,7 @@ const OrderRow = ({ order }: any) => {
   const formattedDate = order?.createdAt ? tryFormatDate(order?.createdAt) : "";
 
   return (
-    <Link href={`/orders/${order.id}`} passHref>
+    <Link href={`${isSeller ? "/vendor" : ""}/orders/${order.id}`} passHref>
       <TableRow
         sx={{
           my: "1rem",
@@ -33,13 +38,13 @@ const OrderRow = ({ order }: any) => {
         }}
       >
         <H5 m={0.75} textAlign="left">
-          {order.id.split("-")[0].substring(0, 10)}
+          {(order.id ||"").split("-")[0].substring(0, 10)}
         </H5>
 
         <Box m={0.75}>
           <Chip
             size="small"
-            label={order.status}
+            label={capitalizeStr(order.status)}
             sx={{
               p: "0.25rem 0.5rem",
               fontSize: 12,
@@ -76,9 +81,6 @@ const OrderRow = ({ order }: any) => {
             <East
               fontSize="small"
               color="inherit"
-              sx={{
-                transform: `rotate("0deg")`,
-              }}
             />
           </IconButton>
         </Typography>

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Button,
   FormControl,
@@ -26,8 +26,9 @@ import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
 import { useRouter } from "next/navigation";
 import { clearItemsInCart } from "@/redux/features/cartSlice";
-import { IOrder } from "@/app/models/Order";
+import { ICart, IOrder } from "@/app/models/Order";
 import { addOrdersSync } from "@/redux/features/orderSlice";
+import { updateProductQuantities } from "@/redux/features/productSlice";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -49,11 +50,14 @@ const CheckoutForm = ({
   total,
 }: {
   total: number;
-  cartList: Partial<IOrder>;
+  cartList: Partial<ICart>[];
   user: IUser;
 }) => {
   const dispatch: any = useAppDispatch();
   const router = useRouter();
+
+  const getIdList = useMemo(() => cartList.map((cart: any) => cart.product.id), [cartList])
+  const getQuantityList = useMemo(() => cartList.map((cart: any) => cart.quantity), [cartList])
 
   const {
     handleSubmit,
@@ -65,7 +69,7 @@ const CheckoutForm = ({
     defaultValues: {
       name: user.displayName,
       email: user.email,
-      address: "",
+      address: user.address,
       phone: "",
       note: "",
       isInCity: "yes",
@@ -95,10 +99,11 @@ const CheckoutForm = ({
       };
       dispatch(addOrdersSync(mergedData));
       router.push("/order-complete");
-      dispatch(setMessage({ message: "Your order is successfully!" }));
+      dispatch(setMessage({ message: "Your order is successfully!", type: "success" }));
       dispatch(clearItemsInCart(user.docId || ""));
+      dispatch(updateProductQuantities(getIdList, getQuantityList))
     } catch (error) {
-      dispatch(setMessage({ message: "Your order is fail with " + error }));
+      dispatch(setMessage({ message: "Your order is fail with " + error, type: "error" }));
     }
   };
 

@@ -31,9 +31,9 @@ export default function Home() {
   useEffect(() => {
     let isCancelled = false;
     if (!isCancelled) {
-      dispatch(fetchCategories());
-      dispatch(fetchBanners());
-      dispatch(fetchProducts());
+      dispatch(fetchCategories(true));
+      dispatch(fetchBanners(true));
+      dispatch(fetchProducts(true));
       dispatch(fetchParentCategories());
       dispatch(fetchUsers({ isVendor: true }));
     }

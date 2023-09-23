@@ -106,7 +106,7 @@ const DashboardNavbar = ({ handleDrawerToggle }: any) => {
             />
 
             <NotificationsPopover />
-            {user.userType !== "None" && (
+            {user.userType && user.userType !== "None" && (
               <Typography color="grey.600" letterSpacing="0.2em">
                 <Span
                   p="6px 10px"

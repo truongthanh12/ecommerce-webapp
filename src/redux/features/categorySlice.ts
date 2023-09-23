@@ -8,7 +8,9 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 interface CategoryState {
@@ -140,28 +142,6 @@ const categorySlice = createSlice({
 export const { setLoading, setCategories, setParentCategories, setError } =
   categorySlice.actions;
 
-export const fetchCategories = () => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(setLoading(true));
-
-    // Update to use the new query and getDocs function
-    const categoriesRef = collection(db, "categories");
-    const querySnapshot = await getDocs(categoriesRef);
-
-    const categories: ICategory[] = [];
-    querySnapshot.forEach((doc) => {
-      const categoryData = doc.data() as ICategory;
-      const id = doc.id;
-      const categoryWithId = { ...categoryData, id };
-      categories.push(categoryWithId);
-    });
-
-    dispatch(setCategories(categories));
-  } catch (error) {
-    dispatch(setError("An error occurred while fetching categories."));
-  }
-};
-
 export const fetchParentCategories = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(setLoading(true));
@@ -182,6 +162,35 @@ export const fetchParentCategories = () => async (dispatch: AppDispatch) => {
   }
 };
 
+export const fetchCategories =
+  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+
+      const rechargeRef = collection(db, "categories");
+
+      let queryRef: any = rechargeRef;
+
+      if (isFetchByUser) {
+        queryRef = query(rechargeRef, where("published", "==", isFetchByUser));
+      }
+
+      const querySnapshot = await getDocs(queryRef);
+
+      const categories: ICategory[] = [];
+      querySnapshot.forEach((doc) => {
+        const categoryData = doc.data() as ICategory;
+        const id = doc.id;
+        const categoryWithId = { ...categoryData, id };
+        categories.push(categoryWithId);
+      });
+
+      dispatch(setCategories(categories));
+    } catch (error) {
+      dispatch(setError("An error occurred while fetching recharge."));
+    }
+  };
+
 export const categoryDataForm = (data: Partial<ICategory>) => {
   return {
     description: "description",
@@ -191,7 +200,7 @@ export const categoryDataForm = (data: Partial<ICategory>) => {
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase(),
     type: data.type || "",
     parent: data.parent || "",
-    featured: true,
+    published: false,
   };
 };
 

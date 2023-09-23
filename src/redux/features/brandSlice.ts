@@ -7,7 +7,9 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { IBrand } from "@/app/models/Brand";
 
@@ -133,27 +135,35 @@ const brandSlice = createSlice({
 
 export const { setLoading, setBrands, setError } = brandSlice.actions;
 
-export const fetchBrands = () => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(setLoading(true));
+export const fetchBrands =
+  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
 
-    // Update to use the new query and getDocs function
-    const brandsRef = collection(db, "brands");
-    const querySnapshot = await getDocs(brandsRef);
+      // Update to use the new query and getDocs function
+      const brandsRef = collection(db, "brands");
 
-    const brands: IBrand[] = [];
-    querySnapshot.forEach((doc) => {
-      const brandData = doc.data() as IBrand;
-      const id = doc.id;
-      const brandWithId = { ...brandData, id };
-      brands.push(brandWithId);
-    });
+      let queryRef: any = brandsRef;
 
-    dispatch(setBrands(brands));
-  } catch (error) {
-    dispatch(setError("An error occurred while fetching brands."));
-  }
-};
+      if (isFetchByUser) {
+        queryRef = query(brandsRef, where("published", "==", isFetchByUser));
+      }
+
+      const querySnapshot = await getDocs(queryRef);
+
+      const brands: IBrand[] = [];
+      querySnapshot.forEach((doc) => {
+        const brandData = doc.data() as IBrand;
+        const id = doc.id;
+        const brandWithId = { ...brandData, id };
+        brands.push(brandWithId);
+      });
+
+      dispatch(setBrands(brands));
+    } catch (error) {
+      dispatch(setError("An error occurred while fetching brands."));
+    }
+  };
 
 export const brandDataForm = (data: Partial<IBrand>) => {
   return {
@@ -161,7 +171,7 @@ export const brandDataForm = (data: Partial<IBrand>) => {
     name: data.name || "",
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase() || "",
     type: data.type || "",
-    featured: true,
+    published: false,
   };
 };
 

@@ -34,7 +34,7 @@ export interface NameUser {
   lastName?: string;
 }
 export interface IProducts {
-  id?: string;
+  id: string;
   slug?: string;
   title: string;
   brands?: string | null;
@@ -50,7 +50,7 @@ export interface IProducts {
   rating?: number;
   type?: string;
   shop?: IShop;
-  published?: boolean;
+  published: boolean;
   description: string;
   indexOfImages?: number;
   stock?: string;

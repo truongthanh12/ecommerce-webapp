@@ -15,6 +15,7 @@ import { fetchBrands } from "@/redux/features/brandSlice";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import NotFound from "@/app/components/not-found";
+import { IBrand } from "@/app/models/Brand";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -106,11 +107,10 @@ export default function BrandList() {
 
               <TableBody>
                 {!isEmpty(filteredList) ? (
-                  filteredList.map((brand: any) => (
+                  filteredList.map((brand: Partial<IBrand>) => (
                     <BrandRow
                       brand={brand}
                       key={brand.id}
-                      selected={selected}
                     />
                   ))
                 ) : (

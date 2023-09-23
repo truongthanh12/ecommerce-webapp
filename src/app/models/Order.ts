@@ -13,6 +13,10 @@ export interface IOrder {
   id: string;
   address: string;
   status: string;
+  updatedDeliveredAt: {
+    seconds?: number;
+    nanoseconds?: number;
+  };
   createdAt: {
     seconds?: number;
     nanoseconds?: number;

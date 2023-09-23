@@ -11,7 +11,9 @@ import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { addChargeAsync } from "@/redux/features/rechargeSlice";
+import { serverTimestamp } from "firebase/firestore";
 
 const Wrapper = styled("form")(() => ({
   display: "flex",
@@ -34,31 +36,32 @@ export default function Recharge() {
     mode: "onSubmit",
   });
 
-  const { user, isLoading } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: any) => state.auth);
+  const { loading } = useSelector((state: any) => state.recharge);
   const dispatch: any = useAppDispatch();
 
   const handleSubmitForm = async (values: { wallet: number }) => {
     const { wallet } = values;
-    const data = { wallet: Number(wallet) };
-    const resultAction = await dispatch(
-      updateUserAsync({
-        updateUser: updateUserData(data, true, user),
-        id: user?.docId,
-      })
-    );
+    const data = {
+      amount: Number(wallet),
+      pending: false,
+      createdAt: serverTimestamp(),
+      userId: user.docId
+    };
+    const resultAction = await dispatch(addChargeAsync(data));
 
     if (updateUserAsync.rejected.match(resultAction)) {
       const errorPayload = resultAction.payload;
       dispatch(
         setMessage({
-          message: `User cannot recharged: ${errorPayload}`,
+          message: `Error: ${errorPayload}`,
           type: "error",
         })
       );
     } else {
       dispatch(
         setMessage({
-          message: "User recharged successfully",
+          message: "User recharged is processing.",
           type: "success",
         })
       );
@@ -95,8 +98,8 @@ export default function Recharge() {
 
           <FlexBox alignItems="center" gap={2}>
             <Button
-              onClick={handleSubmit(handleSubmitForm)}
-              disabled={!isDirty && isLoading && !isValid}
+              type="submit"
+              disabled={loading || !isDirty && !isValid}
               size="medium"
               color="error"
               variant="outlined"

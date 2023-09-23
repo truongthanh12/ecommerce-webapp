@@ -22,7 +22,7 @@ const Orders = () => {
   
   useEffect(() => {
     dispatch(fetchOrders(user.docId));
-  }, [dispatch]);
+  }, [dispatch, user.docId]);
 
   return (
     <CustomerDashboardLayout>

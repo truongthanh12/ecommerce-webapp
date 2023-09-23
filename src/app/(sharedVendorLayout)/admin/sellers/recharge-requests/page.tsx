@@ -7,40 +7,25 @@ import TablePagination from "@/components/data-table/TablePagination";
 import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
-import ProductRow from "@/page-sections/vendor/products";
-import { useRouter } from "next/navigation";
+import RechargeRow from "@/page-sections/admin/recharge";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
-import { fetchProducts } from "@/redux/features/productSlice";
 import NotFound from "@/app/components/not-found";
+import { fetchRecharge } from "@/redux/features/rechargeSlice";
+import { ADMIN_ID } from "@/app/constant";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
   {
-    id: "name",
-    label: "Name",
+    id: "id",
+    label: "ID-CODE",
     align: "center",
   },
   {
-    id: "stock",
-    label: "Stock",
-    align: "center",
-  },
-  {
-    id: "category",
-    label: "Category",
-    align: "center",
-  },
-  {
-    id: "brand",
-    label: "Brand",
-    align: "center",
-  },
-  {
-    id: "price",
-    label: "Price",
+    id: "amount",
+    label: "Amount",
     align: "center",
   },
   {
@@ -57,16 +42,22 @@ const tableHeading = [
 
 // =============================================================================
 
-export default function ProductList() {
-  // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const router = useRouter();
-  const { products } = useSelector((state: any) => state.products);
+export default function RechargeRequest() {
+  const { recharge } = useSelector((state: any) => state.recharge);
+  const { user } = useSelector((state: any) => state.auth);
   const dispatch: any = useDispatch();
-  const { onSearchInputChange, filteredData } = useSearch(products);
+
+  const { onSearchInputChange, filteredData } = useSearch(recharge);
+
+  const isAdmin = useMemo(() => user.docId === ADMIN_ID, [user.docId]);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    if (isAdmin) {
+      dispatch(fetchRecharge());
+      return;
+    }
+    dispatch(fetchRecharge(user.docId));
+  }, [dispatch, user.docId, isAdmin]);
 
   const {
     order,
@@ -81,19 +72,13 @@ export default function ProductList() {
     defaultSort: "name",
   });
 
-  const handleButtonClick = () => {
-    router.push("/vendor/products/create");
-  };
-
   return (
     <Box py={4}>
-      <H3 mb={2}>Products</H3>
+      <H3 mb={2}>Recharge requests</H3>
 
       <SearchArea
         handleSearch={onSearchInputChange}
-        buttonText="Add Product"
-        searchPlaceholder="Search Product..."
-        handleBtnClick={handleButtonClick}
+        searchPlaceholder="Search recharge request..."
       />
 
       <Card>
@@ -116,8 +101,12 @@ export default function ProductList() {
 
               <TableBody>
                 {!isEmpty(filteredList) ? (
-                  filteredList.map((product: any) => (
-                    <ProductRow product={product} key={product.id} />
+                  filteredList.map((recharge: any) => (
+                    <RechargeRow
+                      recharge={recharge}
+                      key={recharge.id}
+                      user={user}
+                    />
                   ))
                 ) : (
                   <tr>

@@ -15,6 +15,7 @@ import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchCategories } from "@/redux/features/categorySlice";
 import NotFound from "@/app/components/not-found";
+import { ICategory } from "@/app/models/Category";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -117,11 +118,10 @@ export default function CategoriesList() {
 
               <TableBody>
                 {!isEmpty(filteredList) ? (
-                  filteredList.map((category: any) => (
+                  filteredList.map((category: Partial<ICategory>) => (
                     <CategoryRow
                       category={category}
                       key={category.id}
-                      selected={selected}
                     />
                   ))
                 ) : (

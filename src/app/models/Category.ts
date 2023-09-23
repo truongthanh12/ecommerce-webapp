@@ -8,4 +8,5 @@ export interface ICategory {
   image: string;
   description: string | null;
   parent: string;
+  published: boolean;
 }

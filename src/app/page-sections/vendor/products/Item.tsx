@@ -16,7 +16,7 @@ type PageProps = {
   autoFocus: boolean;
   multiline: boolean;
   rows: number;
-  disabled: boolean
+  disabled: boolean;
 };
 
 const FieldItem = ({
@@ -32,7 +32,7 @@ const FieldItem = ({
   autoFocus = false,
   multiline = false,
   rows = 3,
-  disabled
+  disabled,
 }: Partial<PageProps>) => {
   const router = useRouter();
 
@@ -89,7 +89,7 @@ const FieldItem = ({
         !isEmpty(data) ? (
           data?.map((item: any) => (
             <MenuItem key={item?.id || item} value={item?.name || item}>
-              {item?.name || item}
+              {item?.name || item || ""}
             </MenuItem>
           ))
         ) : (

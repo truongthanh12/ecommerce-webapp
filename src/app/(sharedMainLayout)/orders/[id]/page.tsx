@@ -1,35 +1,22 @@
 "use client";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Done, ShoppingBag } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Typography,
-  styled,
-} from "@mui/material";
-import TableRow from "@/components/TableRow";
+import { Avatar, Box, Button, Card, Typography, styled } from "@mui/material";
 import Delivery from "@/components/icons/Delivery";
 import PackageBox from "@/components/icons/PackageBox";
 import TruckFilled from "@/components/icons/TruckFilled";
-import { H5, H6, Paragraph } from "@/components/Typography";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "@/components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
 import useWindowSize from "@/hooks/useWindowSize";
-import {
-  calculateFutureDate,
-  currency,
-  formatToSlug,
-  tryFormatDate,
-} from "@/utils/lib";
+import { calculateFutureDate, tryFormatDate } from "@/utils/lib";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
 import { IOrder } from "@/app/models/Order";
 import Link from "next/link";
+import OrderedProductList from "@/app/page-sections/orders/OrderedProductList";
+import OrderedSummary from "@/app/page-sections/orders/OrderedSummary";
 
 // styled components
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
@@ -86,10 +73,19 @@ const OrderDetails = ({ params }: OrderProps) => {
   const width = useWindowSize();
 
   const orderStatus = useMemo(() => order.status, [order.status]);
-  const orderStatusList = ["shipping", "delivering", "complete"];
+  const orderStatusList = [
+    "packed",
+    "processing",
+    "shipping",
+    "delivered",
+    "cancelled",
+  ];
   const stepIconList = [PackageBox, TruckFilled, Delivery];
   const breakpoint = 350;
-  const statusIndex = orderStatusList.indexOf(orderStatus || "processing");
+  const statusIndex = useMemo(() => {
+    if (orderStatus === "cancelled") return 0;
+    return orderStatusList.indexOf(orderStatus || "processing");
+  }, [orderStatusList, orderStatus]);
 
   // SECTION TITLE HEADER
   const HEADER_BUTTON = (
@@ -119,6 +115,19 @@ const OrderDetails = ({ params }: OrderProps) => {
     [order?.createdAt?.seconds]
   );
 
+  const deliveredDate = useMemo(
+    () =>
+      order?.updatedDeliveredAt?.seconds
+        ? new Date(order.updatedDeliveredAt.seconds * 1000)
+        : null,
+    [order?.updatedDeliveredAt?.seconds]
+  );
+  console.log(order)
+
+  const formatDeliveredDate = useMemo(
+    () => (deliveredDate ? calculateFutureDate(deliveredDate, 0) : ""),
+    [deliveredDate]
+  );
   const futureDate = useMemo(
     () => (orderDate ? calculateFutureDate(orderDate) : ""),
     [orderDate]
@@ -206,126 +215,15 @@ const OrderDetails = ({ params }: OrderProps) => {
       </Card>
 
       {/* ORDERED PRODUCT LIST */}
-      <Card
-        sx={{
-          p: 0,
-          mb: "30px",
-        }}
-      >
-        <TableRow
-          sx={{
-            p: "12px",
-            borderRadius: 0,
-            boxShadow: "none",
-            bgcolor: "grey.200",
-          }}
-        >
-          <FlexBox className="pre" m={0.75} alignItems="center">
-            <Typography fontSize={14} color="grey.600" mr={0.5}>
-              Order ID:
-            </Typography>
-
-            <Typography fontSize={14}>
-              #
-              {order?.id?.substring(0, 10) ||
-                (Math.random() * 9999997).toFixed(0)}
-            </Typography>
-          </FlexBox>
-
-          <FlexBox className="pre" m={0.75} alignItems="center">
-            <Typography fontSize={14} color="grey.600" mr={0.5}>
-              Placed on:
-            </Typography>
-
-            <Typography fontSize={14}>{formattedDate}</Typography>
-          </FlexBox>
-
-          <FlexBox className="pre" m={0.75} alignItems="center">
-            <Typography fontSize={14} color="grey.600" mr={0.5}>
-              Delivered on:
-            </Typography>
-
-            <Typography fontSize={14}>{futureDate}</Typography>
-          </FlexBox>
-        </TableRow>
-
-        <Box py={1}>
-          {order?.cartList?.map((item: any, ind: number) => (
-            <FlexBox
-              px={2}
-              py={1}
-              flexWrap="wrap"
-              alignItems="center"
-              key={ind}
-            >
-              <FlexBox flex="2 2 260px" m={0.75} alignItems="center">
-                <Avatar
-                  src={item.product.thumbnail}
-                  sx={{
-                    height: 64,
-                    width: 64,
-                  }}
-                />
-                <Box ml={2.5}>
-                  <H6 my="0px">{item.product.name}</H6>
-
-                  <Typography fontSize="14px" color="grey.600">
-                    {currency(item.product.price)} x {item.quantity}
-                  </Typography>
-                </Box>
-              </FlexBox>
-
-              <FlexBox flex="1 1 260px" m={0.75} alignItems="center">
-                <Typography fontSize="14px" color="grey.600">
-                  Product properties: {item.product.color}, {item.product.size}
-                </Typography>
-              </FlexBox>
-
-              <FlexBox flex="160px" m={0.75} alignItems="center">
-                <Link href={`/product/${formatToSlug(item.product.title)}`}>
-                  <Button variant="text" color="primary">
-                    <Typography fontSize="14px">Write a Review</Typography>
-                  </Button>
-                </Link>
-              </FlexBox>
-            </FlexBox>
-          ))}
-        </Box>
-      </Card>
+      <OrderedProductList
+        order={order}
+        formattedDate={formattedDate}
+        futureDate={formatDeliveredDate}
+        params={params}
+      />
 
       {/* SHIPPING AND ORDER SUMMERY */}
-      <Grid container spacing={3}>
-        <Grid item lg={6} md={6} xs={12}>
-          <Card
-            sx={{
-              p: "20px 30px",
-            }}
-          >
-            <H5 mt={0} mb={2}>
-              Shipping Address
-            </H5>
-
-            <Paragraph fontSize={14} my={0}>
-              {order?.address}
-            </Paragraph>
-          </Card>
-        </Grid>
-
-        <Grid item lg={6} md={6} xs={12}>
-          <Card
-            sx={{
-              p: "20px 30px",
-            }}
-          >
-            <FlexBetween mb={2}>
-              <H6 my="0px">Total</H6>
-              <H6 my="0px">{currency(order?.total)}</H6>
-            </FlexBetween>
-
-            <Typography fontSize={14}>Cash on Delivery</Typography>
-          </Card>
-        </Grid>
-      </Grid>
+      <OrderedSummary order={order} />
     </CustomerDashboardLayout>
   );
 };

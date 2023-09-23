@@ -18,6 +18,7 @@ import {
   bannerDataForm,
   updateBannerAsync,
 } from "@/redux/features/bannerSlice";
+import { ICarouselCard } from "@/app/models/Brand";
 
 // ================================================================
 
@@ -35,11 +36,17 @@ const schema = yup.object().shape({
   ButtonText: yup.string().required(),
 });
 
-const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
+const BannerForm = ({
+  id = "",
+  banner,
+}: {
+  id?: string;
+  banner?: Partial<ICarouselCard>;
+}) => {
   const [files, setFiles] = useState<any>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
-  const { error } = useSelector((state: any) => state.banners);
+  const { error, loading } = useSelector((state: any) => state.banners);
   const { status } = useSelector((state: any) => state.statusAdmin);
   const router = useRouter();
 
@@ -297,14 +304,22 @@ const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
                 {files.map((file: any, index: number) => {
                   return (
                     <UploadImageBox size="medium" key={index}>
-                      <Image alt="Image uploaded" src={file.preview} width="100%" />
+                      <Image
+                        alt="Image uploaded"
+                        src={file.preview}
+                        width="100%"
+                      />
                       <StyledClear onClick={handleFileDelete(file)} />
                     </UploadImageBox>
                   );
                 })}
                 {isEmpty(files) && banner?.imgUrl && (
                   <UploadImageBox size="medium">
-                    <Image alt="Image uploaded" src={banner?.imgUrl} width="100%" />
+                    <Image
+                      alt="Image uploaded"
+                      src={banner?.imgUrl}
+                      width="100%"
+                    />
                   </UploadImageBox>
                 )}
               </FlexBox>
@@ -320,7 +335,8 @@ const BannerForm = ({ id = "", banner }: { id?: string; banner?: any }) => {
                   (status === "create" && (!isDirty || !isValid)) ||
                   (status === "edit" &&
                     isEmpty(files) &&
-                    (!isDirty || !isValid))
+                    (!isDirty || !isValid)) ||
+                  loading
                 }
                 variant="contained"
                 color="info"

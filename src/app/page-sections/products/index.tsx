@@ -135,7 +135,7 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
   } = shopData || {};
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(true));
   }, [dispatch]);
 
   return (

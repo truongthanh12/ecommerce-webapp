@@ -7,7 +7,9 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { ICarouselCard } from "@/app/models/Brand";
 
@@ -133,37 +135,44 @@ const bannerSlice = createSlice({
 
 export const { setLoading, setBanners, setError } = bannerSlice.actions;
 
-export const fetchBanners = () => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(setLoading(true));
+export const fetchBanners =
+  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
 
-    // Update to use the new query and getDocs function
-    const bannersRef = collection(db, "hero-banners");
-    const querySnapshot = await getDocs(bannersRef);
+      // Update to use the new query and getDocs function
+      const bannersRef = collection(db, "hero-banners");
+      let queryRef: any = bannersRef;
 
-    const banners: ICarouselCard[] = [];
-    querySnapshot.forEach((doc) => {
-      const bannersData = doc.data() as ICarouselCard;
-      const id = doc.id; // Get the document ID
-      const bannerWithId = { ...bannersData, id };
-      banners.push(bannerWithId);
-    });
+      if (isFetchByUser) {
+        queryRef = query(bannersRef, where("published", "==", isFetchByUser));
+      }
 
-    dispatch(setBanners(banners));
-  } catch (error) {
-    dispatch(setError("An error occurred while fetching banners."));
-  }
-};
+      const querySnapshot = await getDocs(queryRef);
+
+      const banners: ICarouselCard[] = [];
+      querySnapshot.forEach((doc) => {
+        const bannersData = doc.data() as ICarouselCard;
+        const id = doc.id; // Get the document ID
+        const bannerWithId = { ...bannersData, id };
+        banners.push(bannerWithId);
+      });
+
+      dispatch(setBanners(banners));
+    } catch (error) {
+      dispatch(setError("An error occurred while fetching banners."));
+    }
+  };
 
 export const bannerDataForm = (data: Partial<ICarouselCard>) => {
   return {
     imgUrl: data.imgUrl || "",
     title: data.title || "",
     type: data.type || "",
-    featured: true,
     buttonText: data.buttonText || "",
     buttonLink: data.buttonLink || "",
     description: data.description || "",
+    published: false,
   };
 };
 

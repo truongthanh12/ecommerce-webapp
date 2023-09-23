@@ -15,6 +15,7 @@ import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchBanners } from "@/redux/features/bannerSlice";
 import NotFound from "@/app/components/not-found";
+import { ICarouselCard } from "@/app/models/Brand";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -115,12 +116,8 @@ export default function BannerList() {
 
               <TableBody>
                 {!isEmpty(filteredList) ? (
-                  filteredList.map((banner: any) => (
-                    <BannerRow
-                      banner={banner}
-                      key={banner.id}
-                      selected={selected}
-                    />
+                  filteredList.map((banner: Partial<ICarouselCard>) => (
+                    <BannerRow banner={banner} key={banner.id} />
                   ))
                 ) : (
                   <tr>

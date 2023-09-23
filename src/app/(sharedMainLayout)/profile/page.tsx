@@ -17,13 +17,65 @@ import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
 import { currency, tryFormatDate } from "@/utils/lib";
 import { useSelector } from "react-redux";
-import { Fragment } from "react";
+import { Fragment, useEffect, useMemo } from "react";
+import { fetchOrders } from "@/redux/features/orderSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { IOrder } from "@/models/Order";
+import { INFO_LIST } from "@/data/status";
 // ============================================================
 
 export default function Profile() {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const { user } = useSelector((state: any) => state.auth);
+  const { orders } = useSelector((state: any) => state.orders);
+  const dispatch: any = useAppDispatch();
+
+  const ordersAwating = useMemo(
+    () => orders.filter((item: IOrder) => item.status === "processing"),
+    [orders]
+  );
+  const ordersCancelled = useMemo(
+    () => orders.filter((item: IOrder) => item.status === "cancelled"),
+    [orders]
+  );
+  const ordersDelivered = useMemo(
+    () => orders.filter((item: IOrder) => item.status === "delivered"),
+    [orders]
+  );
   // SECTION TITLE HEADER LINK
+  const updatedInfoList = useMemo(() => {
+    return INFO_LIST.map((item) => {
+      if (item.subtitle.includes("All")) {
+        return {
+          ...item,
+          title: orders.length,
+        };
+      }
+      if (item.subtitle.includes("Awaiting")) {
+        return {
+          ...item,
+          title: ordersAwating.length,
+        };
+      }
+      if (item.subtitle.includes("Delivered")) {
+        return {
+          ...item,
+          title: ordersDelivered.length,
+        };
+      }
+      if (item.subtitle.includes("Cancelled")) {
+        return {
+          ...item,
+          title: ordersCancelled.length,
+        };
+      }
+      return item;
+    });
+  }, [orders, ordersAwating, ordersDelivered, ordersCancelled]);
+
+  useEffect(() => {
+    dispatch(fetchOrders(user.docId));
+  }, [dispatch, user.docId]);
 
   const HEADER_LINK = (
     <Link href={`/profile/${user.docId}`}>
@@ -38,25 +90,6 @@ export default function Profile() {
       </Button>
     </Link>
   );
-
-  const infoList = [
-    {
-      title: "16",
-      subtitle: "All Orders",
-    },
-    {
-      title: "02",
-      subtitle: "Awaiting Payments",
-    },
-    {
-      title: "00",
-      subtitle: "Awaiting Shipment",
-    },
-    {
-      title: "01",
-      subtitle: "Awaiting Delivery",
-    },
-  ];
 
   return (
     <Fragment>
@@ -112,27 +145,29 @@ export default function Profile() {
 
           <Grid item md={6} xs={12}>
             <Grid container spacing={4}>
-              {infoList.map((item) => (
-                <Grid item lg={3} sm={6} xs={6} key={item.subtitle}>
-                  <Card
-                    sx={{
-                      height: "100%",
-                      display: "flex",
-                      p: "1rem 1.25rem",
-                      alignItems: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <H3 color="primary.main" my={0} fontWeight={600}>
-                      {item.title}
-                    </H3>
+              {updatedInfoList?.map(
+                (item: { title: string; subtitle: string }) => (
+                  <Grid item lg={3} sm={6} xs={6} key={item.subtitle}>
+                    <Card
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        p: "1rem 1.25rem",
+                        alignItems: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <H3 color="primary.main" my={0} fontWeight={600}>
+                        {item.title}
+                      </H3>
 
-                    <Small color="grey.600" textAlign="center">
-                      {item.subtitle}
-                    </Small>
-                  </Card>
-                </Grid>
-              ))}
+                      <Small color="grey.600" textAlign="center">
+                        {item.subtitle}
+                      </Small>
+                    </Card>
+                  </Grid>
+                )
+              )}
             </Grid>
           </Grid>
         </Grid>

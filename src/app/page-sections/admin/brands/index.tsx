@@ -8,20 +8,49 @@ import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
 import { useAppDispatch } from "@/redux/hooks";
 import { deleteBrandAsync } from "@/redux/features/brandSlice";
 import { setMessage } from "@/redux/features/messageSlice";
+import { ADMIN_ID } from "@/app/constant";
+import { useSelector } from "react-redux";
+import { IBrand } from "@/app/models/Brand";
+import { updateAsync } from "@/redux/features/rechargeSlice";
 
 // ========================================================================
 
-const BrandRow = ({ brand, selected }: any) => {
-  const { name, featured, image, id } = brand || {};
+const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
+  const { name, published, image, id } = brand || {};
   const router = useRouter();
-  const [featuredCategory, setFeaturedCategory] = useState(featured);
+  const [featuredBrand, setFeatured] = useState(published);
+  const { user } = useSelector((state: any) => state.auth);
 
-  const isItemSelected = selected?.indexOf(name) !== -1;
+  const handleChangeStatus = async () => {
+    if (user.docId === ADMIN_ID) {
+      setFeatured((state) => !state);
+      const resultAction = await dispatch(
+        updateAsync({ id: id || "", docs: "brands", newStatus: !featuredBrand })
+      );
+
+      if (updateAsync.rejected.match(resultAction)) {
+        const errorPayload = resultAction.payload;
+        dispatch(
+          setMessage({
+            message: `Error: ${errorPayload}`,
+            type: "error",
+          })
+        );
+      } else {
+        dispatch(
+          setMessage({
+            message: "Successfully!",
+            type: "success",
+          })
+        );
+      }
+    }
+  };
   const handleNavigate = () => router.push(`/admin/brands/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {
-    dispatch(deleteBrandAsync({ brandId: id }))
+    dispatch(deleteBrandAsync({ brandId: id || "" }))
       .then((resultAction: any) => {
         if (deleteBrandAsync.fulfilled.match(resultAction)) {
           dispatch(
@@ -45,7 +74,7 @@ const BrandRow = ({ brand, selected }: any) => {
   }, [dispatch, id]);
 
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
+    <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="center">#{id?.split("-")[0]}</StyledTableCell>
 
       <StyledTableCell align="center">{name}</StyledTableCell>
@@ -65,8 +94,9 @@ const BrandRow = ({ brand, selected }: any) => {
       <StyledTableCell align="center">
         <SwitchButton
           color="info"
-          checked={featuredCategory}
-          onChange={() => setFeaturedCategory((state: any) => !state)}
+          checked={featuredBrand}
+          onChange={handleChangeStatus}
+          disabled={user.docId !== ADMIN_ID}
         />
       </StyledTableCell>
 
@@ -75,7 +105,10 @@ const BrandRow = ({ brand, selected }: any) => {
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton onClick={handleDelete}>
+        <StyledIconButton
+          onClick={handleDelete}
+          disabled={user.docId !== ADMIN_ID}
+        >
           <Delete />
         </StyledIconButton>
       </StyledTableCell>

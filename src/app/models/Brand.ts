@@ -4,7 +4,7 @@ export interface IBrand {
   name: string;
   image?: string;
   type?: string;
-  featured: boolean;
+  published: boolean;
 }
 
 export interface ICarouselCard {
@@ -15,4 +15,5 @@ export interface ICarouselCard {
   buttonText?: string;
   buttonLink?: string;
   type?: string;
+  published: boolean;
 }
