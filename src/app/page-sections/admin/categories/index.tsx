@@ -20,8 +20,8 @@ import { ICategory } from "@/app/models/Category";
 
 // ========================================================================
 
-const CategoryRow = ({ category }: {category: Partial<ICategory>}) => {
-  const { name, published, image, id, parent } = category || {};
+const CategoryRow = ({ category }: { category: Partial<ICategory> }) => {
+  const { name, published, image, id, parent, userId } = category || {};
   const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(published);
   const { user } = useSelector((state: any) => state.auth);
@@ -30,7 +30,11 @@ const CategoryRow = ({ category }: {category: Partial<ICategory>}) => {
     if (user.docId === ADMIN_ID) {
       setFeaturedCategory((state) => !state);
       const resultAction = await dispatch(
-        updateAsync({ id: id || "", docs: "categories", newStatus: !featuredCategory })
+        updateAsync({
+          id: id || "",
+          docs: "categories",
+          newStatus: !featuredCategory,
+        })
       );
 
       if (updateAsync.rejected.match(resultAction)) {
@@ -111,7 +115,10 @@ const CategoryRow = ({ category }: {category: Partial<ICategory>}) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleNavigate}>
+        <StyledIconButton
+          onClick={handleNavigate}
+          disabled={userId !== user.docId && ADMIN_ID !== user.docId}
+        >
           <Edit />
         </StyledIconButton>
 

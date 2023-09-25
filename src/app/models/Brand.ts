@@ -5,6 +5,7 @@ export interface IBrand {
   image?: string;
   type?: string;
   published: boolean;
+  userId: string;
 }
 
 export interface ICarouselCard {
@@ -16,4 +17,5 @@ export interface ICarouselCard {
   buttonLink?: string;
   type?: string;
   published: boolean;
+  userId: string;
 }

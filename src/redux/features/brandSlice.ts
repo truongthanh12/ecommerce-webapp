@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { IBrand } from "@/app/models/Brand";
+import { ADMIN_ID } from "@/app/constant";
 
 interface BrandState {
   brands: IBrand[];
@@ -136,7 +137,8 @@ const brandSlice = createSlice({
 export const { setLoading, setBrands, setError } = brandSlice.actions;
 
 export const fetchBrands =
-  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+  (isFetchByUser?: boolean, userId?: string) =>
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
 
@@ -145,8 +147,13 @@ export const fetchBrands =
 
       let queryRef: any = brandsRef;
 
-      if (isFetchByUser) {
-        queryRef = query(brandsRef, where("published", "==", isFetchByUser));
+      if (userId !== ADMIN_ID) {
+        if (isFetchByUser) {
+          queryRef = query(brandsRef, where("published", "==", isFetchByUser));
+        }
+        if (userId) {
+          queryRef = query(brandsRef, where("userId", "==", userId));
+        }
       }
 
       const querySnapshot = await getDocs(queryRef);
@@ -165,13 +172,14 @@ export const fetchBrands =
     }
   };
 
-export const brandDataForm = (data: Partial<IBrand>) => {
+export const brandDataForm = (data: Partial<IBrand>, userId: string) => {
   return {
     image: data.image || "",
     name: data.name || "",
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase() || "",
     type: data.type || "",
-    published: false,
+    published: data.published || false,
+    userId: userId,
   };
 };
 

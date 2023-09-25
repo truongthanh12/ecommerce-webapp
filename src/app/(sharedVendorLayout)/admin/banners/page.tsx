@@ -57,6 +57,7 @@ export default function BannerList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
   const { banners } = useSelector((state: any) => state.banners);
+  const { user } = useSelector((state: any) => state.auth);
   const dispatch: any = useDispatch();
 
   const uniqueArrayBanners: any[] = useMemo(() => {
@@ -65,7 +66,7 @@ export default function BannerList() {
   const { onSearchInputChange, filteredData } = useSearch(uniqueArrayBanners);
 
   useEffect(() => {
-    dispatch(fetchBanners());
+    dispatch(fetchBanners(false, user.docId));
   }, [dispatch]);
 
   const {

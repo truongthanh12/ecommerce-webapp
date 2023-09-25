@@ -16,7 +16,7 @@ import { updateAsync } from "@/redux/features/rechargeSlice";
 // ========================================================================
 
 const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
-  const { name, published, image, id } = brand || {};
+  const { name, published, image, id, userId } = brand || {};
   const router = useRouter();
   const [featuredBrand, setFeatured] = useState(published);
   const { user } = useSelector((state: any) => state.auth);
@@ -101,7 +101,10 @@ const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleNavigate}>
+        <StyledIconButton
+          onClick={handleNavigate}
+          disabled={userId !== user.docId && ADMIN_ID !== user.docId}
+        >
           <Edit />
         </StyledIconButton>
 

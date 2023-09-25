@@ -57,6 +57,7 @@ const CategoryForm = ({
   const dispatch: any = useDispatch();
   const { error, loading } = useSelector((state: any) => state.categories);
   const { status } = useSelector((state: any) => state.statusAdmin);
+  const { user } = useSelector((state: any) => state.auth);
   const { parentCategories } = useSelector((state: any) => state.categories);
   const router = useRouter();
 
@@ -135,14 +136,15 @@ const CategoryForm = ({
               image: url || category?.image,
               icon: Icon || category?.icon,
               parent: Parent || category?.parent,
+              published: category?.published
             };
             if (status === "create") {
-              dispatch(addCategoryAsync(categoryDataForm(data)));
+              dispatch(addCategoryAsync(categoryDataForm(data, user.docId)));
             }
             if (status === "edit") {
               dispatch(
                 updateCategoryAsync({
-                  updatedCategory: categoryDataForm(data),
+                  updatedCategory: categoryDataForm(data, user.docId),
                   id,
                 })
               );
@@ -179,13 +181,14 @@ const CategoryForm = ({
       type: Type || category?.type,
       icon: Icon || category?.icon || "",
       parent: Parent || category?.parent,
+      published: category?.published
     };
     if (status === "create") {
-      dispatch(addCategoryAsync(categoryDataForm(data)));
+      dispatch(addCategoryAsync(categoryDataForm(data, user.docId)));
     }
     if (status === "edit") {
       dispatch(
-        updateCategoryAsync({ updatedCategory: categoryDataForm(data), id })
+        updateCategoryAsync({ updatedCategory: categoryDataForm(data, user.docId), id })
       );
     }
     if (error) {

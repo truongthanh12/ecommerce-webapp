@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { ICarouselCard } from "@/app/models/Brand";
+import { ADMIN_ID } from "@/app/constant";
 
 interface BannerState {
   banners: ICarouselCard[];
@@ -136,7 +137,8 @@ const bannerSlice = createSlice({
 export const { setLoading, setBanners, setError } = bannerSlice.actions;
 
 export const fetchBanners =
-  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+  (isFetchByUser?: boolean, userId?: string) =>
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
 
@@ -144,8 +146,13 @@ export const fetchBanners =
       const bannersRef = collection(db, "hero-banners");
       let queryRef: any = bannersRef;
 
-      if (isFetchByUser) {
-        queryRef = query(bannersRef, where("published", "==", isFetchByUser));
+      if (userId !== ADMIN_ID) {
+        if (isFetchByUser) {
+          queryRef = query(bannersRef, where("published", "==", isFetchByUser));
+        }
+        if (userId) {
+          queryRef = query(bannersRef, where("userId", "==", userId));
+        }
       }
 
       const querySnapshot = await getDocs(queryRef);
@@ -164,7 +171,10 @@ export const fetchBanners =
     }
   };
 
-export const bannerDataForm = (data: Partial<ICarouselCard>) => {
+export const bannerDataForm = (
+  data: Partial<ICarouselCard>,
+  userId: string
+) => {
   return {
     imgUrl: data.imgUrl || "",
     title: data.title || "",
@@ -172,7 +182,8 @@ export const bannerDataForm = (data: Partial<ICarouselCard>) => {
     buttonText: data.buttonText || "",
     buttonLink: data.buttonLink || "",
     description: data.description || "",
-    published: false,
+    published: data.published || false,
+    userId: userId,
   };
 };
 

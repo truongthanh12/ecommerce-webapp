@@ -12,6 +12,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { ADMIN_ID } from "@/app/constant";
 
 interface CategoryState {
   categories: ICategory[];
@@ -163,7 +164,8 @@ export const fetchParentCategories = () => async (dispatch: AppDispatch) => {
 };
 
 export const fetchCategories =
-  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+  (isFetchByUser?: boolean, userId?: string) =>
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
 
@@ -171,8 +173,16 @@ export const fetchCategories =
 
       let queryRef: any = rechargeRef;
 
-      if (isFetchByUser) {
-        queryRef = query(rechargeRef, where("published", "==", isFetchByUser));
+      if (userId !== ADMIN_ID) {
+        if (isFetchByUser) {
+          queryRef = query(
+            rechargeRef,
+            where("published", "==", isFetchByUser)
+          );
+        }
+        if (userId) {
+          queryRef = query(rechargeRef, where("userId", "==", userId));
+        }
       }
 
       const querySnapshot = await getDocs(queryRef);
@@ -191,7 +201,7 @@ export const fetchCategories =
     }
   };
 
-export const categoryDataForm = (data: Partial<ICategory>) => {
+export const categoryDataForm = (data: Partial<ICategory>, userId: string) => {
   return {
     description: "description",
     icon: data.icon,
@@ -200,7 +210,8 @@ export const categoryDataForm = (data: Partial<ICategory>) => {
     slug: data.name?.replace(/ +/g, "-")?.toLowerCase(),
     type: data.type || "",
     parent: data.parent || "",
-    published: false,
+    published: data.published || false,
+    userId: userId,
   };
 };
 

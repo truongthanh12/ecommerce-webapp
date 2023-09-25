@@ -15,8 +15,8 @@ import { ICarouselCard } from "@/app/models/Brand";
 
 // ========================================================================
 
-const BannerRow = ({ banner }: {banner: Partial<ICarouselCard>}) => {
-  const { title, published, imgUrl, id, description } = banner || {};
+const BannerRow = ({ banner }: { banner: Partial<ICarouselCard> }) => {
+  const { title, published, imgUrl, id, description, userId } = banner || {};
   const router = useRouter();
   const [featured, setFeatured] = useState(published);
   const { user } = useSelector((state: any) => state.auth);
@@ -28,7 +28,11 @@ const BannerRow = ({ banner }: {banner: Partial<ICarouselCard>}) => {
     if (user.docId === ADMIN_ID) {
       setFeatured((state) => !state);
       const resultAction = await dispatch(
-        updateAsync({ id: id || "", docs: "banners", newStatus: !featured })
+        updateAsync({
+          id: id || "",
+          docs: "hero-banners",
+          newStatus: !featured,
+        })
       );
 
       if (updateAsync.rejected.match(resultAction)) {
@@ -102,7 +106,10 @@ const BannerRow = ({ banner }: {banner: Partial<ICarouselCard>}) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleNavigate}>
+        <StyledIconButton
+          onClick={handleNavigate}
+          disabled={user.docId !== userId && ADMIN_ID !== user.docId}
+        >
           <Edit />
         </StyledIconButton>
 

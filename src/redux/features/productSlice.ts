@@ -16,6 +16,7 @@ import {
 import { IProducts } from "@/app/models/Product";
 import { IUser } from "@/app/models/User";
 import { formatToSlug } from "@/app/utils/lib";
+import { ADMIN_ID } from "@/app/constant";
 
 interface productstate {
   products: IProducts[];
@@ -167,7 +168,8 @@ const productSlice = createSlice({
 export const { setLoading, setProducts, setError } = productSlice.actions;
 
 export const fetchProducts =
-  (isFetchByUser?: boolean) => async (dispatch: AppDispatch) => {
+  (isFetchByUser?: boolean, userId?: string) =>
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
 
@@ -176,8 +178,16 @@ export const fetchProducts =
 
       let queryRef: any = productsRef;
 
-      if (isFetchByUser) {
-        queryRef = query(productsRef, where("published", "==", isFetchByUser));
+      if (userId !== ADMIN_ID) {
+        if (isFetchByUser) {
+          queryRef = query(
+            productsRef,
+            where("published", "==", isFetchByUser)
+          );
+        }
+        if (userId) {
+          queryRef = query(productsRef, where("userId", "==", userId));
+        }
       }
 
       const querySnapshot = await getDocs(queryRef);
@@ -207,7 +217,7 @@ export const productDataForm = (
     slug: formatToSlug(data.title || ""),
     type: data.type || "",
     categories: data.categories || [],
-    published: false,
+    published: data.published || false,
     price: data.price || 0,
     colors: data.colors || [],
     sizes: data.sizes || [],
@@ -218,6 +228,7 @@ export const productDataForm = (
     shop: user,
     stock: data.stock || 0,
     createdAt: serverTimestamp(),
+    userId: user.docId,
   };
 };
 

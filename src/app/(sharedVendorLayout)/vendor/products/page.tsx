@@ -61,11 +61,12 @@ export default function ProductList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
   const { products } = useSelector((state: any) => state.products);
+  const { user } = useSelector((state: any) => state.auth);
   const dispatch: any = useDispatch();
   const { onSearchInputChange, filteredData } = useSearch(products);
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(false, user.docId));
   }, [dispatch]);
 
   const {

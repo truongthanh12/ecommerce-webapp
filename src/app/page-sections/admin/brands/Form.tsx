@@ -38,6 +38,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
   const { error } = useSelector((state: any) => state.brands);
+  const { user } = useSelector((state: any) => state.auth);
   const { status } = useSelector((state: any) => state.statusAdmin);
   const router = useRouter();
 
@@ -106,13 +107,17 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
               name: Name || brand?.name,
               type: Type || brand?.type,
               image: url || brand?.image,
+              published: brand?.published,
             };
             if (status === "create") {
-              dispatch(addBrandSync(brandDataForm(data)));
+              dispatch(addBrandSync(brandDataForm(data, user.docId)));
             }
             if (status === "edit") {
               dispatch(
-                updateBrandAsync({ updatedBrand: brandDataForm(data), id })
+                updateBrandAsync({
+                  updatedBrand: brandDataForm(data, user.docId),
+                  id,
+                })
               );
             }
             if (error) {
@@ -146,12 +151,15 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
       name: Name || brand?.name,
       type: Type || brand?.type,
       image: brand?.image || "",
+      published: brand?.published,
     };
     if (status === "create") {
-      dispatch(addBrandSync(brandDataForm(data)));
+      dispatch(addBrandSync(brandDataForm(data, user.docId)));
     }
     if (status === "edit") {
-      dispatch(updateBrandAsync({ updatedBrand: brandDataForm(data), id }));
+      dispatch(
+        updateBrandAsync({ updatedBrand: brandDataForm(data, user.docId), id })
+      );
     }
     if (error) {
       setErrorMessage("An error occurred! Please try again.");

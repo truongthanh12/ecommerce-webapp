@@ -9,4 +9,5 @@ export interface ICategory {
   description: string | null;
   parent: string;
   published: boolean;
+  userId: string;
 }

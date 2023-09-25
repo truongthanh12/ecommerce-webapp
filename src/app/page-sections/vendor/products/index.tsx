@@ -22,8 +22,17 @@ import { ADMIN_ID } from "@/app/constant";
 
 // ========================================================================
 const ProductRow = ({ product }: any) => {
-  const { title, published, thumbnail, id, categories, price, brands, stock } =
-    product || {};
+  const {
+    title,
+    published,
+    thumbnail,
+    id,
+    categories,
+    price,
+    brands,
+    stock,
+    userId,
+  } = product || {};
   const router = useRouter();
   const [featured, setFeatured] = useState(published);
   const { user } = useSelector((state: any) => state.auth);
@@ -111,7 +120,10 @@ const ProductRow = ({ product }: any) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleNavigate}>
+        <StyledIconButton
+          onClick={handleNavigate}
+          disabled={userId !== user.docId && ADMIN_ID !== user.docId}
+        >
           <Edit />
         </StyledIconButton>
 

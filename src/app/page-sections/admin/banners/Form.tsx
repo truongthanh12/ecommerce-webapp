@@ -47,6 +47,7 @@ const BannerForm = ({
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
   const { error, loading } = useSelector((state: any) => state.banners);
+  const { user } = useSelector((state: any) => state.auth);
   const { status } = useSelector((state: any) => state.statusAdmin);
   const router = useRouter();
 
@@ -121,13 +122,17 @@ const BannerForm = ({
               imgUrl: url || banner?.imgUrl,
               description: Description || banner?.description,
               buttonText: ButtonText || banner?.buttonText,
+              published: banner?.published,
             };
             if (status === "create") {
-              dispatch(addBannerAsync(bannerDataForm(data)));
+              dispatch(addBannerAsync(bannerDataForm(data, user.docId)));
             }
             if (status === "edit") {
               dispatch(
-                updateBannerAsync({ updateBanner: bannerDataForm(data), id })
+                updateBannerAsync({
+                  updateBanner: bannerDataForm(data, user.docId),
+                  id,
+                })
               );
             }
             if (error) {
@@ -163,12 +168,18 @@ const BannerForm = ({
       imgUrl: banner?.imgUrl || "",
       description: Description || banner?.description,
       buttonText: ButtonText || banner?.buttonText,
+      published: banner?.published,
     };
     if (status === "create") {
-      dispatch(addBannerAsync(bannerDataForm(data)));
+      dispatch(addBannerAsync(bannerDataForm(data, user.docId)));
     }
     if (status === "edit") {
-      dispatch(updateBannerAsync({ updateBanner: bannerDataForm(data), id }));
+      dispatch(
+        updateBannerAsync({
+          updateBanner: bannerDataForm(data, user.docId),
+          id,
+        })
+      );
     }
     if (error) {
       setErrorMessage("An error occurred! Please try again.");

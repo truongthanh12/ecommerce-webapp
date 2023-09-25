@@ -57,6 +57,7 @@ export default function CategoriesList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
   const { categories } = useSelector((state: any) => state.categories);
+  const { user } = useSelector((state: any) => state.auth);
   const dispatch: any = useDispatch();
 
   const uniqueArrayCategories: any[] = useMemo(() => {
@@ -67,7 +68,7 @@ export default function CategoriesList() {
   );
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(fetchCategories(false, user.docId));
   }, [dispatch]);
 
   const {
@@ -119,10 +120,7 @@ export default function CategoriesList() {
               <TableBody>
                 {!isEmpty(filteredList) ? (
                   filteredList.map((category: Partial<ICategory>) => (
-                    <CategoryRow
-                      category={category}
-                      key={category.id}
-                    />
+                    <CategoryRow category={category} key={category.id} />
                   ))
                 ) : (
                   <tr>

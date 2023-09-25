@@ -52,12 +52,13 @@ export default function BrandList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
   const { brands } = useSelector((state: any) => state.brands);
+  const { user } = useSelector((state: any) => state.auth);
   const dispatch: any = useDispatch();
   const { onSearchInputChange, filteredData } = useSearch(brands);
 
   useEffect(() => {
-    dispatch(fetchBrands());
-  }, [dispatch]);
+    dispatch(fetchBrands(false, user.docId));
+  }, [dispatch, user.docId]);
 
   const {
     order,
