@@ -186,3 +186,12 @@ export function calculateFutureDate(baseDate: any, date = 3) {
     return "";
   }
 }
+export function formatNumberWithThousandSeparators(number: number) {
+  if (number >= 1000 && number < 10000) {
+    return (number / 1000).toFixed(1) + "k";
+  } else if (number >= 10000) {
+    return (number / 1000).toFixed(0) + "k";
+  } else {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+}

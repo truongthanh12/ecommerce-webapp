@@ -45,6 +45,7 @@ interface TypeProps {
   children?: React.ReactNode;
   isInShop?: boolean;
   stock?: string;
+  shop?: any
 }
 const ProductCard = ({
   id,
@@ -65,6 +66,7 @@ const ProductCard = ({
   isTopCategory,
   isInShop,
   stock,
+  shop
 }: Partial<TypeProps>) => {
   const [openModal, setOpenModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -229,6 +231,7 @@ const ProductCard = ({
           thumbnail,
           discount,
           stock,
+          shop
         }}
       />
       <Grid item alignItems="center" container spacing={1} xs={isInShop}>

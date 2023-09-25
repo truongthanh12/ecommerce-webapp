@@ -26,7 +26,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
   }, [width]);
 
   const bigDiscountList = useMemo(() => {
-    return products.filter((item) => item.type === "big-discounts");
+    return products.filter((item) => item.type === "big-discount");
   }, [products]);
 
   return (
@@ -34,13 +34,13 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
       icon={<GiftBox />}
       title="Big Discounts"
       seeMoreLink={`/sale-page?${new URLSearchParams({
-        type: "big-discounts",
+        type: "big-discount",
       })}`}
     >
       <Box my="-0.25rem">
         <Carousel visibleSlides={visibleSlides}>
           {bigDiscountList.map(
-            ({ id, title, thumbnail, price, discount, slug, stock }) => (
+            ({ id, title, thumbnail, price, discount, slug, stock, shop }) => (
               <Box py={0.5} key={id}>
                 <Card
                   sx={{
@@ -55,6 +55,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
                       price={price}
                       discount={discount}
                       stock={stock}
+                      shop={shop}
                     />
                   </Link>
                 </Card>

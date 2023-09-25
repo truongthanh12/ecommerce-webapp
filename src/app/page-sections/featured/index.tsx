@@ -58,6 +58,7 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
                         thumbnail={item.thumbnail}
                         reviewCount={0 || item?.reviews?.length}
                         stock={item.stock}
+                        shop={item.shop}
                       />
                     </Link>
                   </Grid>

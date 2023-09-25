@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import db from "@/firebase";
 import {
   addDoc,
@@ -22,12 +22,18 @@ interface productstate {
   products: IProducts[];
   loading: boolean;
   error: any;
+  currentPage: number;
+  hasMorePages: boolean;
+  totalProducts: number;
 }
 
 const initialState: productstate = {
   products: [],
   loading: false,
   error: {},
+  currentPage: 1,
+  hasMorePages: true,
+  totalProducts: 0,
 };
 
 export const addProductSync = createAsyncThunk(
@@ -118,6 +124,12 @@ const productSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setTotalProducts: (state, action: PayloadAction<number>) => {
+      state.totalProducts = action.payload;
+    },
+    setHasMorePages: (state, action: PayloadAction<boolean>) => {
+      state.hasMorePages = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -165,13 +177,29 @@ const productSlice = createSlice({
   },
 });
 
-export const { setLoading, setProducts, setError } = productSlice.actions;
+export const {
+  setLoading,
+  setProducts,
+  setError,
+  setTotalProducts,
+  setHasMorePages,
+} = productSlice.actions;
 
 export const fetchProducts =
-  (isFetchByUser?: boolean, userId?: string) =>
-  async (dispatch: AppDispatch) => {
+  (isFetchByUser?: boolean, userId?: string, page?: number) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(setLoading(true));
+
+      const productsState: any = getState();
+      const { products }: any = productsState.products || {};
+      if (products) {
+        dispatch(setTotalProducts(products.length));
+      }
+      // Calculate the start and end points based on the page size
+      const pageSize = 10; // Adjust as needed
+      const startAt = ((page || 0) - 1) * pageSize;
+      const endAt = startAt + pageSize;
 
       // Update to use the new query and getDocs function
       const productsRef = collection(db, "products");
@@ -190,17 +218,29 @@ export const fetchProducts =
         }
       }
 
+      if (page) {
+        if (startAt > 0) {
+          // Apply startAt if not on the first page
+          queryRef = queryRef.startAfter(startAt);
+        }
+        queryRef = queryRef.endAt(endAt);
+      }
+
       const querySnapshot = await getDocs(queryRef);
 
-      const products: IProducts[] = [];
+      if (querySnapshot.docs.length < pageSize) {
+        dispatch(setHasMorePages(false));
+      }
+
+      const productsList: IProducts[] = [];
       querySnapshot.forEach((doc) => {
         const productData = doc.data() as IProducts;
         const id = doc.id;
         const productWithId = { ...productData, id };
-        products.push(productWithId);
+        productsList.push(productWithId);
       });
 
-      dispatch(setProducts(products));
+      dispatch(setProducts(productsList));
     } catch (error) {
       dispatch(setError("An error occurred while fetching products."));
     }

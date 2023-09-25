@@ -34,7 +34,8 @@ const MoreProducts: React.FC<TypeProps> = ({ products }) => {
               discount={item.discount}
               images={item.images}
               stock={item.stock}
-            />
+              shop={item.shop}
+              />
           </Grid>
         ))}
       </Grid>

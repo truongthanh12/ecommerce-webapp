@@ -178,6 +178,7 @@ export default function SalePage({ searchParams }: PageProps) {
                 rating={item.rating}
                 thumbnail={item.thumbnail}
                 discount={item.discount}
+                shop={item.shop}
               />
             </Grid>
           ))}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Container, Grid } from "@mui/material";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
 import ProductsGrid from "@/app/components/products/ProductsGrid";
@@ -12,15 +12,24 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import { removeAccents } from "@/app/utils/lib";
 import { IProducts } from "@/app/models/Product";
 import debounce from "lodash/debounce";
+import Pagination from "@/app/components/pagination";
 
 interface PageProps {
   type?: "shop" | "product";
   shopData?: Partial<IShop>;
   searchParams: { [key: string]: string | undefined };
+  productsByUser?: Partial<IProducts[]>;
 }
-const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
+const ProductsSearch = ({
+  type,
+  shopData,
+  searchParams,
+  productsByUser,
+}: PageProps) => {
   const [view, setView] = useState("grid");
-  const { products } = useSelector((state: any) => state.products);
+  const { products, totalProducts } = useSelector(
+    (state: any) => state.products
+  );
   const dispatch: any = useDispatch();
   const [searchItems, setSearchItems] = useState(products);
   const {
@@ -37,8 +46,8 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
 
   useEffect(
     debounce(() => {
-      if (products) {
-        let filtered = products;
+      if (products || productsByUser) {
+        let filtered = productsByUser || products;
         if (query) {
           const normalizedQuery = removeAccents(query).toLowerCase();
           filtered = products.filter((item: IProducts) =>
@@ -105,7 +114,6 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
         } else if (orderBy === "Price Low to High") {
           sortedProducts.sort((a, b) => a.price - b.price);
         }
-
         setSearchItems(sortedProducts);
       }
     }, 400),
@@ -135,8 +143,10 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
   } = shopData || {};
 
   useEffect(() => {
-    dispatch(fetchProducts(true));
-  }, [dispatch]);
+    if (!productsByUser) {
+      dispatch(fetchProducts(true));
+    }
+  }, [dispatch, productsByUser]);
 
   return (
     <Container
@@ -183,14 +193,22 @@ const ProductsSearch = ({ type, shopData, searchParams }: PageProps) => {
         </Grid>
 
         {/* PRODUCT VIEW AREA */}
-        <Grid item md={9} xs={12}>
-          {view === "grid" ? (
-            <ProductsGrid products={searchItems} />
-          ) : (
-            <ProductsList products={searchItems} />
-          )}
-        </Grid>
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <Grid item md={9} xs={12}>
+            {view === "grid" ? (
+              <ProductsGrid products={searchItems} />
+            ) : (
+              <ProductsList products={searchItems} />
+            )}
+          </Grid>
+        </Suspense>
       </Grid>
+      <Pagination
+        products={products}
+        totalProducts={totalProducts}
+        startProductNumber={1}
+        searchParams={searchParams}
+      />
     </Container>
   );
 };

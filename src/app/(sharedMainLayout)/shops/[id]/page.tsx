@@ -5,6 +5,9 @@ import { Container } from "@mui/material";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
 import {} from "react";
+import { fetchProducts } from "@/redux/features/productSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useSelector } from "react-redux";
 
 // ============================================================
 
@@ -29,15 +32,20 @@ async function getShopById(id = "") {
 }
 export default function ShopDetails({ params, searchParams }: PageProps) {
   const [shop, setShop] = useState({});
+  const dispatch: any = useAppDispatch();
+  const { products } = useSelector((state: any) => state.products || []);
 
   useEffect(() => {
-    async function fetchData() {
-      const shop = await getShopById(params.id);
-      setShop(shop || {});
-    }
+    if (params.id) {
+      async function fetchData() {
+        dispatch(fetchProducts(false, params.id));
+        const shop = await getShopById(params.id);
+        setShop(shop || {});
+      }
 
-    fetchData();
-  }, [params.id]);
+      fetchData();
+    }
+  }, [params.id, dispatch]);
 
   return (
     <Suspense fallback={<h1>Loading...</h1>}>
@@ -51,6 +59,7 @@ export default function ShopDetails({ params, searchParams }: PageProps) {
           searchParams={searchParams}
           shopData={shop}
           type="shop"
+          productsByUser={products}
         />
       </Container>
     </Suspense>

@@ -1,7 +1,5 @@
 import React, { Fragment } from "react";
-import { Grid, Pagination } from "@mui/material";
-import { FlexBetween } from "@/components/flex-box";
-import { Span } from "@/components/Typography";
+import { Grid } from "@mui/material";
 import { IProducts } from "@/app/models/Product";
 import ProductCard from "@/components/products/Card";
 import NotFound from "../not-found";
@@ -27,6 +25,7 @@ const ProductsGrid: React.FC<TypeProps> = ({ products }) => {
                 thumbnail={item.thumbnail}
                 discount={item.discount}
                 stock={item.stock}
+                shop={item.shop}
               />
             </Grid>
           ))
@@ -34,13 +33,6 @@ const ProductsGrid: React.FC<TypeProps> = ({ products }) => {
           <NotFound />
         )}
       </Grid>
-
-      {products.length > 9 && (
-        <FlexBetween flexWrap="wrap" mt={4}>
-          <Span color="grey.600">Showing 1-9 of 1.3k Products</Span>
-          <Pagination count={10} variant="outlined" color="primary" />
-        </FlexBetween>
-      )}
     </Fragment>
   );
 };

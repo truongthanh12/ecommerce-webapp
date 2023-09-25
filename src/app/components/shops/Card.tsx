@@ -13,6 +13,7 @@ import {
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H3, Span } from "@/components/Typography";
 import React from "react";
+import { IUser } from "@/app/models/User";
 
 // styled components
 const ContentWrapper = styled(Box)(
@@ -38,6 +39,7 @@ interface CardShops {
   coverPicture: string;
   profilePicture: string;
   id: string;
+  user: Partial<IUser>;
 }
 const ShopCard = ({
   name,
@@ -47,9 +49,10 @@ const ShopCard = ({
   coverPicture,
   profilePicture,
   id,
+  user,
 }: CardShops) => {
   return (
-    <Card>
+    <Card sx={id === user.docId ? { border: "2px solid red" } : {}}>
       <ContentWrapper img={coverPicture}>
         <H3 fontWeight="600" mb={1}>
           {name}
