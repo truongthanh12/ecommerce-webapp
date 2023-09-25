@@ -14,8 +14,8 @@ const ProductsGrid: React.FC<TypeProps> = ({ products }) => {
     <Fragment>
       <Grid container spacing={3}>
         {!isEmpty(products) ? (
-          products.map((item) => (
-            <Grid item lg={4} sm={6} xs={12} key={item.id}>
+          products.map((item, ind:number) => (
+            <Grid item lg={4} sm={6} xs={12} key={item.id + ind}>
               <ProductCard
                 id={item.id}
                 slug={item.slug}

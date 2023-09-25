@@ -8,6 +8,7 @@ import { Providers } from "@/redux/provider";
 import ToastProvider from "@/redux/toastProvider";
 import React from "react";
 import PackageStateChanged from "@/components/auth/PackageStateChanged";
+import BackdropLoading from "@/components/backdrop"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,7 +48,7 @@ export default function RootLayout({ children }: LayoutProps) {
         <Providers>
           <PackageStateChanged>
             <ToastProvider>
-              <Suspense fallback="Loading...">
+              <Suspense fallback={<BackdropLoading />}>
                 <MuiTheme>{children}</MuiTheme>
               </Suspense>
             </ToastProvider>

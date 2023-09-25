@@ -1,16 +1,5 @@
-import React, { Suspense, useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  TextField,
-  styled,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Grid, TextField, styled } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -151,12 +140,79 @@ const VoucherForm = ({ id = "", voucher }: { id?: string; voucher?: any }) => {
         p: 6,
       }}
     >
-      <Suspense fallback="Loading...">
-        <form onSubmit={handleSubmit(handleVoucherForm)}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+      <form onSubmit={handleSubmit(handleVoucherForm)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Controller
+              name="Name"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Code"
+                  placeholder="Code...."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                  autoFocus={status === "create"}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="TotalBill"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label={"Total Bill >=" + currency(value || "")}
+                  placeholder="Total Bill >=..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Controller
+              name="Amount"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Total number of codes."
+                  placeholder="Amount..."
+                  type="number"
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <>
               <Controller
-                name="Name"
+                name="DiscountPercent"
                 control={control}
                 render={({
                   field: { onChange, value },
@@ -164,126 +220,57 @@ const VoucherForm = ({ id = "", voucher }: { id?: string; voucher?: any }) => {
                 }) => (
                   <TextField
                     fullWidth
+                    type="number"
                     variant="outlined"
-                    label="Code"
-                    placeholder="Code...."
+                    label={"Discount " + " " + (value + "(%)" || "")}
+                    placeholder="Discount..."
                     onChange={onChange}
                     helperText={!!error ? error.message : ""}
                     error={!!error?.message}
                     value={value || ""}
-                    autoFocus={status === "create"}
                   />
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
               <Controller
-                name="TotalBill"
+                name="DiscountMax"
                 control={control}
                 render={({
                   field: { onChange, value },
                   fieldState: { error },
                 }) => (
                   <TextField
+                    sx={{ mt: 3 }}
                     fullWidth
-                    variant="outlined"
-                    label={"Total Bill >=" + currency(value || "")}
-                    placeholder="Total Bill >=..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Controller
-                name="Amount"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Total number of codes."
-                    placeholder="Amount..."
                     type="number"
+                    variant="outlined"
+                    label={"Discount max" + " " + currency(value || "")}
+                    placeholder="Discount max..."
                     onChange={onChange}
                     helperText={!!error ? error.message : ""}
                     error={!!error?.message}
-                    value={value}
+                    value={value || ""}
                   />
                 )}
               />
-            </Grid>
-
-            <Grid item xs={12}>
-              <>
-                <Controller
-                  name="DiscountPercent"
-                  control={control}
-                  render={({
-                    field: { onChange, value },
-                    fieldState: { error },
-                  }) => (
-                    <TextField
-                      fullWidth
-                      type="number"
-                      variant="outlined"
-                      label={"Discount " + " " + (value + "(%)" || "")}
-                      placeholder="Discount..."
-                      onChange={onChange}
-                      helperText={!!error ? error.message : ""}
-                      error={!!error?.message}
-                      value={value || ""}
-                    />
-                  )}
-                />
-                <Controller
-                  name="DiscountMax"
-                  control={control}
-                  render={({
-                    field: { onChange, value },
-                    fieldState: { error },
-                  }) => (
-                    <TextField
-                      sx={{ mt: 3 }}
-                      fullWidth
-                      type="number"
-                      variant="outlined"
-                      label={"Discount max" + " " + currency(value || "")}
-                      placeholder="Discount max..."
-                      onChange={onChange}
-                      helperText={!!error ? error.message : ""}
-                      error={!!error?.message}
-                      value={value || ""}
-                    />
-                  )}
-                />
-              </>
-            </Grid>
-
-            {isDirty && isValid && errorMessage && (
-              <ErrorMessage>{errorMessage}</ErrorMessage>
-            )}
-
-            <Grid justifyContent="flex-end" container item xs={12}>
-              <Button
-                disabled={!isDirty || !isValid}
-                variant="contained"
-                color="info"
-                type="submit"
-              >
-                Save voucher
-              </Button>
-            </Grid>
+            </>
           </Grid>
-        </form>
-      </Suspense>
+
+          {isDirty && isValid && errorMessage && (
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          )}
+
+          <Grid justifyContent="flex-end" container item xs={12}>
+            <Button
+              disabled={!isDirty || !isValid}
+              variant="contained"
+              color="info"
+              type="submit"
+            >
+              Save voucher
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 };

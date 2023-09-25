@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Container, Grid } from "@mui/material";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
 import ProductsGrid from "@/app/components/products/ProductsGrid";
@@ -13,6 +13,8 @@ import { removeAccents } from "@/app/utils/lib";
 import { IProducts } from "@/app/models/Product";
 import debounce from "lodash/debounce";
 import Pagination from "@/app/components/pagination";
+import BackdropLoading from "@/components/backdrop";
+import CircularWithValueLabel from "@/components/loading/LoadingWithLabel";
 
 interface PageProps {
   type?: "shop" | "product";
@@ -27,6 +29,7 @@ const ProductsSearch = ({
   productsByUser,
 }: PageProps) => {
   const [view, setView] = useState("grid");
+  const [loadingLayout, setLoadingLayout] = useState(true);
   const { products, totalProducts } = useSelector(
     (state: any) => state.products
   );
@@ -43,6 +46,17 @@ const ProductsSearch = ({
     color,
     subcategory,
   } = searchParams || {};
+  const timerRef = useRef<NodeJS.Timeout | undefined>();
+
+  useEffect(() => {
+    timerRef.current = setTimeout(() => {
+      setLoadingLayout(false);
+    }, 1200);
+
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, []);
 
   useEffect(
     debounce(() => {
@@ -193,9 +207,11 @@ const ProductsSearch = ({
         </Grid>
 
         {/* PRODUCT VIEW AREA */}
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<BackdropLoading />}>
           <Grid item md={9} xs={12}>
-            {view === "grid" ? (
+            {loadingLayout ? (
+              <CircularWithValueLabel />
+            ) : view === "grid" ? (
               <ProductsGrid products={searchItems} />
             ) : (
               <ProductsList products={searchItems} />

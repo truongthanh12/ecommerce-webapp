@@ -129,41 +129,39 @@ const ProductIntro = ({
               height: "auto",
             }}
           >
-            <Suspense fallback="Loading...">
-              <DialogContent
-                sx={{
-                  maxWidth: 900,
-                  width: "100%",
-                }}
-              >
-                <ContentWrapper>
-                  {images && images.length > 0 ? (
-                    <LazyImage
-                      alt={title}
-                      width={0}
-                      height={0}
-                      layout="responsive"
-                      loading="eager"
-                      objectFit="cover"
-                      src={images[selectedImage]}
-                    />
-                  ) : (
-                    <div>No Images Available</div>
-                  )}
-                </ContentWrapper>
+            <DialogContent
+              sx={{
+                maxWidth: 900,
+                width: "100%",
+              }}
+            >
+              <ContentWrapper>
+                {images && images.length > 0 ? (
+                  <LazyImage
+                    alt={title}
+                    width={0}
+                    height={0}
+                    layout="responsive"
+                    loading="eager"
+                    objectFit="cover"
+                    src={images[selectedImage]}
+                  />
+                ) : (
+                  <div>No Images Available</div>
+                )}
+              </ContentWrapper>
 
-                <IconButton
-                  sx={{
-                    position: "absolute",
-                    top: 3,
-                    right: 3,
-                  }}
-                  onClick={toggleDialog}
-                >
-                  <Close fontSize="small" color="secondary" />
-                </IconButton>
-              </DialogContent>
-            </Suspense>
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 3,
+                  right: 3,
+                }}
+                onClick={toggleDialog}
+              >
+                <Close fontSize="small" color="secondary" />
+              </IconButton>
+            </DialogContent>
           </Dialog>
 
           <FlexBox overflow="auto">

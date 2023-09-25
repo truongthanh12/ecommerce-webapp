@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Grid } from "@mui/material";
 import DropZone from "@/components/DropZone";
 import { FlexBox } from "@/components/flex-box";
@@ -224,271 +224,277 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
         p: 6,
       }}
     >
-      <Suspense fallback="Loading...">
-        <form onSubmit={handleSubmit(handleProductForm)}>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="title"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || ""}
-                    error={error}
-                    label="Title"
-                    name="Product title..."
-                    onChange={onChange}
-                    autoFocus={status === "create"}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="price"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || ""}
-                    error={error}
-                    label={`Price ${value ? currency(value || 0) : ""}`}
-                    name="Price..."
-                    onChange={onChange}
-                    type="number"
-                  />
-                )}
-              />
-            </Grid>
+      <form onSubmit={handleSubmit(handleProductForm)}>
+        <Grid container spacing={3}>
+          <Grid item md={6} xs={12}>
+            <Controller
+              name="title"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || ""}
+                  error={error}
+                  label="Title"
+                  name="Product title..."
+                  onChange={onChange}
+                  autoFocus={status === "create"}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <Controller
+              name="price"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || ""}
+                  error={error}
+                  label={`Price ${value ? currency(value || 0) : ""}`}
+                  name="Price..."
+                  onChange={onChange}
+                  type="number"
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="stock"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || ""}
-                    error={error}
-                    label="Stock"
-                    name="Stock..."
-                    onChange={onChange}
-                    type="number"
-                  />
-                )}
-              />
-            </Grid>
+          <Grid item md={6} xs={12}>
+            <Controller
+              name="stock"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || ""}
+                  error={error}
+                  label="Stock"
+                  name="Stock..."
+                  onChange={onChange}
+                  type="number"
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="categories"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || []}
-                    data={categories}
-                    error={error}
-                    label="Select Category"
-                    name="Category"
-                    onChange={onChange}
-                    isSelect
-                  />
-                )}
-              />
-            </Grid>
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="categories"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || []}
+                  data={categories}
+                  error={error}
+                  label="Select Category"
+                  name="Category"
+                  onChange={onChange}
+                  isSelect
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item xs={12}>
-              <DropZone
-                title="Drop & drag maximum 4 products image list"
-                onChange={handleChangeDropZone}
-              />
+          <Grid item xs={12}>
+            <DropZone
+              title="Drop & drag maximum 4 products image list"
+              onChange={handleChangeDropZone}
+            />
 
-              <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                {(files || product?.images).map((file: any, index: number) => {
+            <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
+              {(files || product?.images).map((file: any, index: number) => {
+                return (
+                  <UploadImageBox size="small" key={index}>
+                    <Image
+                      alt="Image uploaded"
+                      src={file.preview || file}
+                      width="100%"
+                    />
+                    <StyledClear onClick={handleFileDelete(file)} />
+                  </UploadImageBox>
+                );
+              })}
+              {isEmpty(files) &&
+                filesUpdate &&
+                filesUpdate.map((file: any, index: number) => {
                   return (
                     <UploadImageBox size="small" key={index}>
-                      <Image alt="Image uploaded" src={file.preview || file} width="100%" />
-                      <StyledClear onClick={handleFileDelete(file)} />
+                      <Image
+                        alt="Image uploaded"
+                        src={file || ""}
+                        width="100%"
+                      />
+                      <StyledClear onClick={handleFileDeleteByUpdate(file)} />
                     </UploadImageBox>
                   );
                 })}
-                {isEmpty(files) &&
-                  filesUpdate &&
-                  filesUpdate.map((file: any, index: number) => {
-                    return (
-                      <UploadImageBox size="small" key={index}>
-                        <Image alt="Image uploaded" src={file || ""} width="100%" />
-                        <StyledClear onClick={handleFileDeleteByUpdate(file)} />
-                      </UploadImageBox>
-                    );
-                  })}
-              </FlexBox>
-            </Grid>
-
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="discount"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <FiledItem
-                    value={value || ""}
-                    label={`Discount ${value ? value + "%" : ""}`}
-                    name="%"
-                    onChange={onChange}
-                    type="number"
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="indexOfImages"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <FiledItem
-                    value={value || ""}
-                    label="Show thumbnail by index of images"
-                    name="Select index thumbnail"
-                    onChange={onChange}
-                    type="number"
-                    isSelect
-                    disabled={!filesUpdate}
-                    data={Array.from(
-                      { length: filesUpdate.length },
-                      (_, index) => index + 1
-                    )}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="brands"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || []}
-                    data={brands}
-                    error={error}
-                    label="Select brand"
-                    name="Brands"
-                    onChange={onChange}
-                    isSelect
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="sizes"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <FiledItem
-                    value={value || []}
-                    data={sizes}
-                    // error={error}
-                    label="Select size"
-                    isMultiple
-                    name="Sizes"
-                    onChange={onChange}
-                    isSelect
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="colors"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || []}
-                    data={colors}
-                    error={error}
-                    label="Select color"
-                    isMultiple
-                    name="colors"
-                    onChange={onChange}
-                    isSelect
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="type"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FiledItem
-                    value={value || []}
-                    data={types}
-                    error={error}
-                    label="Select type"
-                    name="Types"
-                    onChange={onChange}
-                    isSelect
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Controller
-                name="description"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <FiledItem
-                    value={value || ""}
-                    label="Description"
-                    name="Description..."
-                    onChange={onChange}
-                    rows={4}
-                    multiline
-                  />
-                )}
-              />
-            </Grid>
-
-            {isDirty && isValid && errorMessage && (
-              <ErrorMessage>{errorMessage}</ErrorMessage>
-            )}
-
-            <Grid justifyContent="flex-end" container item xs={12}>
-              <Button
-                variant="contained"
-                color="info"
-                type="submit"
-                disabled={loading}
-              >
-                Save product
-              </Button>
-            </Grid>
+            </FlexBox>
           </Grid>
-        </form>
-      </Suspense>
+
+          <Grid item md={6} xs={12}>
+            <Controller
+              name="discount"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FiledItem
+                  value={value || ""}
+                  label={`Discount ${value ? value + "%" : ""}`}
+                  name="%"
+                  onChange={onChange}
+                  type="number"
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <Controller
+              name="indexOfImages"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FiledItem
+                  value={value || ""}
+                  label="Show thumbnail by index of images"
+                  name="Select index thumbnail"
+                  onChange={onChange}
+                  type="number"
+                  isSelect
+                  disabled={!filesUpdate}
+                  data={Array.from(
+                    { length: filesUpdate.length },
+                    (_, index) => index + 1
+                  )}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="brands"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || []}
+                  data={brands}
+                  error={error}
+                  label="Select brand"
+                  name="Brands"
+                  onChange={onChange}
+                  isSelect
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="sizes"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FiledItem
+                  value={value || []}
+                  data={sizes}
+                  // error={error}
+                  label="Select size"
+                  isMultiple
+                  name="Sizes"
+                  onChange={onChange}
+                  isSelect
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="colors"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || []}
+                  data={colors}
+                  error={error}
+                  label="Select color"
+                  isMultiple
+                  name="colors"
+                  onChange={onChange}
+                  isSelect
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="type"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FiledItem
+                  value={value || []}
+                  data={types}
+                  error={error}
+                  label="Select type"
+                  name="Types"
+                  onChange={onChange}
+                  isSelect
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FiledItem
+                  value={value || ""}
+                  label="Description"
+                  name="Description..."
+                  onChange={onChange}
+                  rows={4}
+                  multiline
+                />
+              )}
+            />
+          </Grid>
+
+          {isDirty && isValid && errorMessage && (
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          )}
+
+          <Grid justifyContent="flex-end" container item xs={12}>
+            <Button
+              variant="contained"
+              color="info"
+              type="submit"
+              disabled={loading}
+            >
+              Save product
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 };

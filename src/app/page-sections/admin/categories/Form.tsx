@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -136,7 +136,7 @@ const CategoryForm = ({
               image: url || category?.image,
               icon: Icon || category?.icon,
               parent: Parent || category?.parent,
-              published: category?.published
+              published: category?.published,
             };
             if (status === "create") {
               dispatch(addCategoryAsync(categoryDataForm(data, user.docId)));
@@ -181,14 +181,17 @@ const CategoryForm = ({
       type: Type || category?.type,
       icon: Icon || category?.icon || "",
       parent: Parent || category?.parent,
-      published: category?.published
+      published: category?.published,
     };
     if (status === "create") {
       dispatch(addCategoryAsync(categoryDataForm(data, user.docId)));
     }
     if (status === "edit") {
       dispatch(
-        updateCategoryAsync({ updatedCategory: categoryDataForm(data, user.docId), id })
+        updateCategoryAsync({
+          updatedCategory: categoryDataForm(data, user.docId),
+          id,
+        })
       );
     }
     if (error) {
@@ -221,172 +224,165 @@ const CategoryForm = ({
         p: 6,
       }}
     >
-      <Suspense fallback="Loading...">
-        <form onSubmit={handleSubmit(handleCategoryForm)}>
-          <Grid container spacing={3}>
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="Name"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    type="name"
-                    variant="outlined"
-                    label="name"
-                    placeholder="Categories...."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                    autoFocus={status === "create"}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="Parent"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    fullWidth
-                    size="small"
-                    onChange={onChange}
-                    value={value || ""}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    style={{ display: "flex" }}
-                  >
-                    <MenuItem value="">
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <>
-                          <Car fontSize="small" />
-                        </>
-                        <em style={{ marginLeft: 12 }}>Choose category</em>
-                      </div>
-                    </MenuItem>
-                    {parentCategories.map(
-                      (
-                        item: { title: string; icon: string },
-                        index: number
-                      ) => {
-                        return (
-                          <MenuItem key={index} value={item.title}>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              {item.icon && <>{CategoryIcon[item.icon]}</>}
-                              <span style={{ marginLeft: 12 }}>
-                                {item.title}
-                              </span>
-                            </div>
-                          </MenuItem>
-                        );
-                      }
-                    )}
-                  </Select>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="Type"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Type"
-                    placeholder="type..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                  />
-                )}
-              />
-            </Grid>
+      <form onSubmit={handleSubmit(handleCategoryForm)}>
+        <Grid container spacing={3}>
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="Name"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  type="name"
+                  variant="outlined"
+                  label="name"
+                  placeholder="Categories...."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                  autoFocus={status === "create"}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <Controller
+              name="Parent"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  fullWidth
+                  size="small"
+                  onChange={onChange}
+                  value={value || ""}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  style={{ display: "flex" }}
+                >
+                  <MenuItem value="">
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <>
+                        <Car fontSize="small" />
+                      </>
+                      <em style={{ marginLeft: 12 }}>Choose category</em>
+                    </div>
+                  </MenuItem>
+                  {parentCategories.map(
+                    (item: { title: string; icon: string }, index: number) => {
+                      return (
+                        <MenuItem key={index} value={item.title}>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            {item.icon && <>{CategoryIcon[item.icon]}</>}
+                            <span style={{ marginLeft: 12 }}>{item.title}</span>
+                          </div>
+                        </MenuItem>
+                      );
+                    }
+                  )}
+                </Select>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="Type"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Type"
+                  placeholder="type..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item xs={12}>
-              <Controller
-                name="Icon"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Icon..."
-                    placeholder="Icon..."
-                    onChange={onChange}
-                    value={value || ""}
-                  />
-                )}
-              />
-            </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="Icon"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Icon..."
+                  placeholder="Icon..."
+                  onChange={onChange}
+                  value={value || ""}
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item xs={12}>
-              <DropZone
-                title="Drop & drag category image"
-                onChange={handleChangeDropZone}
-                imageSize=""
-              />
+          <Grid item xs={12}>
+            <DropZone
+              title="Drop & drag category image"
+              onChange={handleChangeDropZone}
+              imageSize=""
+            />
 
-              <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                {files.map((file: any, index: number) => {
-                  return (
-                    <UploadImageBox size="medium" key={index}>
-                      <Image
-                        alt="Image uploaded"
-                        src={file.preview}
-                        width="100%"
-                      />
-                      <StyledClear onClick={handleFileDelete(file)} />
-                    </UploadImageBox>
-                  );
-                })}
-                {isEmpty(files) && category?.image && (
-                  <UploadImageBox size="medium">
+            <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
+              {files.map((file: any, index: number) => {
+                return (
+                  <UploadImageBox size="medium" key={index}>
                     <Image
                       alt="Image uploaded"
-                      src={category?.image}
+                      src={file.preview}
                       width="100%"
                     />
+                    <StyledClear onClick={handleFileDelete(file)} />
                   </UploadImageBox>
-                )}
-              </FlexBox>
-            </Grid>
-
-            {isDirty && isValid && errorMessage && (
-              <ErrorMessage>{errorMessage}</ErrorMessage>
-            )}
-
-            <Grid justifyContent="flex-end" container item xs={12}>
-              <Button
-                disabled={
-                  (status === "create" && (!isDirty || !isValid)) ||
-                  (status === "edit" &&
-                    isEmpty(files) &&
-                    (!isDirty || !isValid) &&
-                    !valueSeclect) ||
-                  loading
-                }
-                variant="contained"
-                color="info"
-                type="submit"
-              >
-                Save category
-              </Button>
-            </Grid>
+                );
+              })}
+              {isEmpty(files) && category?.image && (
+                <UploadImageBox size="medium">
+                  <Image
+                    alt="Image uploaded"
+                    src={category?.image}
+                    width="100%"
+                  />
+                </UploadImageBox>
+              )}
+            </FlexBox>
           </Grid>
-        </form>
-      </Suspense>
+
+          {isDirty && isValid && errorMessage && (
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          )}
+
+          <Grid justifyContent="flex-end" container item xs={12}>
+            <Button
+              disabled={
+                (status === "create" && (!isDirty || !isValid)) ||
+                (status === "edit" &&
+                  isEmpty(files) &&
+                  (!isDirty || !isValid) &&
+                  !valueSeclect) ||
+                loading
+              }
+              variant="contained"
+              color="info"
+              type="submit"
+            >
+              Save category
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 };

@@ -17,11 +17,12 @@ import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
 import { currency, tryFormatDate } from "@/utils/lib";
 import { useSelector } from "react-redux";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, Suspense, useEffect, useMemo } from "react";
 import { fetchOrders } from "@/redux/features/orderSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { IOrder } from "@/models/Order";
 import { INFO_LIST } from "@/data/status";
+import BackdropLoading from "@/components/backdrop";
 // ============================================================
 
 export default function Profile() {
@@ -93,106 +94,108 @@ export default function Profile() {
 
   return (
     <Fragment>
-      {/* TITLE HEADER AREA */}
-      <UserDashboardHeader
-        icon={Person}
-        title="My Profile"
-        button={HEADER_LINK}
-        navigation={<CustomerDashboardNavigation />}
-      />
+      <Suspense fallback={<BackdropLoading />}>
+        {/* TITLE HEADER AREA */}
+        <UserDashboardHeader
+          icon={Person}
+          title="My Profile"
+          button={HEADER_LINK}
+          navigation={<CustomerDashboardNavigation />}
+        />
 
-      {/* USER PROFILE INFO */}
-      <Box mb={4}>
-        <Grid container spacing={3}>
-          <Grid item md={6} xs={12}>
-            <Card
-              sx={{
-                display: "flex",
-                p: "14px 32px",
-                height: "100%",
-                alignItems: "center",
-              }}
-            >
-              <Avatar
-                src={user.photoURL}
+        {/* USER PROFILE INFO */}
+        <Box mb={4}>
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
+              <Card
                 sx={{
-                  height: 64,
-                  width: 64,
+                  display: "flex",
+                  p: "14px 32px",
+                  height: "100%",
+                  alignItems: "center",
                 }}
-              />
+              >
+                <Avatar
+                  src={user.photoURL}
+                  sx={{
+                    height: 64,
+                    width: 64,
+                  }}
+                />
 
-              <Box ml={1.5} flex="1 1 0">
-                <FlexBetween flexWrap="wrap">
-                  <div>
-                    <H5 my="0px">{user.displayName || "No name"}</H5>
-                    <FlexBox alignItems="center">
-                      <Typography color="grey.600">Balance:</Typography>
-                      <Typography ml={0.5} color="primary.main">
-                        {currency(500)}
-                      </Typography>
-                    </FlexBox>
-                  </div>
+                <Box ml={1.5} flex="1 1 0">
+                  <FlexBetween flexWrap="wrap">
+                    <div>
+                      <H5 my="0px">{user.displayName || "No name"}</H5>
+                      <FlexBox alignItems="center">
+                        <Typography color="grey.600">Balance:</Typography>
+                        <Typography ml={0.5} color="primary.main">
+                          {currency(500)}
+                        </Typography>
+                      </FlexBox>
+                    </div>
 
-                  <Typography color="grey.600" letterSpacing="0.2em">
-                    {user.userType && user.userType !== "None"
-                      ? user.userType?.toUpperCase() + " USER"
-                      : "USER"}
-                  </Typography>
-                </FlexBetween>
-              </Box>
-            </Card>
-          </Grid>
+                    <Typography color="grey.600" letterSpacing="0.2em">
+                      {user.userType && user.userType !== "None"
+                        ? user.userType?.toUpperCase() + " USER"
+                        : "USER"}
+                    </Typography>
+                  </FlexBetween>
+                </Box>
+              </Card>
+            </Grid>
 
-          <Grid item md={6} xs={12}>
-            <Grid container spacing={4}>
-              {updatedInfoList?.map(
-                (item: { title: string; subtitle: string }) => (
-                  <Grid item lg={3} sm={6} xs={6} key={item.subtitle}>
-                    <Card
-                      sx={{
-                        height: "100%",
-                        display: "flex",
-                        p: "1rem 1.25rem",
-                        alignItems: "center",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <H3 color="primary.main" my={0} fontWeight={600}>
-                        {item.title}
-                      </H3>
+            <Grid item md={6} xs={12}>
+              <Grid container spacing={4}>
+                {updatedInfoList?.map(
+                  (item: { title: string; subtitle: string }) => (
+                    <Grid item lg={3} sm={6} xs={6} key={item.subtitle}>
+                      <Card
+                        sx={{
+                          height: "100%",
+                          display: "flex",
+                          p: "1rem 1.25rem",
+                          alignItems: "center",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <H3 color="primary.main" my={0} fontWeight={600}>
+                          {item.title}
+                        </H3>
 
-                      <Small color="grey.600" textAlign="center">
-                        {item.subtitle}
-                      </Small>
-                    </Card>
-                  </Grid>
-                )
-              )}
+                        <Small color="grey.600" textAlign="center">
+                          {item.subtitle}
+                        </Small>
+                      </Card>
+                    </Grid>
+                  )
+                )}
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
 
-      <TableRow
-        sx={{
-          cursor: "auto",
-          p: "0.75rem 1.5rem",
-          ...(downMd && {
-            alignItems: "start",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-          }),
-        }}
-      >
-        <TableRowItem title="Name" value={user.displayName} />
-        <TableRowItem title="Email" value={user.email} />
-        <TableRowItem title="Phone" value={user.phoneNumber} />
-        <TableRowItem
-          title="Birth date"
-          value={tryFormatDate(user.birthDate) || ""}
-        />
-        <TableRowItem title="Address" value={user.address} />
-      </TableRow>
+        <TableRow
+          sx={{
+            cursor: "auto",
+            p: "0.75rem 1.5rem",
+            ...(downMd && {
+              alignItems: "start",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+            }),
+          }}
+        >
+          <TableRowItem title="Name" value={user.displayName} />
+          <TableRowItem title="Email" value={user.email} />
+          <TableRowItem title="Phone" value={user.phoneNumber} />
+          <TableRowItem
+            title="Birth date"
+            value={tryFormatDate(user.birthDate) || ""}
+          />
+          <TableRowItem title="Address" value={user.address} />
+        </TableRow>
+      </Suspense>
     </Fragment>
   );
 }

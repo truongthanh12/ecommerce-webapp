@@ -12,11 +12,11 @@ const ProductsList: React.FC<TypeProps> = ({ products }) => {
   return (
     <div>
       {!isEmpty(products) ? (
-        products.map((item) => (
+        products.map((item, ind: number) => (
           <ProductCard
             isInShop
             id={item.id}
-            key={item.id}
+            key={item.id + ind}
             slug={item.slug}
             title={item.title}
             price={item.price}

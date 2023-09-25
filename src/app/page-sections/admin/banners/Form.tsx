@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Grid, TextField, styled } from "@mui/material";
 import DropZone from "@/components/DropZone";
 import { FlexBox } from "@/components/flex-box";
@@ -211,154 +211,152 @@ const BannerForm = ({
         p: 6,
       }}
     >
-      <Suspense fallback="Loading...">
-        <form onSubmit={handleSubmit(handleBannerForm)}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Controller
-                name="Title"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    type="title"
-                    variant="outlined"
-                    label="Title"
-                    placeholder="banners...."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                    autoFocus={status === "create"}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="Type"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Type"
-                    placeholder="type..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                  />
-                )}
-              />
-            </Grid>
+      <form onSubmit={handleSubmit(handleBannerForm)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Controller
+              name="Title"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  type="title"
+                  variant="outlined"
+                  label="Title"
+                  placeholder="banners...."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                  autoFocus={status === "create"}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="Type"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Type"
+                  placeholder="type..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item xs={12}>
-              <Controller
-                name="ButtonText"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Button text"
-                    placeholder="Button text..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="Description"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Description"
-                    placeholder="Description..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                    multiline
-                    rows={3}
-                  />
-                )}
-              />
-            </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="ButtonText"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Button text"
+                  placeholder="Button text..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="Description"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Description"
+                  placeholder="Description..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                  multiline
+                  rows={3}
+                />
+              )}
+            />
+          </Grid>
 
-            <Grid item xs={12}>
-              <DropZone
-                title="Drop & drag banner image"
-                onChange={handleChangeDropZone}
-                imageSize=""
-              />
+          <Grid item xs={12}>
+            <DropZone
+              title="Drop & drag banner image"
+              onChange={handleChangeDropZone}
+              imageSize=""
+            />
 
-              <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                {files.map((file: any, index: number) => {
-                  return (
-                    <UploadImageBox size="medium" key={index}>
-                      <Image
-                        alt="Image uploaded"
-                        src={file.preview}
-                        width="100%"
-                      />
-                      <StyledClear onClick={handleFileDelete(file)} />
-                    </UploadImageBox>
-                  );
-                })}
-                {isEmpty(files) && banner?.imgUrl && (
-                  <UploadImageBox size="medium">
+            <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
+              {files.map((file: any, index: number) => {
+                return (
+                  <UploadImageBox size="medium" key={index}>
                     <Image
                       alt="Image uploaded"
-                      src={banner?.imgUrl}
+                      src={file.preview}
                       width="100%"
                     />
+                    <StyledClear onClick={handleFileDelete(file)} />
                   </UploadImageBox>
-                )}
-              </FlexBox>
-            </Grid>
-
-            {isDirty && isValid && errorMessage && (
-              <ErrorMessage>{errorMessage}</ErrorMessage>
-            )}
-
-            <Grid justifyContent="flex-end" container item xs={12}>
-              <Button
-                disabled={
-                  (status === "create" && (!isDirty || !isValid)) ||
-                  (status === "edit" &&
-                    isEmpty(files) &&
-                    (!isDirty || !isValid)) ||
-                  loading
-                }
-                variant="contained"
-                color="info"
-                type="submit"
-              >
-                Save
-              </Button>
-            </Grid>
+                );
+              })}
+              {isEmpty(files) && banner?.imgUrl && (
+                <UploadImageBox size="medium">
+                  <Image
+                    alt="Image uploaded"
+                    src={banner?.imgUrl}
+                    width="100%"
+                  />
+                </UploadImageBox>
+              )}
+            </FlexBox>
           </Grid>
-        </form>
-      </Suspense>
+
+          {isDirty && isValid && errorMessage && (
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          )}
+
+          <Grid justifyContent="flex-end" container item xs={12}>
+            <Button
+              disabled={
+                (status === "create" && (!isDirty || !isValid)) ||
+                (status === "edit" &&
+                  isEmpty(files) &&
+                  (!isDirty || !isValid)) ||
+                loading
+              }
+              variant="contained"
+              color="info"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 };

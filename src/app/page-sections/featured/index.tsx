@@ -47,7 +47,7 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
             >
               <Grid container spacing={4}>
                 {topRatedList.map((item) => (
-                  <Grid item md={3} sm={6} xs={6} key={item.title}>
+                  <Grid item md={3} sm={6} xs={6} key={item.id}>
                     <Link href={`/product/${formatToSlug(item.slug)}`} passHref>
                       <ProductCard
                         isBasicCard

@@ -9,9 +9,10 @@ import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "@/components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
 import { useAppDispatch } from "@/redux/hooks";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { fetchOrders } from "@/redux/features/orderSlice";
 import { useSelector } from "react-redux";
+import BackdropLoading from "@/components/backdrop"
 
 // ====================================================
 
@@ -25,7 +26,8 @@ const Orders = () => {
   }, [dispatch, user.docId]);
 
   return (
-    <CustomerDashboardLayout>
+              <Suspense fallback={<BackdropLoading />}>
+              <CustomerDashboardLayout>
       {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         title="My Orders"
@@ -86,6 +88,7 @@ const Orders = () => {
         />
       </FlexBox>
     </CustomerDashboardLayout>
+    </Suspense>
   );
 };
 

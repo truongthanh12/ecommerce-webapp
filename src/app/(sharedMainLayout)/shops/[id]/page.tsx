@@ -8,6 +8,7 @@ import {} from "react";
 import { fetchProducts } from "@/redux/features/productSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
+import BackdropLoading from "@/components/backdrop"
 
 // ============================================================
 
@@ -33,22 +34,20 @@ async function getShopById(id = "") {
 export default function ShopDetails({ params, searchParams }: PageProps) {
   const [shop, setShop] = useState({});
   const dispatch: any = useAppDispatch();
-  const { products } = useSelector((state: any) => state.products || []);
+  const { products } = useSelector((state: any) => state.products);
 
   useEffect(() => {
-    if (params.id) {
-      async function fetchData() {
-        dispatch(fetchProducts(false, params.id));
-        const shop = await getShopById(params.id);
-        setShop(shop || {});
-      }
-
-      fetchData();
+    async function fetchData() {
+      dispatch(fetchProducts(false, params.id));
+      const shop = await getShopById(params.id);
+      setShop(shop || {});
     }
+
+    fetchData();
   }, [params.id, dispatch]);
 
   return (
-    <Suspense fallback={<h1>Loading...</h1>}>
+    <Suspense fallback={<BackdropLoading />}>
       <Container
         sx={{
           mt: 4,

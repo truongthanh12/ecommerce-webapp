@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Grid, TextField, styled } from "@mui/material";
 import DropZone from "@/components/DropZone";
 import { FlexBox } from "@/components/flex-box";
@@ -191,101 +191,97 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
         p: 6,
       }}
     >
-      <Suspense fallback="Loading...">
-        <form onSubmit={handleSubmit(handleBrandForm)}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Controller
-                name="Name"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    name="Name"
-                    type="name"
-                    variant="outlined"
-                    label="Name"
-                    placeholder="brands..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                    autoFocus={status === "create"}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="Type"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Type"
-                    placeholder="type..."
-                    onChange={onChange}
-                    helperText={!!error ? error.message : ""}
-                    error={!!error?.message}
-                    value={value || ""}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <DropZone
-                title="Drop & drag brand image"
-                onChange={handleChangeDropZone}
-                imageSize=""
-              />
-
-              <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                {files.map((file: any, index: number) => {
-                  return (
-                    <UploadImageBox size="medium" key={index}>
-                      <Image src={file.preview} width="100%" />
-                      <StyledClear onClick={handleFileDelete(file)} />
-                    </UploadImageBox>
-                  );
-                })}
-                {isEmpty(files) && brand?.image && (
-                  <UploadImageBox size="medium">
-                    <Image src={brand?.image} width="100%" />
-                  </UploadImageBox>
-                )}
-              </FlexBox>
-            </Grid>
-
-            {isDirty && isValid && errorMessage && (
-              <ErrorMessage>{errorMessage}</ErrorMessage>
-            )}
-
-            <Grid justifyContent="flex-end" container item xs={12}>
-              <Button
-                disabled={
-                  (status === "create" && (!isDirty || !isValid)) ||
-                  (status === "edit" &&
-                    isEmpty(files) &&
-                    (!isDirty || !isValid))
-                }
-                variant="contained"
-                color="info"
-                type="submit"
-              >
-                Save
-              </Button>
-            </Grid>
+      <form onSubmit={handleSubmit(handleBrandForm)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Controller
+              name="Name"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  name="Name"
+                  type="name"
+                  variant="outlined"
+                  label="Name"
+                  placeholder="brands..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                  autoFocus={status === "create"}
+                />
+              )}
+            />
           </Grid>
-        </form>
-      </Suspense>
+          <Grid item xs={12}>
+            <Controller
+              name="Type"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Type"
+                  placeholder="type..."
+                  onChange={onChange}
+                  helperText={!!error ? error.message : ""}
+                  error={!!error?.message}
+                  value={value || ""}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <DropZone
+              title="Drop & drag brand image"
+              onChange={handleChangeDropZone}
+              imageSize=""
+            />
+
+            <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
+              {files.map((file: any, index: number) => {
+                return (
+                  <UploadImageBox size="medium" key={index}>
+                    <Image src={file.preview} width="100%" />
+                    <StyledClear onClick={handleFileDelete(file)} />
+                  </UploadImageBox>
+                );
+              })}
+              {isEmpty(files) && brand?.image && (
+                <UploadImageBox size="medium">
+                  <Image src={brand?.image} width="100%" />
+                </UploadImageBox>
+              )}
+            </FlexBox>
+          </Grid>
+
+          {isDirty && isValid && errorMessage && (
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          )}
+
+          <Grid justifyContent="flex-end" container item xs={12}>
+            <Button
+              disabled={
+                (status === "create" && (!isDirty || !isValid)) ||
+                (status === "edit" && isEmpty(files) && (!isDirty || !isValid))
+              }
+              variant="contained"
+              color="info"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 };

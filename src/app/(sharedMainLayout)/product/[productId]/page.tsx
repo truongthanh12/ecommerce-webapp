@@ -3,11 +3,11 @@ import { Suspense, useEffect, useState } from "react";
 import { Box, Container, styled, Tab, Tabs } from "@mui/material";
 import ProductIntro from "@/components/products/ProductIntro";
 import ProductReview from "@/components/products/ProductReview";
-import RelatedProducts from "@/components/products/RelatedProducts";
 import ProductDescription from "@/components/products/ProductDescription";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import db from "@/firebase";
 import { H2 } from "@/app/components/Typography";
+import BackdropLoading from "@/components/backdrop";
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -70,12 +70,12 @@ export default function ProductDetails({
   }, [params.productId]);
 
   return (
-    <Container
-      sx={{
-        my: 4,
-      }}
-    >
-      <Suspense fallback="Loading...">
+    <Suspense fallback={<BackdropLoading />}>
+      <Container
+        sx={{
+          my: 4,
+        }}
+      >
         {/* PRODUCT DETAILS INFO AREA */}
         {product ? (
           <ProductIntro searchParams={searchParams} product={product} />
@@ -99,7 +99,7 @@ export default function ProductDetails({
         </Box>
 
         {/* {relatedProducts && <RelatedProducts products={relatedProducts} />} */}
-      </Suspense>
-    </Container>
+      </Container>
+    </Suspense>
   );
 }
