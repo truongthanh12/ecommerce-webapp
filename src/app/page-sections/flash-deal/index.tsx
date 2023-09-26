@@ -33,7 +33,7 @@ const FlashDeal = ({ products }: { products: IProducts[] }) => {
       })}`}
       length={productsList.length}
     >
-      <Carousel visibleSlides={visibleSlides} infinite={true} spaceBetween={16}>
+      <Carousel visibleSlides={visibleSlides} spaceBetween={16}>
         {productsList?.map((product) => (
           <Box py={0.5} key={product.id}>
             <ProductCard

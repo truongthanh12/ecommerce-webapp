@@ -21,7 +21,10 @@ import {
   StyledChipCategory,
 } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToWishlist, fetchWishlistByUserId } from "@/redux/features/wishlistSlice";
+import {
+  addItemToWishlist,
+  fetchWishlistByUserId,
+} from "@/redux/features/wishlistSlice";
 
 // ========================================================
 interface TypeProps {
@@ -45,7 +48,7 @@ interface TypeProps {
   children?: React.ReactNode;
   isInShop?: boolean;
   stock?: string;
-  shop?: any
+  shop?: any;
 }
 const ProductCard = ({
   id,
@@ -66,7 +69,7 @@ const ProductCard = ({
   isTopCategory,
   isInShop,
   stock,
-  shop
+  shop,
 }: Partial<TypeProps>) => {
   const [openModal, setOpenModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -112,6 +115,11 @@ const ProductCard = ({
           size="small"
           sx={{
             left: "0.875rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "flex",
+            WebkitLineClamp: "2",
+            WebkitBoxOrient: "vertical",
           }}
         />
 
@@ -120,6 +128,12 @@ const ProductCard = ({
           size="small"
           sx={{
             right: "0.875rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "flex",
+            WebkitLineClamp: "1",
+            WebkitBoxOrient: "vertical",
+            width: "clamp(220px, 50%, 100px)"
           }}
         />
 
@@ -171,6 +185,13 @@ const ProductCard = ({
           mb={0.5}
           title={title}
           ellipsis
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "flex",
+            WebkitLineClamp: "2",
+            WebkitBoxOrient: "vertical",
+          }}
         >
           {title}
         </H4>
@@ -184,16 +205,18 @@ const ProductCard = ({
             {currency(price)}
           </H4>
         ) : (
-          <FlexBox gap={1}>
-            {discount && (
-              <H4 fontWeight="600" fontSize="14px" color="primary.main">
-                {calculateDiscount(price, discount)}
-              </H4>
-            )}
+          <FlexBox alignItems="center" gap={1} mt={0.5}>
+            <Box fontWeight="600" color="primary.main">
+              {calculateDiscount(price, discount)}
+            </Box>
 
-            <H4 fontWeight="600" fontSize="14px" color="grey.600">
-              <del>{currency(price)}</del>
-            </H4>
+            {Number(discount) !== 0 ? (
+              <Box color="grey.600" fontWeight="600">
+                <del>{currency(price)}</del>
+              </Box>
+            ) : (
+              ""
+            )}
           </FlexBox>
         )}
       </Box>
@@ -231,11 +254,16 @@ const ProductCard = ({
           thumbnail,
           discount,
           stock,
-          shop
+          shop,
         }}
       />
       <Grid item alignItems="center" container spacing={1} xs={isInShop}>
-        <Grid sx={{ width: "100%" }} item sm={isInShop ? 3 : 12} xs={12}>
+        <Grid
+          sx={{ width: "100%", paddingBottom: "100%" }}
+          item
+          sm={isInShop ? 3 : 12}
+          xs={12}
+        >
           <ImageWrapper>
             {!!discount && (
               <StyledChip
@@ -246,11 +274,17 @@ const ProductCard = ({
             )}
 
             <HoverIconWrapper className="hover-box">
-              <IconButton onClick={toggleDialog}>
+              <IconButton
+                sx={{ backgroundColor: "rgba(15, 52, 96, .35)" }}
+                onClick={toggleDialog}
+              >
                 <RemoveRedEye color="disabled" fontSize="small" />
               </IconButton>
 
-              <IconButton onClick={toggleIsFavorite}>
+              <IconButton
+                sx={{ backgroundColor: "rgba(15, 52, 96, .35)" }}
+                onClick={toggleIsFavorite}
+              >
                 {isFavorite ? (
                   <Favorite color="primary" fontSize="small" />
                 ) : (
@@ -282,6 +316,13 @@ const ProductCard = ({
                     fontWeight="600"
                     className="title"
                     color="text.secondary"
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "flex",
+                      WebkitLineClamp: "2",
+                      WebkitBoxOrient: "vertical",
+                    }}
                   >
                     {title}
                   </H3>

@@ -20,10 +20,11 @@ export const StyledCard = styled(Card)({
 });
 export const ImageWrapper = styled(Box)(({ theme }) => ({
   textAlign: "center",
-  position: "relative",
+  position: "absolute",
   display: "inline-block",
   width: "100%",
   maxHeight: 285,
+  paddingBottom: "100%",
   overflow: "hidden",
   objectFit: "cover",
   [theme.breakpoints.down("sm")]: {

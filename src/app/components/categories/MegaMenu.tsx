@@ -20,16 +20,16 @@ const MegaMenu: React.FC<TypeProps> = ({ data }) => {
         }}
       >
         {data?.map((item: any, ind: number) => {
-          const icon = CategoryIcon.hasOwnProperty(item.icon)
-            ? item.icon
-            : "default";
+          // const icon = CategoryIcon.hasOwnProperty(item.icon)
+          //   ? item.icon
+          //   : "default";
 
           return (
             <CategoryMenuItem
               href={`/product/search/cate?${new URLSearchParams({
                 subCategory: removeAccents(item.slug),
               })}`}
-              icon={icon}
+              // icon={icon}
               key={ind}
               title={item.name}
             >

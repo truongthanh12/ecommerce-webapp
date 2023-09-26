@@ -12,11 +12,11 @@ import { formatToSlug } from "@/app/utils/lib";
 type TypeCategory = { categories: ICategory[] };
 const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
   const [visibleSlides, setVisibleSlides] = useState(3);
-  const [isArrow, setArrow] = useState(false);
 
-  const categoriesData = useMemo(() => {
-    return categories.filter((item) => item.type === "top-categories");
-  }, [categories]);
+  const categoriesData = useMemo(
+    () => categories.filter((cate) => cate.image),
+    [categories]
+  );
 
   const width = useWindowSize();
   useEffect(() => {
@@ -24,12 +24,6 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
     else if (width < 950) setVisibleSlides(2);
     else setVisibleSlides(3);
   }, [width]);
-
-  useEffect(() => {
-    if (categoriesData.length > visibleSlides) {
-      setArrow(true);
-    }
-  }, [categoriesData.length, visibleSlides]);
 
   return (
     <CategorySectionCreator
@@ -43,7 +37,7 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
       <Carousel visibleSlides={visibleSlides}>
         {categoriesData.map((item) => (
           <Link
-            href={`/product/search/${formatToSlug(item.slug)}`}
+            href={`/product/search/cate?subcategory=${formatToSlug(item.slug)}`}
             key={item.id}
             passHref
           >

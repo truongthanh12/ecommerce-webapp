@@ -15,9 +15,6 @@ type TypeProps = {
   brands: IBrand[];
 };
 const Featured: React.FC<TypeProps> = ({ products, brands }) => {
-  const topRatedBrands = useMemo(() => {
-    return brands?.filter((item) => item.type === "featured-brands");
-  }, [brands]);
   const topRatedList = useMemo(() => {
     return products?.filter((item) => item.type === "top-ratings");
   }, [products]);
@@ -73,7 +70,7 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
               icon={<DottedStar />}
               title="Featured Brands"
               seeMoreLink={
-                topRatedBrands?.length > 4
+                brands?.length > 4
                   ? `/sale-page?${new URLSearchParams({
                       type: "featured-brands",
                     })}`
@@ -87,7 +84,7 @@ const Featured: React.FC<TypeProps> = ({ products, brands }) => {
               }}
             >
               <Grid container spacing={4}>
-                {topRatedBrands.map(({ id, name, image, slug }) => (
+                {brands.slice(0, 2).map(({ id, name, image, slug }) => (
                   <Grid item sm={6} xs={12} key={id}>
                     <Link
                       href={`/product/search/${formatToSlug(slug)}`}

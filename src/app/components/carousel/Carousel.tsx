@@ -33,6 +33,7 @@ const CarouselSlider = ({
   return (
     <StyledCarouselProvider
       sx={sx}
+      direction='horizontal'
       modules={[Navigation, Pagination, A11y]}
       navigation={isArrow && showNavigation}
       pagination={isDots ? { clickable: true } : false}
