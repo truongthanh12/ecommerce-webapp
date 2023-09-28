@@ -18,13 +18,13 @@ export const StyledCard = styled(Card)({
     },
   },
 });
-export const ImageWrapper = styled(Box)(({ theme }) => ({
+export const ImageWrapper = styled(Box)(({ theme, inlist }) => ({
   textAlign: "center",
-  position: "absolute",
+  position: inlist ? "relative" : "absolute",
   display: "inline-block",
   width: "100%",
   maxHeight: 285,
-  paddingBottom: "100%",
+  paddingBottom: inlist ? 0 : "100%",
   overflow: "hidden",
   objectFit: "cover",
   [theme.breakpoints.down("sm")]: {

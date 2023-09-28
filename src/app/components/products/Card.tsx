@@ -33,7 +33,6 @@ interface TypeProps {
   title?: string;
   price?: number;
   thumbnail?: string;
-  rating?: number;
   hoverEffect?: boolean;
   discount?: number;
   showProductSize?: boolean;
@@ -56,7 +55,6 @@ const ProductCard = ({
   title = "",
   price = 0,
   thumbnail = "",
-  rating = 5,
   hoverEffect,
   discount = 0,
   showProductSize,
@@ -91,7 +89,6 @@ const ProductCard = ({
           title,
           price,
           thumbnail,
-          rating,
           discount,
           stock,
           id,
@@ -120,6 +117,8 @@ const ProductCard = ({
             display: "flex",
             WebkitLineClamp: "2",
             WebkitBoxOrient: "vertical",
+            width: "clamp(170px, 46%, 100px)",
+            maxWidth: "max-content",
           }}
         />
 
@@ -133,7 +132,8 @@ const ProductCard = ({
             display: "flex",
             WebkitLineClamp: "1",
             WebkitBoxOrient: "vertical",
-            width: "clamp(220px, 50%, 100px)"
+            width: "clamp(170px, 46%, 100px)",
+            maxWidth: "max-content",
           }}
         />
 
@@ -172,7 +172,7 @@ const ProductCard = ({
 
         {isTopCategory && (
           <FlexRowCenter mb={0.5}>
-            <Rating value={rating} color="warn" readOnly />
+            <Rating productId={id || ""} />
             <Small fontWeight={600} pl={0.5}>
               ({reviewCount})
             </Small>
@@ -257,15 +257,15 @@ const ProductCard = ({
           shop,
         }}
       />
-      <Grid item alignItems="center" container spacing={1} xs={isInShop}>
+      <Grid item alignItems="center" container spacing={1}>
         <Grid
-          sx={{ width: "100%", paddingBottom: "100%" }}
+          sx={{ width: "100%", paddingBottom: isInShop? 0 : "100%" }}
           item
           sm={isInShop ? 3 : 12}
           xs={12}
         >
-          <ImageWrapper>
-            {!!discount && (
+          <ImageWrapper inlist={isInShop}>
+            {!!Number(discount) && (
               <StyledChip
                 color="primary"
                 size="small"
@@ -328,9 +328,7 @@ const ProductCard = ({
                   </H3>
                 </Link>
 
-                {/* {!hideRating && ( */}
-                <Rating value={rating || 0} color="warn" />
-                {/* )} */}
+                <Rating productId={id || ""} />
 
                 {showProductSize && (
                   <Span color="grey.600" mb={1} display="block">
@@ -343,7 +341,7 @@ const ProductCard = ({
                     {calculateDiscount(price, discount)}
                   </Box>
 
-                  {discount ? (
+                  {Number(discount) !== 0 ? (
                     <Box color="grey.600" fontWeight="600">
                       <del>{currency(price)}</del>
                     </Box>

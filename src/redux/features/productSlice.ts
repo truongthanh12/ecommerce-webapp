@@ -3,20 +3,24 @@ import { AppDispatch, RootState } from "@/redux/store";
 import db from "@/firebase";
 import {
   addDoc,
+  arrayUnion,
   collection,
+  collectionGroup,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
-import { IProducts } from "@/app/models/Product";
+import { IComments, IProducts } from "@/app/models/Product";
 import { IUser } from "@/app/models/User";
 import { formatToSlug } from "@/app/utils/lib";
 import { ADMIN_ID } from "@/app/constant";
+import { uniqueId } from "lodash";
 
 interface productstate {
   products: IProducts[];
@@ -25,17 +29,133 @@ interface productstate {
   currentPage: number;
   hasMorePages: boolean;
   totalProducts: number;
+  comments: IComments[];
 }
 
 const initialState: productstate = {
   products: [],
   loading: false,
+  comments: [],
   error: {},
   currentPage: 1,
   hasMorePages: true,
   totalProducts: 0,
 };
 
+// comment actions
+export const addCommentAsync = createAsyncThunk(
+  "products/addCommentAsync",
+  async ({
+    productId,
+    comment,
+    rating,
+    user,
+  }: {
+    productId: string;
+    comment: string;
+    rating: number;
+    user: Partial<IUser>;
+  }) => {
+    try {
+      const productRef = doc(collection(db, "products"), productId);
+
+      const commentData = {
+        comment,
+        rating,
+        createdAt: serverTimestamp(),
+        user,
+      };
+
+      // Use Firestore's auto-generated document ID for the comment
+      const commentRef = await addDoc(
+        collection(productRef, "comments"),
+        commentData
+      );
+
+      // Update the comment data with the generated document ID
+      const commentWithId = {
+        id: commentRef.id,
+        ...commentData,
+      };
+
+      return commentWithId;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getCommentsByProductId = async (productId: string) => {
+  try {
+    const productRef = doc(db, "products", productId);
+
+    const commentsRef = collection(productRef, "comments");
+
+    const querySnapshot = await getDocs(commentsRef);
+
+    const comments: any[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const commentData = doc.data();
+      comments.unshift(commentData);
+    });
+
+    // Return the array of comments
+    return comments;
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    throw error;
+  }
+};
+
+export async function deleteComment(productId: string, commentId: string) {
+  try {
+    const productRef = doc(db, "products", productId);
+    const commentsRef = collection(productRef, "comments");
+
+    const commentDocRef = doc(commentsRef, commentId);
+
+    await deleteDoc(commentDocRef);
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function getProductsWithComments() {
+  try {
+    const productsRef = collection(db, "products");
+    const querySnapshot = await getDocs(productsRef);
+
+    const productsWithComments = [];
+
+    for (const doc of querySnapshot.docs) {
+      const productData = doc.data();
+      const productId = doc.id;
+      const commentsRef = collection(doc.ref, "comments");
+      const commentsSnapshot = await getDocs(commentsRef);
+
+      if (!commentsSnapshot.empty) {
+        const comments = commentsSnapshot.docs.map((commentDoc) =>
+          commentDoc.data()
+        );
+
+        productsWithComments.push({
+          id: productId,
+          ...productData,
+          comments: comments,
+        });
+      }
+    }
+
+    return productsWithComments;
+  } catch (error) {
+    console.error("Error fetching products with comments:", error);
+    throw error;
+  }
+}
+
+// products actions
 export const addProductSync = createAsyncThunk(
   "products/addProductSync",
   async (productData: any) => {
@@ -108,7 +228,7 @@ export const updateProductQuantities =
     }
   };
 
-const productSlice = createSlice({
+const productSlice: any = createSlice({
   name: "products",
   initialState,
   reducers: {
@@ -173,6 +293,24 @@ const productSlice = createSlice({
       .addCase(updateProductAsync.rejected, (state, action: any) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // comments
+      .addCase(addCommentAsync.fulfilled, (state, action) => {
+        const newComment: any = action.payload;
+        const productIndex = state.products.findIndex(
+          (product) => product.id === newComment.productId
+        );
+
+        if (productIndex !== -1) {
+          const updatedComments = [
+            ...state.products[productIndex].comments,
+            newComment,
+          ];
+
+          // Update the product's comments array
+          state.products[productIndex].comments = updatedComments;
+        }
       });
   },
 });
@@ -198,7 +336,7 @@ export const fetchProducts =
       }
       // Calculate the start and end points based on the page size
       const pageSize = 10; // Adjust as needed
-      const startAt = ((page || 0) - 1) * pageSize;
+      const startAt = ((page || 1) - 1) * pageSize;
       const endAt = startAt + pageSize;
 
       // Update to use the new query and getDocs function
@@ -219,11 +357,8 @@ export const fetchProducts =
       }
 
       if (page) {
-        if (startAt > 0) {
-          // Apply startAt if not on the first page
-          queryRef = queryRef.startAfter(startAt);
-        }
-        queryRef = queryRef.endAt(endAt);
+        queryRef = queryRef.limit(pageSize);
+        console.log(page); // Log the page value when it's not undefined
       }
 
       const querySnapshot = await getDocs(queryRef);

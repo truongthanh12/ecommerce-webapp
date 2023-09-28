@@ -19,7 +19,7 @@ const RelatedProducts: React.FC<TypeProps> = ({ products }) => {
               slug={item.slug}
               title={item.title}
               price={item.price}
-              rating={item.rating}
+              images={item.images}
               thumbnail={item.thumbnail}
               discount={item.discount}
               stock={item.stock}

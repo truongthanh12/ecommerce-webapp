@@ -1,3 +1,5 @@
+import { IUser } from "./User";
+
 export interface IShop {
   id: string | number;
   slug?: string;
@@ -18,20 +20,29 @@ export interface Social {
   twitter?: null | string;
   instagram?: null | string;
 }
-export interface IUser {
-  id: string | number;
-  email?: string;
-  phone?: string;
-  avatar?: string;
-  password?: string;
-  dateOfBirth?: string;
-  verified?: boolean;
-  name?: NameUser;
-}
+// export interface IUser {
+//   id: string;
+//   email?: string;
+//   phone?: string;
+//   avatar?: string;
+//   password?: string;
+//   dateOfBirth?: string;
+//   verified?: boolean;
+//   name?: NameUser;
+//   displayName: string;
+// }
 export interface NameUser {
   name?: string;
   firstName?: string;
   lastName?: string;
+}
+export interface IComments {
+  id: string;
+  user: Partial<IUser>;
+  comment: string;
+  rating: number;
+  createdAt: any;
+  updatedAt: any;
 }
 export interface IProducts {
   id: string;
@@ -58,4 +69,5 @@ export interface IProducts {
   size: string;
   color: string;
   voucherSelected: number;
+  comments: Partial<IComments[]>;
 }

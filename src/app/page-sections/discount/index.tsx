@@ -40,7 +40,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
       <Box my="-0.25rem">
         <Carousel visibleSlides={visibleSlides}>
           {bigDiscountList.map(
-            ({ id, title, thumbnail, price, discount, slug, stock, shop }) => (
+            ({ id, title, thumbnail, price, discount, slug, stock, shop, images }) => (
               <Box py={0.5} key={id}>
                 <Card
                   sx={{
@@ -52,6 +52,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
                       isBasicCard
                       title={title}
                       thumbnail={thumbnail}
+                      images={images}
                       price={price}
                       discount={discount}
                       stock={stock}

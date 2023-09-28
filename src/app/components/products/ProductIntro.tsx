@@ -17,7 +17,7 @@ import { H1, H2, H4, H6, Span } from "@/components/Typography";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import { calculateDiscount, capitalizeStr, currency } from "@/utils/lib";
 import Chip from "@mui/material/Chip";
-import { IProducts } from "@/app/models/Product";
+import { IComments, IProducts } from "@/app/models/Product";
 import CartAction from "./CartAction";
 import { addDays, format } from "date-fns";
 import Card from "../Card";
@@ -33,9 +33,11 @@ const ContentWrapper = styled(Box)(() => ({
 const ProductIntro = ({
   product,
   searchParams,
+  comments,
 }: {
   product: Partial<IProducts>;
   searchParams: { [key: string]: string | undefined };
+  comments: IComments[];
 }) => {
   const { price, title, images, shop, stock, sizes, colors, discount, id } =
     product || {};
@@ -132,23 +134,20 @@ const ProductIntro = ({
             <DialogContent
               sx={{
                 maxWidth: 900,
+                minWidth: 400,
                 width: "100%",
               }}
             >
               <ContentWrapper>
-                {images && images.length > 0 ? (
-                  <LazyImage
-                    alt={title}
-                    width={0}
-                    height={0}
-                    layout="responsive"
-                    loading="eager"
-                    objectFit="cover"
-                    src={images[selectedImage]}
-                  />
-                ) : (
-                  <div>No Images Available</div>
-                )}
+                <LazyImage
+                  alt={title}
+                  width={0}
+                  height={0}
+                  layout="responsive"
+                  loading="eager"
+                  objectFit="cover"
+                  src={images ? images[selectedImage] : ""}
+                />
               </ContentWrapper>
 
               <IconButton
@@ -206,9 +205,9 @@ const ProductIntro = ({
           <FlexBox alignItems="center" mb={2}>
             <Box lineHeight="1">Rated:</Box>
             <Box mx={1} lineHeight="1">
-              <Rating color="warn" fontSize="1.25rem" value={4} readOnly />
+              <Rating productId={id || ""} />
             </Box>
-            <H6 lineHeight="1">(50)</H6>
+            <H6 lineHeight="1">({comments?.length})</H6>
           </FlexBox>
 
           {sizes && (
@@ -262,7 +261,7 @@ const ProductIntro = ({
           )}
 
           <FlexBox alignItems="center" py={2.5}>
-            {discount ? (
+            {Number(discount) ? (
               <Box>
                 <FlexBox>
                   <H2
@@ -274,7 +273,7 @@ const ProductIntro = ({
                     {currency(price)}
                   </H2>
                   <H2 lineHeight="1">
-                    {calculateDiscount(price, discount, voucher * 1000)}
+                    {calculateDiscount(price, discount || 0, voucher * 1000)}
                   </H2>
                 </FlexBox>
               </Box>

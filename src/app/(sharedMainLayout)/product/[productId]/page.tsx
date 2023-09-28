@@ -8,6 +8,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import db from "@/firebase";
 import { H2 } from "@/app/components/Typography";
 import BackdropLoading from "@/components/backdrop";
+import { getCommentsByProductId } from "@/redux/features/productSlice";
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -56,7 +57,8 @@ export default function ProductDetails({
 }: ProductDetailProps) {
   const [selectedOption, setSelectedOption] = useState(0);
   const handleOptionClick = (_: any, value: any) => setSelectedOption(value);
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState<any>({});
+  const [comments, setComments] = useState<any>();
 
   useEffect(() => {
     // Define an async function
@@ -69,6 +71,18 @@ export default function ProductDetails({
     fetchData();
   }, [params.productId]);
 
+  useEffect(() => {
+    if (product.id) {
+      getCommentsByProductId(product.id)
+        .then((res: any) => {
+          setComments(res);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
+  }, [product.id]);
+
   return (
     <Suspense fallback={<BackdropLoading />}>
       <Container
@@ -78,7 +92,7 @@ export default function ProductDetails({
       >
         {/* PRODUCT DETAILS INFO AREA */}
         {product ? (
-          <ProductIntro searchParams={searchParams} product={product} />
+          <ProductIntro comments={comments} searchParams={searchParams} product={product} />
         ) : (
           <H2>Loading...</H2>
         )}
@@ -90,12 +104,17 @@ export default function ProductDetails({
           onChange={handleOptionClick}
         >
           <Tab className="inner-tab" label="Description" />
-          <Tab className="inner-tab" label="Review (3)" />
+          <Tab
+            className="inner-tab"
+            label={`Review ${
+              comments?.length ? `(${comments?.length})` : "(0)"
+            }`}
+          />
         </StyledTabs>
 
         <Box mb={6}>
           {selectedOption === 0 && <ProductDescription product={product} />}
-          {selectedOption === 1 && <ProductReview />}
+          {selectedOption === 1 && <ProductReview productId={product.id} />}
         </Box>
 
         {/* {relatedProducts && <RelatedProducts products={relatedProducts} />} */}

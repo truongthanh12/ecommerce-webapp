@@ -6,6 +6,7 @@ import {
   differenceInMinutes,
   addDays,
 } from "date-fns";
+import { Timestamp } from "firebase/firestore";
 
 /**
  * GET THE DIFFERENCE DATE FORMAT
@@ -13,8 +14,10 @@ import {
  * @returns string - formatted from now
  */
 
-function getDateDifference(date: string) {
-  let diff = differenceInMinutes(new Date(), new Date(date));
+function getDateDifference(date: Timestamp) {
+  const jsDate = date?.toDate();
+
+  let diff = differenceInMinutes(new Date(), jsDate);
   if (diff < 60) return diff + " minutes ago";
   diff = ceil(diff / 60);
   if (diff < 24) return `${diff} hour${diff === 0 ? "" : "s"} ago`;
@@ -23,7 +26,7 @@ function getDateDifference(date: string) {
   diff = ceil(diff / 30);
   if (diff < 12) return `${diff} month${diff === 0 ? "" : "s"} ago`;
   diff = diff / 12;
-  return `${diff.toFixed(1)} year${ceil(diff) === 0 ? "" : "s"} ago`;
+  return "seconds ago";
 }
 
 /**
@@ -194,4 +197,16 @@ export function formatNumberWithThousandSeparators(number: number) {
   } else {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
+}
+
+export function calculateAverageRating(comments: any) {
+  if (comments.length === 0) {
+    return 0;
+  }
+
+  const totalRating = comments.reduce(
+    (sum: any, comment: any) => sum + comment.rating,
+    0
+  );
+  return totalRating / comments.length;
 }

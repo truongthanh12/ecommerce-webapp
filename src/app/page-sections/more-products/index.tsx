@@ -29,7 +29,6 @@ const MoreProducts: React.FC<TypeProps> = ({ products }) => {
               slug={item.slug}
               title={item.title}
               price={item.price}
-              rating={item.rating}
               thumbnail={item.thumbnail}
               discount={item.discount}
               images={item.images}

@@ -59,6 +59,7 @@ const ShopCard = ({
         </H3>
 
         <Rating
+          precision={0.5}
           value={rating}
           color="warn"
           size="small"

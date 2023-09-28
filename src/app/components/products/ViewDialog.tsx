@@ -8,6 +8,8 @@ import {
 import { IProducts } from "@/app/models/Product";
 import { ContentWrapperView } from "./styles";
 import ProductIntro from "./ProductIntro";
+import { useEffect, useState } from "react";
+import { getCommentsByProductId } from "@/redux/features/productSlice";
 
 // =====================================================
 interface TypeProps {
@@ -23,6 +25,19 @@ const ProductViewDialog = ({
   const downXs = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    if (product.id) {
+      getCommentsByProductId(product.id)
+        .then((res: any) => {
+          setComments(res);
+        })
+        .catch((error: any) => {
+          throw error;
+        });
+    }
+  }, [product.id]);
 
   return (
     <Dialog
@@ -40,7 +55,7 @@ const ProductViewDialog = ({
         }}
       >
         <ContentWrapperView>
-          <ProductIntro product={product} searchParams={{}} />
+          <ProductIntro comments={comments} product={product} searchParams={{}} />
         </ContentWrapperView>
 
         <IconButton

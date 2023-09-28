@@ -175,8 +175,8 @@ export default function SalePage({ searchParams }: PageProps) {
                 slug={item.slug}
                 title={item.title}
                 price={item.price}
-                rating={item.rating}
                 thumbnail={item.thumbnail}
+                images={item.images}
                 discount={item.discount}
                 shop={item.shop}
               />

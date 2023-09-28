@@ -21,8 +21,8 @@ const ProductsList: React.FC<TypeProps> = ({ products }) => {
             title={item.title}
             price={item.price}
             discount={item.discount}
-            rating={item.rating}
-            thumbnail={item.thumbnail}
+                images={item.images}
+                thumbnail={item.thumbnail}
             stock={item.stock}
             shop={item.shop}
           />

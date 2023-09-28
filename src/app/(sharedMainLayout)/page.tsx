@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { fetchBanners } from "@/redux/features/bannerSlice";
 import { fetchProducts } from "@/redux/features/productSlice";
 import { fetchUsers } from "@/redux/features/authSlice";
+import { fetchBrands } from "@/redux/features/brandSlice";
 
 export default function Home() {
   const dispatch: any = useAppDispatch();
@@ -33,6 +34,7 @@ export default function Home() {
     if (!isCancelled) {
       dispatch(fetchCategories(true));
       dispatch(fetchBanners(true));
+      dispatch(fetchBrands(true));
       dispatch(fetchProducts(true));
       dispatch(fetchParentCategories());
       dispatch(fetchUsers({ isVendor: true }));

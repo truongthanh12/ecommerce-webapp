@@ -7,11 +7,10 @@ import TextFieldInput from "@/components/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/redux/hooks";
-import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
+import { updateUserAsync } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useEffect, useMemo } from "react";
 import { addChargeAsync } from "@/redux/features/rechargeSlice";
 import { serverTimestamp } from "firebase/firestore";
 

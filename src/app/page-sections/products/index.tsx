@@ -45,6 +45,7 @@ const ProductsSearch = ({
     ratings,
     color,
     subcategory,
+    page,
   } = searchParams || {};
   const timerRef = useRef<NodeJS.Timeout | undefined>();
 
@@ -158,9 +159,9 @@ const ProductsSearch = ({
 
   useEffect(() => {
     if (!productsByUser) {
-      dispatch(fetchProducts(true));
+      dispatch(fetchProducts(true, "", Number(page)));
     }
-  }, [dispatch, productsByUser]);
+  }, [dispatch, productsByUser, page]);
 
   return (
     <Container

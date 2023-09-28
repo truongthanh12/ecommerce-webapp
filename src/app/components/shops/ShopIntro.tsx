@@ -112,7 +112,7 @@ const ShopIntroCard = ({
           <FlexBetween flexWrap="wrap">
             <Box>
               <FlexBox alignItems="center" gap={1} mb={2}>
-                <Rating color="warn" size="small" value={5} readOnly />
+                <Rating color="warn" size="small" value={5} precision={0.5} readOnly />
                 <Small color="grey.600" display="block">
                   (45)
                 </Small>
