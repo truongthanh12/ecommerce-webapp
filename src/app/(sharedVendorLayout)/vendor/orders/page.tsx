@@ -1,18 +1,50 @@
 "use client";
-import { ShoppingBag } from "@mui/icons-material";
-import TableRow from "@/components/TableRow";
-import { H5 } from "@/components/Typography";
+import { H3, H5 } from "@/components/Typography";
 import OrderRow from "@/page-sections/orders/OrderRow";
-import UserDashboardHeader from "@/components/header/UserDashboardHeader";
-import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useMemo } from "react";
 import { fetchOrders } from "@/redux/features/orderSlice";
 import { useSelector } from "react-redux";
-import { Box, Grid } from "@mui/material";
+import { Box, Stack, Table, TableBody, TableContainer } from "@mui/material";
+import { useSearch } from "@/app/hooks/useSearch";
+import useMuiTable from "@/app/hooks/useMuiTable";
+import SearchArea from "@/app/components/dashboard/SearchArea";
+import TablePagination from "@/app/components/data-table/TablePagination";
+import Card from "@/app/components/Card";
+import Scrollbar from "@/app/components/Scrollbar";
+import TableHeader from "@/app/components/data-table/TableHeader";
+import { isEmpty } from "lodash";
+import NotFound from "@/app/components/not-found";
+import TableRow from "@/app/components/TableRow";
 
 // ====================================================
-
+const tableHeading = [
+  {
+    id: "order",
+    label: "#Order ID",
+    align: "center",
+  },
+  {
+    id: "Status",
+    label: "Status",
+    align: "center",
+  },
+  {
+    id: "date",
+    label: "Date purcharse",
+    align: "center",
+  },
+  {
+    id: "Total",
+    label: "Total",
+    align: "center",
+  },
+  {
+    id: "action",
+    label: "Action",
+    align: "center",
+  },
+];
 const Orders = () => {
   const dispatch: any = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth);
@@ -31,20 +63,42 @@ const Orders = () => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
+  const { onSearchInputChange, filteredData } = useSearch(filteredOrders);
+
+  const {
+    order,
+    orderBy,
+    rowsPerPage,
+    filteredList,
+    handleChangePage,
+    handleRequestSort,
+  } = useMuiTable({
+    listData: filteredData,
+    defaultSort: "name",
+  });
+
   return (
     <Box py={4}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          {/* TITLE HEADER AREA */}
-          <UserDashboardHeader
-            title="Orders"
-            icon={ShoppingBag}
-            navigation={<CustomerDashboardNavigation />}
-          />
-          <TableRow
+      <H3 mb={2}>Vouchers</H3>
+
+      <SearchArea
+        handleSearch={onSearchInputChange}
+        buttonText=""
+        searchPlaceholder="Search Order by ID"
+        handleBtnClick={""}
+      />
+      <Card>
+        <Scrollbar>
+          <TableContainer
+            sx={{
+              minWidth: 600,
+            }}
+          >
+            <Table>
+            <TableRow
             elevation={0}
             sx={{
-              padding: "0px 18px",
+              padding: "20px 18px",
               background: "none",
               display: {
                 xs: "none",
@@ -67,24 +121,34 @@ const Orders = () => {
             <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
               Total
             </H5>
-
-            <H5
-              my={0}
-              px={2.75}
-              color="grey.600"
-              flex="0 0 0 !important"
-              sx={{
-                xs: "none",
-                md: "block",
-              }}
-            />
           </TableRow>
 
-          {filteredOrders.map((order: any) => (
-            <OrderRow isSeller order={order} key={order.id} />
-          ))}
-        </Grid>
-      </Grid>
+              <TableBody>
+                {!isEmpty(filteredList) ? (
+                  filteredList.map((order: any) => (
+                    <OrderRow isSeller order={order} key={order.id} />
+                  ))
+                ) : (
+                  <tr>
+                    <td>
+                      <NotFound />
+                    </td>
+                  </tr>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Scrollbar>
+
+        {Math.ceil(filteredData.length / rowsPerPage) > 1 && (
+          <Stack alignItems="center" my={4}>
+            <TablePagination
+              onChange={handleChangePage}
+              count={Math.round(filteredData.length / rowsPerPage)}
+            />
+          </Stack>
+        )}
+      </Card>
     </Box>
   );
 };

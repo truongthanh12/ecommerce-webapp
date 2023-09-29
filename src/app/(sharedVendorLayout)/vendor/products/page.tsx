@@ -132,11 +132,11 @@ export default function ProductList() {
           </TableContainer>
         </Scrollbar>
 
-        {Math.ceil(filteredList.length / rowsPerPage) > 1 && (
+        {Math.ceil(filteredData.length / rowsPerPage) > 1 && (
           <Stack alignItems="center" my={4}>
             <TablePagination
               onChange={handleChangePage}
-              count={Math.ceil(filteredList.length / rowsPerPage)}
+              count={Math.round(filteredData.length / rowsPerPage)}
             />
           </Stack>
         )}
