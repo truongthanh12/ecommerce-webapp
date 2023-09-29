@@ -38,7 +38,8 @@ export default function ShopDetails({ params, searchParams }: PageProps) {
 
   useEffect(() => {
     async function fetchData() {
-      dispatch(fetchProducts(false, params.id));
+      dispatch(fetchProducts({ userId: params.id }));
+
       const shop = await getShopById(params.id);
       setShop(shop || {});
     }

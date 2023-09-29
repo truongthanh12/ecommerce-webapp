@@ -10,9 +10,11 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   query,
   serverTimestamp,
   setDoc,
+  startAfter,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -28,7 +30,6 @@ interface productstate {
   error: any;
   currentPage: number;
   hasMorePages: boolean;
-  totalProducts: number;
   comments: IComments[];
 }
 
@@ -39,7 +40,6 @@ const initialState: productstate = {
   error: {},
   currentPage: 1,
   hasMorePages: true,
-  totalProducts: 0,
 };
 
 // comment actions
@@ -244,9 +244,6 @@ const productSlice: any = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    setTotalProducts: (state, action: PayloadAction<number>) => {
-      state.totalProducts = action.payload;
-    },
     setHasMorePages: (state, action: PayloadAction<boolean>) => {
       state.hasMorePages = action.payload;
     },
@@ -315,57 +312,27 @@ const productSlice: any = createSlice({
   },
 });
 
-export const {
-  setLoading,
-  setProducts,
-  setError,
-  setTotalProducts,
-  setHasMorePages,
-} = productSlice.actions;
+export const { setLoading, setProducts, setError, setHasMorePages } =
+  productSlice.actions;
 
 export const fetchProducts =
-  (isFetchByUser?: boolean, userId?: string, page?: number) =>
+  ({ isFetchByUser, userId }: { isFetchByUser?: boolean; userId?: string }) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(setLoading(true));
 
-      const productsState: any = getState();
-      const { products }: any = productsState.products || {};
-      if (products) {
-        dispatch(setTotalProducts(products.length));
-      }
-      // Calculate the start and end points based on the page size
-      const pageSize = 10; // Adjust as needed
-      const startAt = ((page || 1) - 1) * pageSize;
-      const endAt = startAt + pageSize;
-
-      // Update to use the new query and getDocs function
-      const productsRef = collection(db, "products");
-
-      let queryRef: any = productsRef;
+      let queryRef: any = collection(db, "products");
 
       if (userId !== ADMIN_ID) {
         if (isFetchByUser) {
-          queryRef = query(
-            productsRef,
-            where("published", "==", isFetchByUser)
-          );
+          queryRef = query(queryRef, where("published", "==", isFetchByUser));
         }
         if (userId) {
-          queryRef = query(productsRef, where("userId", "==", userId));
+          queryRef = query(queryRef, where("userId", "==", userId));
         }
-      }
-
-      if (page) {
-        queryRef = queryRef.limit(pageSize);
-        console.log(page); // Log the page value when it's not undefined
       }
 
       const querySnapshot = await getDocs(queryRef);
-
-      if (querySnapshot.docs.length < pageSize) {
-        dispatch(setHasMorePages(false));
-      }
 
       const productsList: IProducts[] = [];
       querySnapshot.forEach((doc) => {

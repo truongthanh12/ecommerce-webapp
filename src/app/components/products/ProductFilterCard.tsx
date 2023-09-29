@@ -21,7 +21,8 @@ type TypeProps = {
   searchParams: { [key: string]: string | undefined };
 };
 const ProductFilterCard = ({ searchParams }: TypeProps) => {
-  const { minPrice, maxPrice, brand, options, ratings, color } = searchParams || {};
+  const { minPrice, maxPrice, brand, options, ratings, color } =
+    searchParams || {};
   const { brands } = useSelector((state: any) => state.brands);
   const router = useRouter();
 
@@ -50,23 +51,23 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState<number[]>([]);
-  const [selectedColor, setSelectedColor] = useState(color||"");
+  const [selectedColor, setSelectedColor] = useState(color || "");
 
   const handleChangeColor = (colorName: string) => {
     let updatedQuery: any = { ...searchParams };
-  
+
     if (selectedColor === colorName) {
       setSelectedColor("");
-      delete updatedQuery.color; 
+      delete updatedQuery.color;
     } else {
       setSelectedColor(colorName);
       updatedQuery.color = colorName;
     }
-  
+
     const debouncedFunction = debounce(() => {
       router.push(`?${objectToQueryString(updatedQuery)}`);
     }, 400);
-  
+
     debouncedFunction();
   };
 
@@ -300,6 +301,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
         <FormControlLabel
           control={
             <Checkbox
+              disabled
               size="small"
               name={String(item)}
               checked={selectedRating.includes(item)}

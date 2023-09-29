@@ -15,6 +15,7 @@ import debounce from "lodash/debounce";
 import Pagination from "@/app/components/pagination";
 import BackdropLoading from "@/components/backdrop";
 import CircularWithValueLabel from "@/components/loading/LoadingWithLabel";
+import { fetchUsers } from "@/redux/features/authSlice";
 
 interface PageProps {
   type?: "shop" | "product";
@@ -28,11 +29,9 @@ const ProductsSearch = ({
   searchParams,
   productsByUser,
 }: PageProps) => {
+  const { products } = useSelector((state: any) => state.products);
   const [view, setView] = useState("grid");
   const [loadingLayout, setLoadingLayout] = useState(true);
-  const { products, totalProducts } = useSelector(
-    (state: any) => state.products
-  );
   const dispatch: any = useDispatch();
   const [searchItems, setSearchItems] = useState(products);
   const {
@@ -45,7 +44,7 @@ const ProductsSearch = ({
     ratings,
     color,
     subcategory,
-    page,
+    page = 0,
   } = searchParams || {};
   const timerRef = useRef<NodeJS.Timeout | undefined>();
 
@@ -58,6 +57,10 @@ const ProductsSearch = ({
       clearTimeout(timerRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchProducts({ isFetchByUser: true }));
+  }, [dispatch]);
 
   useEffect(
     debounce(() => {
@@ -112,16 +115,6 @@ const ProductsSearch = ({
           }
         }
 
-        // if (ratings && ratings.length > 0) {
-        //   filtered = filtered.filter((item: Partial<IProducts>) => {
-        //     const itemRating =
-        //       typeof item.rating === "string"
-        //         ? parseFloat(item.rating)
-        //         : item.rating;
-        //     return ratings.includes(itemRating || 0);
-        //   });
-        // }
-
         let sortedProducts = [...filtered];
 
         if (orderBy === "Price High to Low") {
@@ -129,7 +122,14 @@ const ProductsSearch = ({
         } else if (orderBy === "Price Low to High") {
           sortedProducts.sort((a, b) => a.price - b.price);
         }
-        setSearchItems(sortedProducts);
+
+        const pageNumber = Number(page) > 0 ? Number(page) - 1 : 0;
+        const itemsPerPage = 10;
+        const startIndex = pageNumber * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        const productsForPage = sortedProducts.slice(startIndex, endIndex);
+        setSearchItems(productsForPage);
       }
     }, 400),
     [
@@ -142,6 +142,8 @@ const ProductsSearch = ({
       options,
       color,
       subcategory,
+      productsByUser,
+      page,
     ]
   );
 
@@ -156,12 +158,6 @@ const ProductsSearch = ({
     email,
     description,
   } = shopData || {};
-
-  useEffect(() => {
-    if (!productsByUser) {
-      dispatch(fetchProducts(true, "", Number(page)));
-    }
-  }, [dispatch, productsByUser, page]);
 
   return (
     <Container
@@ -221,8 +217,8 @@ const ProductsSearch = ({
         </Suspense>
       </Grid>
       <Pagination
-        products={products}
-        totalProducts={totalProducts}
+        products={searchItems}
+        totalProducts={products.length}
         startProductNumber={1}
         searchParams={searchParams}
       />

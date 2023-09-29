@@ -35,7 +35,7 @@ export default function Home() {
       dispatch(fetchCategories(true));
       dispatch(fetchBanners(true));
       dispatch(fetchBrands(true));
-      dispatch(fetchProducts(true));
+      dispatch(fetchProducts({ isFetchByUser: true }));
       dispatch(fetchParentCategories());
       dispatch(fetchUsers({ isVendor: true }));
     }

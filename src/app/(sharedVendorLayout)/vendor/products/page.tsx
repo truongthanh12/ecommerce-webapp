@@ -66,7 +66,7 @@ export default function ProductList() {
   const { onSearchInputChange, filteredData } = useSearch(products);
 
   useEffect(() => {
-    dispatch(fetchProducts(false, user.docId));
+    dispatch(fetchProducts({ userId: user.docId }));
   }, [dispatch]);
 
   const {

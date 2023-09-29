@@ -5,11 +5,18 @@ import ShopCard from "@/components/shops/Card";
 import { useSelector } from "react-redux";
 import { ADMIN_ID } from "@/app/constant";
 import BackdropLoading from "@/components/backdrop";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useAppDispatch } from "@/redux/hooks";
+import { fetchUsers } from "@/redux/features/authSlice";
 // =============================================
 
 export default function ShopList() {
   const { users, user } = useSelector((state: any) => state.auth);
+  const dispatch: any = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchUsers({ isVendor: true }));
+  }, [dispatch]);
 
   return (
     <Suspense fallback={<BackdropLoading />}>
