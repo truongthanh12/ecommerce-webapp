@@ -76,7 +76,6 @@ const CategoryForm = ({
       reset({
         Name: category.name,
         Type: category.type,
-        Icon: category.icon,
         Parent: !isEmpty(category.parent)
           ? category.parent
           : "Choose category's parent",
@@ -105,10 +104,9 @@ const CategoryForm = ({
   const handleCategoryForm = async (value: {
     Name: string;
     Type: string;
-    Icon: string;
     Parent: string;
   }) => {
-    const { Name, Type, Icon, Parent } = value;
+    const { Name, Type, Parent } = value;
     if (files[0]?.name) {
       console.log("first");
       const uploadTask = uploadBytesResumable(
@@ -134,7 +132,6 @@ const CategoryForm = ({
               name: Name || category?.name,
               type: Type || category?.type,
               image: url || category?.image,
-              icon: Icon || category?.icon,
               parent: Parent || category?.parent,
               published: category?.published,
             };
@@ -179,7 +176,6 @@ const CategoryForm = ({
     const data = {
       name: Name || category?.name,
       type: Type || category?.type,
-      icon: Icon || category?.icon || "",
       parent: Parent || category?.parent,
       published: category?.published,
     };
@@ -311,7 +307,7 @@ const CategoryForm = ({
             />
           </Grid>
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Controller
               name="Icon"
               control={control}
@@ -326,7 +322,7 @@ const CategoryForm = ({
                 />
               )}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12}>
             <DropZone

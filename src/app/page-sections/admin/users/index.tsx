@@ -29,7 +29,7 @@ const UserRow = ({ user, selected }: any) => {
     () => selected?.indexOf(displayName) !== -1,
     [selected, displayName]
   );
-  const currentUser = useSelector((state: any) => state.auth.user)
+  const currentUser = useSelector((state: any) => state.auth.user);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {
@@ -61,7 +61,7 @@ const UserRow = ({ user, selected }: any) => {
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
           <Avatar src={photoURL} />
-          <Paragraph>{displayName || ""}</Paragraph>
+          <Paragraph>{displayName || "Not updated"}</Paragraph>
         </FlexBox>
       </StyledTableCell>
 
@@ -71,7 +71,7 @@ const UserRow = ({ user, selected }: any) => {
           fontWeight: 400,
         }}
       >
-        {phoneNumber}
+        {phoneNumber || "Not updated"}
       </StyledTableCell>
       <StyledTableCell
         align="left"
@@ -87,7 +87,7 @@ const UserRow = ({ user, selected }: any) => {
           fontWeight: 400,
         }}
       >
-        {currentUser.docId === docId ? currency(wallet) : '*****'}
+        {currentUser.docId === docId ? currency(wallet) : "*****"}
       </StyledTableCell>
       <StyledTableCell
         align="center"
@@ -99,7 +99,10 @@ const UserRow = ({ user, selected }: any) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleDelete}>
+        <StyledIconButton
+          disabled={currentUser.docId !== docId}
+          onClick={handleDelete}
+        >
           <Delete />
         </StyledIconButton>
       </StyledTableCell>
