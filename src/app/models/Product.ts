@@ -1,6 +1,7 @@
 import { IUser } from "./User";
 
 export interface IShop {
+  uid: string | number;
   id: string | number;
   slug?: string;
   email?: string;
@@ -70,4 +71,5 @@ export interface IProducts {
   color: string;
   voucherSelected: number;
   comments: Partial<IComments[]>;
+  tags: string[];
 }

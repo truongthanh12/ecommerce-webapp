@@ -24,10 +24,12 @@ import {
 } from "@/redux/features/productSlice";
 import { IProducts } from "@/app/models/Product";
 import { currency } from "@/app/utils/lib";
+import Tags from "@/app/components/products/Tags";
 // ================================================================
 
 const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
   const [files, setFiles] = useState<any>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [filesUpdate, setFilesUpdate] = useState<any>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
@@ -79,6 +81,12 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
       setFilesUpdate(product?.images);
     }
   }, [product?.images]);
+
+  useEffect(() => {
+    if (!isEmpty(product?.tags)) {
+      setTags(product?.tags);
+    }
+  }, [product?.tags])
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files: any) => {
@@ -150,6 +158,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
         sizes: sizes || product?.sizes || [],
         brands: brands || product?.brands || "",
         discount: discount || product?.discount || 0,
+        tags: tags || product?.tags || [],
         images:
           status === "create"
             ? !isEmpty(downloadUrls)
@@ -460,6 +469,10 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
                 />
               )}
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Tags tags={tags} setTags={setTags} />
           </Grid>
 
           <Grid item xs={12}>

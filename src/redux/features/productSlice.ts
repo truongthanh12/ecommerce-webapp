@@ -371,6 +371,7 @@ export const productDataForm = (
     stock: data.stock || 0,
     createdAt: serverTimestamp(),
     userId: user.docId,
+    tags: data.tags || [],
   };
 };
 

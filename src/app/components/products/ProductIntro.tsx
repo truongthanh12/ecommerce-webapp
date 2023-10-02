@@ -39,8 +39,18 @@ const ProductIntro = ({
   searchParams: { [key: string]: string | undefined };
   comments: IComments[];
 }) => {
-  const { price, title, images, shop, stock, sizes, colors, discount, id } =
-    product || {};
+  const {
+    price,
+    title,
+    images,
+    shop,
+    stock,
+    sizes,
+    colors,
+    discount,
+    id,
+    tags,
+  } = product || {};
   const [selectedImage, setSelectedImage] = useState(0);
   const [voucher, setVoucher] = useState(0);
 
@@ -376,10 +386,24 @@ const ProductIntro = ({
             <CartAction product={productData} />
           </div>
 
+          {tags && tags.length && (
+            <FlexBox alignItems="center" mb={2}>
+              <Box>Tags:</Box>
+              {tags.map((tag, ind) => {
+                const isLastItem = ind === tags.length - 1;
+                return (
+                  <Link href={`/shops/${shop?.uid || shop?.id}`} passHref>
+                    <H6 ml={1}>{tag + (isLastItem ? "" : ", ")}</H6>
+                  </Link>
+                );
+              })}
+            </FlexBox>
+          )}
+
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>
-            <Link href={`/shops/${shop?.id}`} passHref>
-              <H6 ml={1}>{shop?.displayName}</H6>
+            <Link href={`/shops/${shop?.uid || shop?.id}`} passHref>
+              <H6 ml={1}>{shop?.displayName || "Not updated"}</H6>
             </Link>
           </FlexBox>
         </Grid>

@@ -8,7 +8,6 @@ import Featured from "@/page-sections/featured";
 import NewArrival from "@/page-sections/new-arrival";
 import Discount from "@/page-sections/discount";
 import BannerAds from "@/page-sections/banner";
-import MoreProducts from "@/page-sections/more-products";
 import Services from "@/page-sections/services";
 import { useEffect } from "react";
 import {
@@ -54,7 +53,6 @@ export default function Home() {
       <Discount products={products} />
       <Featured products={products} brands={brands} />
       <NewArrival products={products} />
-      <MoreProducts products={products} />
       <Services serviceList={serviceList} />
     </>
   );

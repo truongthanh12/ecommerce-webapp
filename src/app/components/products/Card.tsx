@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Add, Favorite, RemoveRedEye } from "@mui/icons-material";
-import { Box, Button, Grid, IconButton } from "@mui/material";
+import { Box, Button, Grid, IconButton, Tooltip } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import LazyImage from "@/components/LazyImage";
 import Card from "@/components/Card";
@@ -207,7 +207,7 @@ const ProductCard = ({
         ) : (
           <FlexBox alignItems="center" gap={1} mt={0.5}>
             <Box fontWeight="600" color="primary.main">
-              {calculateDiscount(price, discount)}
+              {calculateDiscount(price, Number(discount))}
             </Box>
 
             {Number(discount) !== 0 ? (
@@ -259,7 +259,7 @@ const ProductCard = ({
       />
       <Grid item alignItems="center" container spacing={1}>
         <Grid
-          sx={{ width: "100%", paddingBottom: isInShop? 0 : "100%" }}
+          sx={{ width: "100%", paddingBottom: isInShop ? 0 : "100%" }}
           item
           sm={isInShop ? 3 : 12}
           xs={12}
@@ -274,23 +274,27 @@ const ProductCard = ({
             )}
 
             <HoverIconWrapper className="hover-box">
-              <IconButton
-                sx={{ backgroundColor: "rgba(15, 52, 96, .35)" }}
-                onClick={toggleDialog}
-              >
-                <RemoveRedEye color="disabled" fontSize="small" />
-              </IconButton>
+              <Tooltip title="Detail" placement="top">
+                <IconButton
+                  sx={{ backgroundColor: "rgba(15, 52, 96, .35)" }}
+                  onClick={toggleDialog}
+                >
+                  <RemoveRedEye color="disabled" fontSize="small" />
+                </IconButton>
+              </Tooltip>
 
-              <IconButton
-                sx={{ backgroundColor: "rgba(15, 52, 96, .35)" }}
-                onClick={toggleIsFavorite}
-              >
-                {isFavorite ? (
-                  <Favorite color="primary" fontSize="small" />
-                ) : (
-                  <FavoriteBorder fontSize="small" color="disabled" />
-                )}
-              </IconButton>
+              <Tooltip title={isFavorite ? "Remove wishlist" : "Add wishlist"}>
+                <IconButton
+                  sx={{ backgroundColor: "rgba(15, 52, 96, .35)" }}
+                  onClick={toggleIsFavorite}
+                >
+                  {isFavorite ? (
+                    <Favorite color="primary" fontSize="small" />
+                  ) : (
+                    <FavoriteBorder fontSize="small" color="disabled" />
+                  )}
+                </IconButton>
+              </Tooltip>
             </HoverIconWrapper>
 
             <Link href={`/product/${formattedSlug}`} passHref>
@@ -338,7 +342,7 @@ const ProductCard = ({
 
                 <FlexBox alignItems="center" gap={1} mt={0.5}>
                   <Box fontWeight="600" color="primary.main">
-                    {calculateDiscount(price, discount)}
+                    {calculateDiscount(price, Number(discount))}
                   </Box>
 
                   {Number(discount) !== 0 ? (

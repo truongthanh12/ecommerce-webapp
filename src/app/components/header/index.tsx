@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Badge, Box, Button, Dialog, Drawer } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -10,7 +10,6 @@ import clsx from "clsx";
 import Icon from "@/components/icons";
 import { layoutConstant } from "@/utils/constants";
 import Auth from "@/components/auth";
-// import { useAppContext } from "contexts/AppContext";
 import MiniCart from "@/components/MiniCart";
 import Category from "@/components/icons/Category";
 import { Paragraph } from "@/components/Typography";
@@ -22,8 +21,11 @@ import Image from "next/image";
 import debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
 import { HeaderWrapper, StyledContainer } from "./styles";
-import Avatar from "./Avatar";
-import { selectCartItemsForUser, selectTotalQuantityForUser } from "@/redux/features/cartSlice";
+import {
+  selectCartItemsForUser,
+  selectTotalQuantityForUser,
+} from "@/redux/features/cartSlice";
+import AccountPopover from "../layouts/vendor-dashboard/popovers/AccountPopover";
 
 // ==============================================================
 
@@ -221,7 +223,19 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
 
         {/* Auth AND CART BUTTON */}
         <FlexBox gap={1.5} alignItems="center">
-          <Avatar toggleDialog={toggleDialog} />
+          {/* <Avatar toggleDialog={toggleDialog} /> */}
+          {user?.uid ? (
+            <AccountPopover />
+          ) : (
+            <Box
+              component={IconButton}
+              p={1.25}
+              bgcolor="grey.200"
+              onClick={toggleDialog}
+            >
+              <PersonOutline />
+            </Box>
+          )}
 
           <Badge badgeContent={totalQuantity} color="primary">
             <Box

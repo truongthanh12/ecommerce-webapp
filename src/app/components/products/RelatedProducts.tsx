@@ -13,7 +13,7 @@ const RelatedProducts: React.FC<TypeProps> = ({ products }) => {
       <H3 mb={3}>Realted Products</H3>
       <Grid container spacing={8}>
         {products.map((item, ind) => (
-          <Grid item lg={3} md={4} sm={6} xs={12} key={ind}>
+          <Grid item lg={3} md={4} sm={6} xs={12} key={item.id + ind}>
             <ProductCard
               id={item.id}
               slug={item.slug}

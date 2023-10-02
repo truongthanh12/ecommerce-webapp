@@ -37,8 +37,8 @@ export default function EditProduct({ params }: TypeProps) {
   useEffect(() => {
     // Define an async function
     async function fetchData() {
-      const brand = await getProductById(params.id);
-      setProduct(brand || {});
+      const productData = await getProductById(params.id);
+      setProduct(productData || {});
     }
     // Call the async function
     fetchData();
@@ -47,7 +47,7 @@ export default function EditProduct({ params }: TypeProps) {
   return (
     <Box py={4}>
       <FlexBox mb={2} gap={2} justifyContent="space-between" flexWrap="wrap">
-        <H3 mb={2}>Edit product "{product?.name}"</H3>
+        <H3 mb={2}>Edit product ID "{id}"</H3>
         <Link href="/vendor/products">
           <Button
             color="info"

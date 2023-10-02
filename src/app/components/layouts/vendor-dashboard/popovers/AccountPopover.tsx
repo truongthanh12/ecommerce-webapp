@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Badge,
   Box,
   IconButton,
   Menu,
@@ -14,18 +15,50 @@ import { logout } from "@/redux/features/authSlice";
 import { auth } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { setMessage } from "@/redux/features/messageSlice";
+import Link from "next/link";
+import { ADMIN_ID } from "@/app/constant";
 
 // styled components
 const Divider = styled(Box)(({ theme }) => ({
   margin: "0.5rem 0",
   border: `1px dashed ${theme.palette.grey[200]}`,
 }));
+const StyledBadge = styled(Badge)(({ theme }: { theme: any }) => ({
+  cursor: "pointer",
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1,
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0,
+    },
+  },
+}));
+
 const AccountPopover = () => {
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
   const { user } = useSelector((state: any) => state.auth);
   const dispatch: any = useAppDispatch();
   const router = useRouter();
-  const { displayName, isVendor } = user || {};
+  const { displayName, isVendor, photoURL, docId } = user || {};
 
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
@@ -57,7 +90,16 @@ const AccountPopover = () => {
         aria-expanded={open ? "true" : undefined}
         aria-controls={open ? "account-menu" : undefined}
       >
-        <Avatar alt="Remy Sharp" src="/assets/images/avatars/001-man.svg" />
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          variant="dot"
+        >
+          <Avatar
+            alt={displayName || "Not updated"}
+            src={photoURL || "/assets/images/avatars/001-man.svg"}
+          />
+        </StyledBadge>
       </IconButton>
 
       <Menu
@@ -106,14 +148,19 @@ const AccountPopover = () => {
         }}
       >
         <Box px={2} pt={1}>
-          <H6>{displayName}</H6>
-          <Small color="grey.500">{isVendor ? "Seller" : "Admin"}</Small>
+          <H6>{displayName || "Not updated"}</H6>
+          <Small color="grey.500">
+            {isVendor ? "Seller" : docId === ADMIN_ID ? "Admin" : "User"}
+          </Small>
         </Box>
 
         <Divider />
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>My Orders</MenuItem>
-        <MenuItem>Settings</MenuItem>
+        <Link href="/profile">
+          <MenuItem>Profile</MenuItem>
+        </Link>
+        <Link href="/orders">
+          <MenuItem>My Orders</MenuItem>
+        </Link>
 
         <Divider />
         <MenuItem onClick={handleLogout}>Logout</MenuItem>

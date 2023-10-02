@@ -93,18 +93,6 @@ const DashboardNavbar = ({ handleDrawerToggle }: any) => {
           <Box flexGrow={1} />
 
           <FlexBox alignItems="center" gap={2}>
-            <StyledInputBase
-              placeholder="Search anything..."
-              startAdornment={
-                <Search
-                  sx={{
-                    color: "grey.500",
-                    mr: 1,
-                  }}
-                />
-              }
-            />
-
             <NotificationsPopover />
             {user.userType && user.userType !== "None" && (
               <Typography color="grey.600" letterSpacing="0.2em">

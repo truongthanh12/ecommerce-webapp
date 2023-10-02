@@ -1,14 +1,17 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { Box, Container, styled, Tab, Tabs } from "@mui/material";
 import ProductIntro from "@/components/products/ProductIntro";
 import ProductReview from "@/components/products/ProductReview";
 import ProductDescription from "@/components/products/ProductDescription";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import db from "@/firebase";
-import { H2 } from "@/app/components/Typography";
+import { H2 } from "@/components/Typography";
 import BackdropLoading from "@/components/backdrop";
 import { getCommentsByProductId } from "@/redux/features/productSlice";
+import RelatedProducts from "@/components/products/RelatedProducts";
+import { useSelector } from "react-redux";
+import { IProducts } from "@/app/models/Product";
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -36,18 +39,14 @@ async function getProductBySlug(productSlug = "") {
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      // Assuming that there's only one product with a given slug
       const productDoc = querySnapshot.docs[0];
       const productData = { ...productDoc.data(), id: productDoc.id };
 
       return productData;
     } else {
-      // Handle the case where no product matches the slug
       return null;
     }
   } catch (error) {
-    // Handle any errors here
-    console.error("Error fetching product:", error);
     return null;
   }
 }
@@ -59,6 +58,20 @@ export default function ProductDetails({
   const handleOptionClick = (_: any, value: any) => setSelectedOption(value);
   const [product, setProduct] = useState<any>({});
   const [comments, setComments] = useState<any>();
+  const { products } = useSelector((state: any) => state.products);
+
+  const relatedProducts = useMemo(() => {
+    if (product?.tags && Array.isArray(product?.tags)) {
+      const lowerCaseTags = product.tags.map((tag: string) => tag.toLowerCase());
+      
+      return products.filter((prod: IProducts) =>
+        prod?.tags?.some((tag) =>
+          lowerCaseTags.includes(tag.toLowerCase()) && prod.id !== product.id
+        )
+      );
+    }
+    return [];
+  }, [products, product?.tags, product?.id]);
 
   useEffect(() => {
     // Define an async function
@@ -92,7 +105,11 @@ export default function ProductDetails({
       >
         {/* PRODUCT DETAILS INFO AREA */}
         {product ? (
-          <ProductIntro comments={comments} searchParams={searchParams} product={product} />
+          <ProductIntro
+            comments={comments}
+            searchParams={searchParams}
+            product={product}
+          />
         ) : (
           <H2>Loading...</H2>
         )}
@@ -117,7 +134,11 @@ export default function ProductDetails({
           {selectedOption === 1 && <ProductReview productId={product.id} />}
         </Box>
 
-        {/* {relatedProducts && <RelatedProducts products={relatedProducts} />} */}
+        {relatedProducts.length ? (
+          <RelatedProducts products={relatedProducts} />
+        ) : (
+          ""
+        )}
       </Container>
     </Suspense>
   );
