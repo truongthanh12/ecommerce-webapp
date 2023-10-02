@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { Suspense, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Close } from "@mui/icons-material";
 import {
   Avatar,
@@ -223,9 +223,9 @@ const ProductIntro = ({
           {sizes && (
             <Box mb={2}>
               <H6 mb={1}>Sizes</H6>
-              {(sizes || []).map((size: any) => (
+              {(sizes || []).map((size: string, index: number) => (
                 <Link
-                  key={size}
+                  key={size + index}
                   href={`?${new URLSearchParams({
                     size,
                     color: selectedColor,
@@ -248,9 +248,9 @@ const ProductIntro = ({
           {colors && (
             <Box mb={2}>
               <H6 mb={1}>Colors</H6>
-              {(colors || []).map((color: any) => (
+              {(colors || []).map((color: string, index: number) => (
                 <Link
-                  key={color}
+                  key={color + index}
                   href={`?${new URLSearchParams({
                     color,
                     size: selectedSize,
@@ -392,7 +392,11 @@ const ProductIntro = ({
               {tags.map((tag, ind) => {
                 const isLastItem = ind === tags.length - 1;
                 return (
-                  <Link href={`/shops/${shop?.uid || shop?.id}`} passHref>
+                  <Link
+                    key={tag + ind}
+                    href={`/product/search/products?tag=${tag}`}
+                    passHref
+                  >
                     <H6 ml={1}>{tag + (isLastItem ? "" : ", ")}</H6>
                   </Link>
                 );

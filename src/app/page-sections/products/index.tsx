@@ -45,6 +45,7 @@ const ProductsSearch = ({
     color,
     subcategory,
     page = 0,
+    tag,
   } = searchParams || {};
   const timerRef = useRef<NodeJS.Timeout | undefined>();
 
@@ -113,6 +114,14 @@ const ProductsSearch = ({
               (item: Partial<IProducts>) => Number(item.stock) > 0
             );
           }
+        }
+
+        if (tag) {
+          filtered = filtered.filter((item: Partial<IProducts>) => {
+            const productTags =
+              item.tags?.map((tag) => tag.toLowerCase()) || [];
+            return productTags.includes(tag.toLowerCase());
+          });
         }
 
         let sortedProducts = [...filtered];
