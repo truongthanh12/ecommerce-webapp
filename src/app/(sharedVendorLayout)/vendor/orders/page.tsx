@@ -16,6 +16,7 @@ import TableHeader from "@/app/components/data-table/TableHeader";
 import { isEmpty } from "lodash";
 import NotFound from "@/app/components/not-found";
 import TableRow from "@/app/components/TableRow";
+import { RootState } from "@/redux/store";
 
 // ====================================================
 const tableHeading = [
@@ -47,8 +48,8 @@ const tableHeading = [
 ];
 const Orders = () => {
   const dispatch: any = useAppDispatch();
-  const { user } = useSelector((state: any) => state.auth);
-  const { orders } = useSelector((state: any) => state.orders);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { orders } = useSelector((state: RootState) => state.orders);
   const filteredOrders = useMemo(
     () =>
       orders.filter((order: any) =>

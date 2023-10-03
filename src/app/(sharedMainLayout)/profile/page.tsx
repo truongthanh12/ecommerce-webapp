@@ -23,12 +23,13 @@ import { useAppDispatch } from "@/redux/hooks";
 import { IOrder } from "@/models/Order";
 import { INFO_LIST } from "@/data/status";
 import BackdropLoading from "@/components/backdrop";
+import { RootState } from "@/redux/store";
 // ============================================================
 
 export default function Profile() {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
-  const { user } = useSelector((state: any) => state.auth);
-  const { orders } = useSelector((state: any) => state.orders);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { orders } = useSelector((state: RootState) => state.orders);
   const dispatch: any = useAppDispatch();
 
   const ordersAwating = useMemo(

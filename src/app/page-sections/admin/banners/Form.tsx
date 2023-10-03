@@ -19,6 +19,7 @@ import {
   updateBannerAsync,
 } from "@/redux/features/bannerSlice";
 import { ICarouselCard } from "@/app/models/Brand";
+import { RootState } from "@/redux/store";
 
 // ================================================================
 
@@ -46,9 +47,9 @@ const BannerForm = ({
   const [files, setFiles] = useState<any>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
-  const { error, loading } = useSelector((state: any) => state.banners);
-  const { user } = useSelector((state: any) => state.auth);
-  const { status } = useSelector((state: any) => state.statusAdmin);
+  const { error, loading } = useSelector((state: RootState) => state.banners);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { status } = useSelector((state: RootState) => state.statusAdmin);
   const router = useRouter();
 
   const {

@@ -13,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { addChargeAsync } from "@/redux/features/rechargeSlice";
 import { serverTimestamp } from "firebase/firestore";
+import { RootState } from "@/redux/store";
 
 const Wrapper = styled("form")(() => ({
   display: "flex",
@@ -35,8 +36,8 @@ export default function Recharge() {
     mode: "onSubmit",
   });
 
-  const { user } = useSelector((state: any) => state.auth);
-  const { loading } = useSelector((state: any) => state.recharge);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { loading } = useSelector((state: RootState) => state.recharge);
   const dispatch: any = useAppDispatch();
 
   const handleSubmitForm = async (values: { wallet: number }) => {

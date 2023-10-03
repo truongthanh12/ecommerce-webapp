@@ -18,6 +18,7 @@ import {
   fetchVouchers,
   selectVoucherForUser,
 } from "@/redux/features/voucherSlice";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -58,8 +59,8 @@ export default function VoucherList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const { user } = useSelector((state: any) => state.auth);
-  const vouchers: any = useSelector((state: any) =>
+  const { user } = useSelector((state: RootState) => state.auth);
+  const vouchers: any = useSelector((state: RootState) =>
     selectVoucherForUser(state, user.docId)
   );
 

@@ -13,13 +13,14 @@ import { Suspense, useEffect } from "react";
 import { fetchOrders } from "@/redux/features/orderSlice";
 import { useSelector } from "react-redux";
 import BackdropLoading from "@/components/backdrop";
+import { RootState } from "@/redux/store";
 
 // ====================================================
 
 const Orders = () => {
   const dispatch: any = useAppDispatch();
-  const { user } = useSelector((state: any) => state.auth);
-  const { orders } = useSelector((state: any) => state.orders);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { orders } = useSelector((state: RootState) => state.orders);
 
   useEffect(() => {
     dispatch(fetchOrders(user.docId));

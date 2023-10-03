@@ -9,6 +9,7 @@ import NavLink from "@/components/nav-link/NavLink";
 import { useSelector } from "react-redux";
 import { fetchOrders } from "@/redux/features/orderSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({
@@ -70,8 +71,8 @@ const LINK_LIST = [
 const Navigations = () => {
   const pathname = usePathname();
   const dispatch: any = useAppDispatch();
-  const { orders } = useSelector((state: any) => state.orders);
-  const { user } = useSelector((state: any) => state.auth);
+  const { orders } = useSelector((state: RootState) => state.orders);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(fetchOrders(user.docId));

@@ -8,10 +8,11 @@ import BackdropLoading from "@/components/backdrop";
 import { Suspense, useEffect } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { fetchUsers } from "@/redux/features/authSlice";
+import { RootState } from "@/redux/store";
 // =============================================
 
 export default function ShopList() {
-  const { users, user } = useSelector((state: any) => state.auth);
+  const { users, user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useAppDispatch()
 
   useEffect(() => {

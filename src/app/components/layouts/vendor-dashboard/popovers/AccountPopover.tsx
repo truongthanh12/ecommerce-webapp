@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { setMessage } from "@/redux/features/messageSlice";
 import Link from "next/link";
 import { ADMIN_ID } from "@/app/constant";
+import { RootState } from "@/redux/store";
 
 // styled components
 const Divider = styled(Box)(({ theme }) => ({
@@ -55,7 +56,7 @@ const StyledBadge = styled(Badge)(({ theme }: { theme: any }) => ({
 
 const AccountPopover = () => {
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useAppDispatch();
   const router = useRouter();
   const { displayName, isVendor, photoURL, docId } = user || {};

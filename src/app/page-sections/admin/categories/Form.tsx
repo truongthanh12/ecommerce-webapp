@@ -28,6 +28,7 @@ import {
 } from "@/redux/features/categorySlice";
 import { CategoryIcon } from "@/common";
 import Car from "@/app/components/icons/Car";
+import { RootState } from "@/redux/store";
 
 // ================================================================
 
@@ -55,10 +56,10 @@ const CategoryForm = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [valueSeclect, setValueSelected] = useState("");
   const dispatch: any = useDispatch();
-  const { error, loading } = useSelector((state: any) => state.categories);
-  const { status } = useSelector((state: any) => state.statusAdmin);
-  const { user } = useSelector((state: any) => state.auth);
-  const { parentCategories } = useSelector((state: any) => state.categories);
+  const { error, loading } = useSelector((state: RootState) => state.categories);
+  const { status } = useSelector((state: RootState) => state.statusAdmin);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { parentCategories } = useSelector((state: RootState) => state.categories);
   const router = useRouter();
 
   const {

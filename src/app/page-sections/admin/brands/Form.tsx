@@ -18,6 +18,7 @@ import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storageRef } from "@/firebase";
 import isEmpty from "lodash/isEmpty";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/redux/store";
 
 // ================================================================
 
@@ -37,9 +38,9 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
   const [files, setFiles] = useState<any>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
-  const { error } = useSelector((state: any) => state.brands);
-  const { user } = useSelector((state: any) => state.auth);
-  const { status } = useSelector((state: any) => state.statusAdmin);
+  const { error } = useSelector((state: RootState) => state.brands);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { status } = useSelector((state: RootState) => state.statusAdmin);
   const router = useRouter();
 
   const {

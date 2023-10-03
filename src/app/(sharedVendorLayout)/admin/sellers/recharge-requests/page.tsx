@@ -15,6 +15,7 @@ import isEmpty from "lodash/isEmpty";
 import NotFound from "@/app/components/not-found";
 import { fetchRecharge } from "@/redux/features/rechargeSlice";
 import { ADMIN_ID } from "@/app/constant";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -43,8 +44,8 @@ const tableHeading = [
 // =============================================================================
 
 export default function RechargeRequest() {
-  const { recharge } = useSelector((state: any) => state.recharge);
-  const { user } = useSelector((state: any) => state.auth);
+  const { recharge } = useSelector((state: RootState) => state.recharge);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
 
   const { onSearchInputChange, filteredData } = useSearch(recharge);

@@ -16,6 +16,7 @@ import isEmpty from "lodash/isEmpty";
 import { fetchBanners } from "@/redux/features/bannerSlice";
 import NotFound from "@/app/components/not-found";
 import { ICarouselCard } from "@/app/models/Brand";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -56,8 +57,8 @@ const tableHeading = [
 export default function BannerList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
-  const { banners } = useSelector((state: any) => state.banners);
-  const { user } = useSelector((state: any) => state.auth);
+  const { banners } = useSelector((state: RootState) => state.banners);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
 
   const uniqueArrayBanners: any[] = useMemo(() => {

@@ -17,6 +17,7 @@ import { ADMIN_ID } from "@/app/constant";
 import { useSelector } from "react-redux";
 import { updateAsync } from "@/redux/features/rechargeSlice";
 import { ICategory } from "@/app/models/Category";
+import { RootState } from "@/redux/store";
 
 // ========================================================================
 
@@ -24,7 +25,7 @@ const CategoryRow = ({ category }: { category: Partial<ICategory> }) => {
   const { name, published, image, id, parent, userId } = category || {};
   const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(published);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleChangeStatus = async () => {
     if (user.docId === ADMIN_ID) {

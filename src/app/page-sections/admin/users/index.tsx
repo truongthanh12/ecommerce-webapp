@@ -10,6 +10,7 @@ import { deleteUserAsync } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
 import { currency } from "@/app/utils/lib";
 import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 // ========================================================================
 
@@ -29,7 +30,7 @@ const UserRow = ({ user, selected }: any) => {
     () => selected?.indexOf(displayName) !== -1,
     [selected, displayName]
   );
-  const currentUser = useSelector((state: any) => state.auth.user);
+  const currentUser = useSelector((state: RootState) => state.auth.user);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

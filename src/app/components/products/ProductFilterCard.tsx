@@ -16,6 +16,7 @@ import debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
 import { IBrand } from "@/app/models/Brand";
 import { colors } from "@/app/data/data";
+import { RootState } from "@/redux/store";
 
 type TypeProps = {
   searchParams: { [key: string]: string | undefined };
@@ -23,7 +24,7 @@ type TypeProps = {
 const ProductFilterCard = ({ searchParams }: TypeProps) => {
   const { minPrice, maxPrice, brand, options, ratings, color } =
     searchParams || {};
-  const { brands } = useSelector((state: any) => state.brands);
+  const { brands } = useSelector((state: RootState) => state.brands);
   const router = useRouter();
 
   const arrayOfStringBrands = useMemo(() => {

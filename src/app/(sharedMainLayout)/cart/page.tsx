@@ -21,6 +21,7 @@ import CheckoutSummary from "@/page-sections/checkout/CheckoutSummary";
 import { Suspense, useMemo, useState } from "react";
 import { IVoucher } from "@/app/models/Voucher";
 import BackdropLoading from "@/components/backdrop"
+import { RootState } from "@/redux/store";
 
 // styled components
 const Wrapper = styled(Card)(({ theme }: { theme: any }) => ({
@@ -42,10 +43,10 @@ const Wrapper = styled(Card)(({ theme }: { theme: any }) => ({
 }));
 
 const Cart = () => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const cartList: any = useSelector(selectCartItemsForUser(user.docId));
   const dispatch: any = useDispatch();
-  const { vouchers } = useSelector((state: any) => state.vouchers);
+  const { vouchers } = useSelector((state: RootState) => state.vouchers);
 
   const [voucher, setVoucher] = useState("");
 

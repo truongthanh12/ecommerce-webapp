@@ -24,6 +24,7 @@ import Card from "../Card";
 import voucherCode from "@/app/data/voucher-code";
 import { useSelector } from "react-redux";
 import { selectCartItemsForUser } from "@/redux/features/cartSlice";
+import { RootState } from "@/redux/store";
 
 const ContentWrapper = styled(Box)(() => ({
   borderRadius: "8px",
@@ -54,7 +55,7 @@ const ProductIntro = ({
   const [selectedImage, setSelectedImage] = useState(0);
   const [voucher, setVoucher] = useState(0);
 
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
 
   const selectedSize = (searchParams?.size || sizes?.[0]) as string;

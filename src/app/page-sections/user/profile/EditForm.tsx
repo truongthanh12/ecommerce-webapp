@@ -16,6 +16,7 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { useSelector } from "react-redux";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storageRef } from "@/firebase";
+import { RootState } from "@/redux/store";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -37,7 +38,7 @@ interface FormValues {
 }
 
 const EditForm = () => {
-  const { user, isLoading } = useSelector((state: any) => state.auth);
+  const { user, isLoading } = useSelector((state: RootState) => state.auth);
   const [file, setFile] = useState<any>(null);
   const [imagePreview, setPreview] = useState("");
   const dispatch: any = useAppDispatch();

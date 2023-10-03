@@ -8,11 +8,12 @@ import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectCartItemsForUser } from "@/redux/features/cartSlice";
 import { IVoucher } from "@/app/models/Voucher";
+import { RootState } from "@/redux/store";
 
 export default function Checkout() {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const cartList: any = useSelector(selectCartItemsForUser(user.docId));
-  const { vouchers } = useSelector((state: any) => state.vouchers);
+  const { vouchers } = useSelector((state: RootState) => state.vouchers);
 
   const [voucher, setVoucher] = useState("");
 

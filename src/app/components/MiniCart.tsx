@@ -18,6 +18,7 @@ import CartAction from "./products/CartAction";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "@/redux/features/cartSlice";
 import { IProducts } from "../models/Product";
+import { RootState } from "@/redux/store";
 
 // =========================================================
 
@@ -28,7 +29,7 @@ type TypeMinicart = {
 const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
   const { palette } = useTheme();
   const dispatch: any = useDispatch();
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const getTotalPrice = useMemo(() => {
     // Calculate the total voucher deduction for the entire cart

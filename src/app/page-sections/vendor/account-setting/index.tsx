@@ -16,6 +16,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/firebase";
 import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
 import { currency } from "@/app/utils/lib";
+import { RootState } from "@/redux/store";
 // upload button
 
 const phoneRegExp =
@@ -52,7 +53,7 @@ const AccountSettingForm = () => {
 
   const [avatarPreview, setPreviewAvatar] = useState("");
   const [coverPreview, setPreviewCover] = useState("");
-  const { user, isLoading } = useSelector((state: any) => state.auth);
+  const { user, isLoading } = useSelector((state: RootState) => state.auth);
 
   const dispatch: any = useAppDispatch();
   useEffect(() => {

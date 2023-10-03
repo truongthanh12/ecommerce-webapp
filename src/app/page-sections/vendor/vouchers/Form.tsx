@@ -11,6 +11,7 @@ import {
   voucherDataForm,
 } from "@/redux/features/voucherSlice";
 import { currency } from "@/app/utils/lib";
+import { RootState } from "@/redux/store";
 
 // ================================================================
 
@@ -52,9 +53,9 @@ const schema = yup.object().shape({
 const VoucherForm = ({ id = "", voucher }: { id?: string; voucher?: any }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
-  const { error } = useSelector((state: any) => state.vouchers);
-  const { status } = useSelector((state: any) => state.statusAdmin);
-  const { user } = useSelector((state: any) => state.auth);
+  const { error } = useSelector((state: RootState) => state.vouchers);
+  const { status } = useSelector((state: RootState) => state.statusAdmin);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const {
     control,

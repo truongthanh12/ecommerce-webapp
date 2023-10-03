@@ -25,6 +25,7 @@ import {
 import { IProducts } from "@/app/models/Product";
 import { currency } from "@/app/utils/lib";
 import Tags from "@/app/components/products/Tags";
+import { RootState } from "@/redux/store";
 // ================================================================
 
 const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
@@ -34,11 +35,11 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch: any = useDispatch();
 
-  const { loading } = useSelector((state: any) => state.products);
-  const { user } = useSelector((state: any) => state.auth);
-  const { status } = useSelector((state: any) => state.statusAdmin);
-  const { categories } = useSelector((state: any) => state.categories);
-  const { brands } = useSelector((state: any) => state.brands);
+  const { loading } = useSelector((state: RootState) => state.products);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { status } = useSelector((state: RootState) => state.statusAdmin);
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const { brands } = useSelector((state: RootState) => state.brands);
   const router = useRouter();
 
   const {

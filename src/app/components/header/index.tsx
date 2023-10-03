@@ -26,6 +26,7 @@ import {
   selectTotalQuantityForUser,
 } from "@/redux/features/cartSlice";
 import AccountPopover from "../layouts/vendor-dashboard/popovers/AccountPopover";
+import { RootState } from "@/redux/store";
 
 // ==============================================================
 
@@ -44,7 +45,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
 
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
   const totalQuantity = useSelector(selectTotalQuantityForUser(user.docId));
 

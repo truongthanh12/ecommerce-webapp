@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/redux/hooks";
 import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
+import { RootState } from "@/redux/store";
 
 const packageList = [
   {
@@ -51,7 +52,7 @@ const packageList = [
 ];
 
 export default function SellerPackage() {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useAppDispatch();
 
   const handleSubmitForm = async (values: {

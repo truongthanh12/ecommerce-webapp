@@ -22,6 +22,7 @@ import { setMessage } from "@/redux/features/messageSlice";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Checkbox, FormControlLabel, FormGroup, styled } from "@mui/material";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { RootState } from "@/redux/store";
 
 type FormValues = {
   Email: string;
@@ -54,7 +55,7 @@ const FormAuth = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [isChecked, setChecked] = useState(false);
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state: any) => state.auth);
+  const { isLoading, error } = useSelector((state: RootState) => state.auth);
   const {
     handleSubmit,
     control,

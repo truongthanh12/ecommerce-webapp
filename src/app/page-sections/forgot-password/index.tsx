@@ -14,6 +14,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/firebase";
 import { setMessage } from "@/redux/features/messageSlice";
 import { loading, loginError } from "@/redux/features/authSlice";
+import { RootState } from "@/redux/store";
 
 export const ErrorMessage = styled("span")(() => ({
   display: "flex",
@@ -31,7 +32,7 @@ type FormValues = {
 };
 const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  const { isLoading, error } = useSelector((state: any) => state.auth);
+  const { isLoading, error } = useSelector((state: RootState) => state.auth);
 
   const {
     handleSubmit,

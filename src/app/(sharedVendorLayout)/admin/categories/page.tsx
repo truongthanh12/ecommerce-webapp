@@ -16,6 +16,7 @@ import isEmpty from "lodash/isEmpty";
 import { fetchCategories } from "@/redux/features/categorySlice";
 import NotFound from "@/app/components/not-found";
 import { ICategory } from "@/app/models/Category";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -56,8 +57,8 @@ const tableHeading = [
 export default function CategoriesList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
-  const { categories } = useSelector((state: any) => state.categories);
-  const { user } = useSelector((state: any) => state.auth);
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
 
   const uniqueArrayCategories: any[] = useMemo(() => {

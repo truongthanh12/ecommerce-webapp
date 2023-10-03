@@ -12,6 +12,7 @@ import { getCommentsByProductId } from "@/redux/features/productSlice";
 import RelatedProducts from "@/components/products/RelatedProducts";
 import { useSelector } from "react-redux";
 import { IProducts } from "@/app/models/Product";
+import { RootState } from "@/redux/store";
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -58,7 +59,7 @@ export default function ProductDetails({
   const handleOptionClick = (_: any, value: any) => setSelectedOption(value);
   const [product, setProduct] = useState<any>({});
   const [comments, setComments] = useState<any>();
-  const { products } = useSelector((state: any) => state.products);
+  const { products } = useSelector((state: RootState) => state.products);
 
   const relatedProducts = useMemo(() => {
     if (product?.tags && Array.isArray(product?.tags)) {

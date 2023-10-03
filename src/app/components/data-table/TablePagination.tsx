@@ -33,5 +33,7 @@ export const StyledPagination = styled(Pagination)(({ theme }) => ({
     },
   },
 }));
-const TablePagination = (props: any) => <StyledPagination {...props} />;
+const TablePagination = (props: any) => (
+  <StyledPagination {...props} defaultPage={1} />
+);
 export default React.memo(TablePagination);

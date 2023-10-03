@@ -9,6 +9,7 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
 import BackdropLoading from "@/components/backdrop"
+import { RootState } from "@/redux/store";
 
 // ============================================================
 
@@ -34,7 +35,7 @@ async function getShopById(id = "") {
 export default function ShopDetails({ params, searchParams }: PageProps) {
   const [shop, setShop] = useState({});
   const dispatch: any = useAppDispatch();
-  const { products } = useSelector((state: any) => state.products);
+  const { products } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     async function fetchData() {

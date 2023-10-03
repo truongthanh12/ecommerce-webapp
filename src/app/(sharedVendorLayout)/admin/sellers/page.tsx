@@ -14,6 +14,7 @@ import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchUsers } from "@/redux/features/authSlice";
 import NotFound from "@/app/components/not-found";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -52,7 +53,7 @@ const tableHeading = [
 // =============================================================================
 
 export default function SellerList() {
-  const { users } = useSelector((state: any) => state.auth);
+  const { users } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
 
   const uniqueArrayCategories: any[] = useMemo(() => {

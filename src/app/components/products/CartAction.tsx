@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { addToCart, selectCartItemsForUser } from "@/redux/features/cartSlice";
 import { Box, Button } from "@mui/material";
 import { FlexBox } from "@/components/flex-box";
@@ -15,7 +15,7 @@ const CartAction = ({
 }) => {
   const { stock, id, size, color, voucherSelected } = product || {};
 
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
 
   const dispatch: AppDispatch = useDispatch();

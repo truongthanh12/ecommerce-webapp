@@ -25,6 +25,7 @@ import {
   addItemToWishlist,
   fetchWishlistByUserId,
 } from "@/redux/features/wishlistSlice";
+import { RootState } from "@/redux/store";
 
 // ========================================================
 interface TypeProps {
@@ -72,8 +73,8 @@ const ProductCard = ({
   const [openModal, setOpenModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const dispatch: any = useDispatch();
-  const wishlist = useSelector((state: any) => state.wishlist);
-  const { user } = useSelector((state: any) => state.auth);
+  const wishlist = useSelector((state: RootState) => state.wishlist);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(fetchWishlistByUserId(user.docId));

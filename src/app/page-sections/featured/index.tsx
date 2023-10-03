@@ -17,7 +17,7 @@ type TypeProps = {
   brands: IBrand[];
 };
 const Featured: React.FC<TypeProps> = ({ brands }) => {
-  const [products, setProducts] = useState<any>([]);
+  const [products, setProducts] = useState<IProducts[]>([]);
 
   const featuredBrand = useMemo(() => {
     return brands.filter((item) => item.image);
@@ -141,10 +141,10 @@ const Featured: React.FC<TypeProps> = ({ brands }) => {
               }}
             >
               <Grid container spacing={4}>
-                {featuredBrand.slice(0, 2).map(({ id, name, image, slug }) => (
+                {featuredBrand.slice(0, 2).map(({ id, name, image }) => (
                   <Grid item sm={6} xs={12} key={id}>
                     <Link
-                      href={`/product/search/${formatToSlug(slug)}`}
+                      href={`/product/search/products?brand=${name}`}
                       passHref
                     >
                       <ProductCard isFeatured title={name} thumbnail={image} />

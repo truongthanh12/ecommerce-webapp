@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { ADMIN_ID } from "@/app/constant";
 import { updateAsync } from "@/redux/features/rechargeSlice";
 import { ICarouselCard } from "@/app/models/Brand";
+import { RootState } from "@/redux/store";
 
 // ========================================================================
 
@@ -19,7 +20,7 @@ const BannerRow = ({ banner }: { banner: Partial<ICarouselCard> }) => {
   const { title, published, imgUrl, id, description, userId } = banner || {};
   const router = useRouter();
   const [featured, setFeatured] = useState(published);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleNavigate = () => router.push(`/admin/banners/${id}`);
   const dispatch: any = useAppDispatch();

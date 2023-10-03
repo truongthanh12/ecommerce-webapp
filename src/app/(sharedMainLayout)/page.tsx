@@ -20,13 +20,14 @@ import { fetchBanners } from "@/redux/features/bannerSlice";
 import { fetchProducts } from "@/redux/features/productSlice";
 import { fetchUsers } from "@/redux/features/authSlice";
 import { fetchBrands } from "@/redux/features/brandSlice";
+import { RootState } from "@/redux/store";
 
 export default function Home() {
   const dispatch: any = useAppDispatch();
-  const { categories } = useSelector((state: any) => state.categories);
-  const mainCarouselData = useSelector((state: any) => state.banners.banners);
-  const { products } = useSelector((state: any) => state.products);
-  const { brands } = useSelector((state: any) => state.brands);
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const mainCarouselData = useSelector((state: RootState) => state.banners.banners);
+  const { products } = useSelector((state: RootState) => state.products);
+  const { brands } = useSelector((state: RootState) => state.brands);
 
   useEffect(() => {
     let isCancelled = false;

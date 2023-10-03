@@ -6,6 +6,7 @@ import Stepper from "@/components/Stepper";
 import { useSelector } from "react-redux";
 import { selectCartItemsForUser } from "@/redux/features/cartSlice";
 import isEmpty from "lodash/isEmpty";
+import { RootState } from "@/redux/store";
 
 // ======================================================
 
@@ -24,7 +25,7 @@ const stepperList = [
   },
 ];
 const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
   const updatedStepper = useMemo(
     () =>

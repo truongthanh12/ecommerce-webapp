@@ -16,6 +16,7 @@ import Pagination from "@/app/components/pagination";
 import BackdropLoading from "@/components/backdrop";
 import CircularWithValueLabel from "@/components/loading/LoadingWithLabel";
 import { fetchUsers } from "@/redux/features/authSlice";
+import { RootState } from "@/redux/store";
 
 interface PageProps {
   type?: "shop" | "product";
@@ -29,7 +30,7 @@ const ProductsSearch = ({
   searchParams,
   productsByUser,
 }: PageProps) => {
-  const { products } = useSelector((state: any) => state.products);
+  const { products } = useSelector((state: RootState) => state.products);
   const [view, setView] = useState("grid");
   const [loadingLayout, setLoadingLayout] = useState(true);
   const dispatch: any = useDispatch();

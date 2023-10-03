@@ -12,6 +12,7 @@ import { ADMIN_ID } from "@/app/constant";
 import { useSelector } from "react-redux";
 import { IBrand } from "@/app/models/Brand";
 import { updateAsync } from "@/redux/features/rechargeSlice";
+import { RootState } from "@/redux/store";
 
 // ========================================================================
 
@@ -19,7 +20,7 @@ const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
   const { name, published, image, id, userId } = brand || {};
   const router = useRouter();
   const [featuredBrand, setFeatured] = useState(published);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleChangeStatus = async () => {
     if (user.docId === ADMIN_ID) {

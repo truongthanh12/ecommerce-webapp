@@ -10,6 +10,7 @@ import CategoryMenuCard from "./CategoryMenuCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNaviagtions } from "@/redux/features/navigationSlice";
 import { ICategory } from "@/app/models/Category";
+import { RootState } from "@/redux/store";
 // Define the styled component type
 type TypeProps = {
   children: ReactNode;
@@ -36,8 +37,8 @@ const CategoryMenu: React.FC<TypeProps> = ({
   const popoverRef = useRef<boolean>(open);
   popoverRef.current = open;
 
-  const { categories } = useSelector((state: any) => state.categories);
-  const { parentCategories } = useSelector((state: any) => state.categories);
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const { parentCategories } = useSelector((state: RootState) => state.categories);
   const dispatch: any = useDispatch();
 
   const toggleMenu = (e: MouseEvent) => {

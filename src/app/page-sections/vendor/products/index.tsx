@@ -19,6 +19,7 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { useSelector } from "react-redux";
 import { updateAsync } from "@/redux/features/rechargeSlice";
 import { ADMIN_ID } from "@/app/constant";
+import { RootState } from "@/redux/store";
 
 // ========================================================================
 const ProductRow = ({ product }: any) => {
@@ -35,7 +36,7 @@ const ProductRow = ({ product }: any) => {
   } = product || {};
   const router = useRouter();
   const [featured, setFeatured] = useState(published);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleChangeStatus = async () => {
     if (user.docId === ADMIN_ID) {

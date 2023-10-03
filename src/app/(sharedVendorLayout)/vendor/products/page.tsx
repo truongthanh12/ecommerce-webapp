@@ -15,6 +15,7 @@ import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchProducts } from "@/redux/features/productSlice";
 import NotFound from "@/app/components/not-found";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -60,8 +61,8 @@ const tableHeading = [
 export default function ProductList() {
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
   const router = useRouter();
-  const { products } = useSelector((state: any) => state.products);
-  const { user } = useSelector((state: any) => state.auth);
+  const { products } = useSelector((state: RootState) => state.products);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
   const { onSearchInputChange, filteredData } = useSearch(products);
 

@@ -11,6 +11,7 @@ import { CategoryIcon } from "@/common";
 import { usePathname, useRouter } from "next/navigation";
 import debounce from "lodash/debounce";
 import { objectToQueryString } from "@/app/utils/lib";
+import { RootState } from "@/redux/store";
 
 const DropDownHandler = styled(FlexBox)(
   ({ theme }: { component: any; theme?: any }) => ({
@@ -34,7 +35,7 @@ const SearchInputWithCategory = () => {
   const params = new URLSearchParams(search);
   const defaultQuerySearch = params.get("query");
 
-  const { parentCategories } = useSelector((state: any) => state.categories);
+  const { parentCategories } = useSelector((state: RootState) => state.categories);
   // HANDLE CHANGE THE CATEGORY
   type TypeCateProps = {
     title: string;

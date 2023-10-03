@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
 
 const PackageStateChanged = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useAppDispatch();
   const currentDate = new Date();
   const data = {

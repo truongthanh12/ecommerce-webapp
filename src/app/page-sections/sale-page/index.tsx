@@ -13,6 +13,7 @@ import { CategoryIcon } from "@/common";
 import { useRouter } from "next/navigation";
 import { objectToQueryString, removeAccents } from "@/app/utils/lib";
 import debounce from "lodash/debounce";
+import { RootState } from "@/redux/store";
 
 //  custom styled components
 const StyledChip = styled(Chip)(
@@ -70,8 +71,8 @@ export default function SalePage({ searchParams }: PageProps) {
   const categoryRef = useRef(null);
   const router = useRouter();
   const { isFixedHeader } = useScroller(categoryRef);
-  const { products } = useSelector((state: any) => state.products);
-  const { parentCategories } = useSelector((state: any) => state.categories);
+  const { products } = useSelector((state: RootState) => state.products);
+  const { parentCategories } = useSelector((state: RootState) => state.categories);
   const [selectedCategory, setSelectedCategory] = useState(
     parentCategories?.[0]?.title
   );

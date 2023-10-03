@@ -13,9 +13,10 @@ import {
   getCommentsByProductId,
 } from "@/redux/features/productSlice";
 import { setMessage } from "@/redux/features/messageSlice";
+import { RootState } from "@/redux/store";
 
 const ProductReview = ({ productId }: { productId: string }) => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useAppDispatch();
   const {
     handleSubmit,

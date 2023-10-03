@@ -13,6 +13,7 @@ import NotificationsPopover from "./popovers/NoficationPopover";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Span } from "@/components/Typography";
+import { RootState } from "@/redux/store";
 
 // custom styled components
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -65,7 +66,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const DashboardNavbar = ({ handleDrawerToggle }: any) => {
   const router = useRouter();
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   return (
     <DashboardNavbarRoot position="sticky">
