@@ -1,3 +1,4 @@
+import { FieldValue } from "firebase/firestore";
 import { IUser } from "./User";
 
 export interface IShop {
@@ -72,4 +73,5 @@ export interface IProducts {
   voucherSelected: number;
   comments: Partial<IComments[]>;
   tags: string[];
+  createdAt: FieldValue;
 }

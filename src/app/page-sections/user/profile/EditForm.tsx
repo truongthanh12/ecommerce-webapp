@@ -26,14 +26,14 @@ const schema = yup.object().shape({
     .length(10, "Phone must be exactly 10 characters")
     .matches(phoneRegExp, "Phone number is not valid"),
   email: yup.string().email("invalid email"),
-  birthDate: yup.date(),
+  // birthDate: yup.date(),
 });
 interface FormValues {
   displayName: string;
   phoneNumber: number;
   email: string;
   photoURL: string;
-  birthDate: any;
+  // birthDate: any;
   address: string;
 }
 
@@ -53,7 +53,7 @@ const EditForm = () => {
         displayName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        birthDate: new Date(user.birthDate.seconds * 1000 || ""),
+        // birthDate: new Date(user.birthDate.seconds * 1000 || ""),
         phoneNumber: user.phoneNumber,
         address: user.address,
       });
@@ -66,8 +66,8 @@ const EditForm = () => {
   };
 
   const handleFormSubmit = async (value: Partial<FormValues>) => {
-    const { displayName, phoneNumber, email, birthDate, address } = value || {};
-    const date = birthDate ? new Date(birthDate || "") : birthDate || "";
+    const { displayName, phoneNumber, email, address } = value || {};
+    // const date = birthDate ? new Date(birthDate || "") : birthDate || "";
 
     if (file) {
       const uploadTask = uploadBytesResumable(
@@ -93,7 +93,7 @@ const EditForm = () => {
               phoneNumber: phoneNumber || user.phoneNumber || "",
               email: email || user.email || "",
               photoURL: url || user.photoURL || "",
-              birthDate: date || user.birthDate || "",
+              // birthDate: date || user.birthDate || "",
               address: address || user.address || "",
             };
 
@@ -130,7 +130,7 @@ const EditForm = () => {
       phoneNumber: phoneNumber || user.phoneNumber || "",
       email: email || user.email || "",
       photoURL: user.photoURL || "",
-      birthDate: date || user.birthDate || "",
+      // birthDate: date || user.birthDate || "",
       address: address || user.address || "",
     };
 
@@ -273,7 +273,7 @@ const EditForm = () => {
               />
             </Grid>
 
-            <Grid item md={6} xs={12}>
+            {/* <Grid item md={6} xs={12}>
               <Controller
                 name="birthDate"
                 control={control}
@@ -289,7 +289,7 @@ const EditForm = () => {
                   </LocalizationProvider>
                 )}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <Controller
                 name="address"

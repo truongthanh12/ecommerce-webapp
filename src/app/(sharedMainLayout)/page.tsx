@@ -18,16 +18,19 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
 import { fetchBanners } from "@/redux/features/bannerSlice";
 import { fetchProducts } from "@/redux/features/productSlice";
-import { fetchUsers } from "@/redux/features/authSlice";
+import { fetchUsers, getWishlistByUserId } from "@/redux/features/authSlice";
 import { fetchBrands } from "@/redux/features/brandSlice";
 import { RootState } from "@/redux/store";
 
 export default function Home() {
   const dispatch: any = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.categories);
-  const mainCarouselData = useSelector((state: RootState) => state.banners.banners);
+  const mainCarouselData = useSelector(
+    (state: RootState) => state.banners.banners
+  );
   const { products } = useSelector((state: RootState) => state.products);
   const { brands } = useSelector((state: RootState) => state.brands);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     let isCancelled = false;
@@ -43,6 +46,10 @@ export default function Home() {
       isCancelled = true;
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getWishlistByUserId(user.docId));
+  }, [dispatch, user.docId]);
 
   return (
     <>

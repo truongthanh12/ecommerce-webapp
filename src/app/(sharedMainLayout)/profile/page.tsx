@@ -190,10 +190,10 @@ export default function Profile() {
           <TableRowItem title="Name" value={user.displayName} />
           <TableRowItem title="Email" value={user.email} />
           <TableRowItem title="Phone" value={user.phoneNumber} />
-          <TableRowItem
+          {/* <TableRowItem
             title="Birth date"
             value={tryFormatDate(user.birthDate) || ""}
-          />
+          /> */}
           <TableRowItem title="Address" value={user.address} />
         </TableRow>
       </Suspense>

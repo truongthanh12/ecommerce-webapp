@@ -1,9 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
 import {
+  addDoc,
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -11,6 +13,88 @@ import {
   where,
 } from "firebase/firestore";
 import db from "@/firebase";
+import { IProducts } from "@/app/models/Product";
+
+// wishlist
+// comment actions
+export const addWishlistAsync = createAsyncThunk(
+  "products/addWishlistAsync",
+  async ({
+    userId,
+    products,
+  }: {
+    userId: string;
+    products: Partial<IProducts>;
+  }) => {
+    try {
+      const userRef = doc(collection(db, "users"), userId);
+      const wishlistData = {
+        products,
+        createdAt: serverTimestamp(),
+        userId,
+      };
+
+      const wishlistRef = await addDoc(
+        collection(userRef, "wishlist"),
+        wishlistData
+      );
+
+      // Update the wishlist data with the generated document ID
+      const wishlistWithId = {
+        id: wishlistRef.id,
+        ...wishlistData,
+      };
+
+      return wishlistWithId;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getWishlistByUserId = createAsyncThunk(
+  "products/getWishlistByUserId",
+  async (userId: string) => {
+    try {
+      const userRef = doc(db, "users", userId);
+      const wishlistsRef = collection(userRef, "wishlist");
+      const querySnapshot = await getDocs(wishlistsRef);
+
+      const wishlists: any[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const wishlistData = doc.data();
+        const wishlistWithId = {
+          id: doc.id,
+          ...wishlistData,
+        };
+        wishlists.unshift(wishlistWithId);
+      });
+
+      return wishlists;
+    } catch (error) {
+      console.error("Error fetching wishlists:", error);
+      throw error;
+    }
+  }
+);
+
+export const deleteWishlistAsync = createAsyncThunk(
+  "products/deleteWishlistAsync",
+  async ({ wishlistId, userId }: { wishlistId: string; userId: string }) => {
+    try {
+      const wislistRef = doc(db, "users", userId);
+      const wishlistsRef = collection(wislistRef, "wishlist");
+      const wishlistDocRef = doc(wishlistsRef, wishlistId);
+
+      await deleteDoc(wishlistDocRef);
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 export const deleteUserAsync = createAsyncThunk(
   "users/deleteUserAsync",
@@ -42,15 +126,24 @@ export const updateUserAsync = createAsyncThunk(
     }
   }
 );
+type InitialState = {
+  user: any;
+  isLoading: boolean;
+  error: any;
+  users: any;
+  wishlist: any;
+};
+const initialState: InitialState = {
+  user: {},
+  isLoading: false,
+  error: {},
+  users: [],
+  wishlist: undefined,
+};
 
 export const userSlice = createSlice({
   name: "user",
-  initialState: {
-    user: {},
-    isLoading: false,
-    error: {},
-    users: [],
-  },
+  initialState,
   reducers: {
     loading: (state) => {
       state.isLoading = true;
@@ -109,6 +202,33 @@ export const userSlice = createSlice({
       .addCase(updateUserAsync.rejected, (state: any, action: any) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(addWishlistAsync.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addWishlistAsync.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getWishlistByUserId.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getWishlistByUserId.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = {};
+        state.user = { ...state.user, wishlist: action.payload };
+      })
+      .addCase(getWishlistByUserId.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteWishlistAsync.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteWishlistAsync.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteWishlistAsync.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || {};
       });
   },
 });

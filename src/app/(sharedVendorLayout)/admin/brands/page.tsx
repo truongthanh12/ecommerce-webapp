@@ -16,6 +16,7 @@ import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import NotFound from "@/app/components/not-found";
 import { IBrand } from "@/app/models/Brand";
+import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [

@@ -1,5 +1,5 @@
 "use client";
-import { Pagination } from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 import { ShoppingBag } from "@mui/icons-material";
 import TableRow from "@/components/TableRow";
 import { H5 } from "@/components/Typography";
@@ -14,6 +14,9 @@ import { fetchOrders } from "@/redux/features/orderSlice";
 import { useSelector } from "react-redux";
 import BackdropLoading from "@/components/backdrop";
 import { RootState } from "@/redux/store";
+import useMuiTable from "@/app/hooks/useMuiTable";
+import TablePagination from "@/app/components/data-table/TablePagination";
+import NotFound from "@/app/components/not-found";
 
 // ====================================================
 
@@ -21,6 +24,10 @@ const Orders = () => {
   const dispatch: any = useAppDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { orders } = useSelector((state: RootState) => state.orders);
+
+  const { rowsPerPage, handleChangePage, filteredList } = useMuiTable({
+    listData: orders,
+  });
 
   useEffect(() => {
     dispatch(fetchOrders(user.docId));
@@ -76,18 +83,22 @@ const Orders = () => {
           />
         </TableRow>
 
-        {orders.map((order: any) => (
-          <OrderRow order={order} key={order.id} />
-        ))}
+        {orders.length ? (
+          filteredList.map((order: any) => (
+            <OrderRow order={order} key={order.id} />
+          ))
+        ) : (
+          <NotFound />
+        )}
 
-        <FlexBox justifyContent="center" mt={5}>
-          <Pagination
-            count={5}
-            color="primary"
-            variant="outlined"
-            // onChange={(data) => console.log(data)}
-          />
-        </FlexBox>
+        {Math.ceil(orders.length / rowsPerPage) > 1 && (
+          <Stack alignItems="center" my={4}>
+            <TablePagination
+              onChange={handleChangePage}
+              count={Math.ceil(orders.length / rowsPerPage)}
+            />
+          </Stack>
+        )}
       </CustomerDashboardLayout>
     </Suspense>
   );

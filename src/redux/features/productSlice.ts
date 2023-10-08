@@ -3,18 +3,13 @@ import { AppDispatch, RootState } from "@/redux/store";
 import db from "@/firebase";
 import {
   addDoc,
-  arrayUnion,
   collection,
-  collectionGroup,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
-  limit,
   query,
   serverTimestamp,
-  setDoc,
-  startAfter,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -22,8 +17,6 @@ import { IComments, IProducts } from "@/app/models/Product";
 import { IUser } from "@/app/models/User";
 import { formatToSlug } from "@/app/utils/lib";
 import { ADMIN_ID } from "@/app/constant";
-import { uniqueId } from "lodash";
-
 interface productstate {
   products: IProducts[];
   loading: boolean;

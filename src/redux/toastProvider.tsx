@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "./features/messageSlice";
 import { RootState } from "./store";
-
 interface MessageProps {
   message: string | null;
   type: "success" | "error";

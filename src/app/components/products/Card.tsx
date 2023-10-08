@@ -21,11 +21,13 @@ import {
   StyledChipCategory,
 } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addItemToWishlist,
-  fetchWishlistByUserId,
-} from "@/redux/features/wishlistSlice";
 import { RootState } from "@/redux/store";
+import {
+  addWishlistAsync,
+  deleteWishlistAsync,
+  getWishlistByUserId,
+} from "@/redux/features/authSlice";
+import { setMessage } from "@/redux/features/messageSlice";
 
 // ========================================================
 interface TypeProps {
@@ -73,30 +75,51 @@ const ProductCard = ({
   const [openModal, setOpenModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const dispatch: any = useDispatch();
-  const wishlist = useSelector((state: RootState) => state.wishlist);
   const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchWishlistByUserId(user.docId));
-  }, [dispatch, user]);
+    if (user && user.wishlist) {
+      const isItemInWishlist = user.wishlist.some(
+        (item: any) => item.products.slug === slug
+      );
+      setIsFavorite(isItemInWishlist);
+    }
+  }, [user]);
 
-  const toggleIsFavorite = () => {
+  const toggleIsFavorite = async () => {
     setIsFavorite((fav) => !fav);
-    dispatch(
-      addItemToWishlist({
-        userId: user.docId,
-        product: {
-          slug,
-          title,
-          price,
-          thumbnail,
-          discount,
-          stock,
-          id,
-        },
-      })
-    );
+
+    if (user) {
+      if (!isFavorite) {
+        await dispatch(
+          addWishlistAsync({
+            userId: user.docId,
+            products: {
+              slug,
+              title,
+              price,
+              images,
+              thumbnail,
+              stock,
+              shop,
+              discount,
+              id,
+            },
+          })
+        );
+        dispatch(setMessage({ message: "Add to wishlist successfully!" }));
+      } else {
+        dispatch(setMessage({ message: "Remove from wishlist successfully!" }));
+        const wishlistItem = user.wishlist?.find(
+          (item: any) => item.products.slug === slug
+        );
+        const wishlistId = wishlistItem?.id;
+        await dispatch(deleteWishlistAsync({ wishlistId, userId: user.docId }));
+        dispatch(getWishlistByUserId(user.docId))
+      }
+    }
   };
+
   const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
 
   const formattedSlug = useMemo(() => formatToSlug(slug), [slug]);
