@@ -1,6 +1,5 @@
 "use client";
-import { Grid, Pagination, Stack } from "@mui/material";
-import { FlexBox } from "@/components/flex-box";
+import { Grid, Stack } from "@mui/material";
 import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "@/components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
