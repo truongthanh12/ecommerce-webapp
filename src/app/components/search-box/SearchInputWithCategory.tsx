@@ -8,7 +8,7 @@ import { FlexBox } from "@/components/flex-box";
 import { SearchOutlinedIcon } from "./styled";
 import { useSelector } from "react-redux";
 import { CategoryIcon } from "@/common";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import debounce from "lodash/debounce";
 import { objectToQueryString } from "@/app/utils/lib";
 import { RootState } from "@/redux/store";

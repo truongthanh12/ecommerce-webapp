@@ -57,7 +57,7 @@ const Orders = () => {
           (cartItem: any) => cartItem.product.shop.id === user.docId
         )
       ),
-    [orders]
+    [orders, user.docId]
   );
 
   useEffect(() => {

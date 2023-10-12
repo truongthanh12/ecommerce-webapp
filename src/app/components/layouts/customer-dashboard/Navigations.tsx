@@ -76,7 +76,7 @@ const Navigations = () => {
 
   useEffect(() => {
     dispatch(fetchOrders(user.docId));
-  }, [dispatch]);
+  }, [dispatch, user.docId]);
 
   const updatedLinkList = LINK_LIST.map((section) => {
     if (section.title === "DASHBOARD") {

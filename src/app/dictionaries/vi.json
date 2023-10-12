@@ -1,0 +1,9 @@
+{
+  "server-component": {
+    "welcome": "sdfs dfsdfdsg viet nam"
+  },
+  "counter": {
+    "increment": "Přidat",
+    "decrement": "Ubrat"
+  }
+}

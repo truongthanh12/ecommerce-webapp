@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { Box, Container, Grid, Skeleton } from "@mui/material";
 import RankBadge from "@/components/icons/RankBadge";

@@ -70,7 +70,7 @@ export default function CategoriesList() {
 
   useEffect(() => {
     dispatch(fetchCategories(false, user.docId));
-  }, [dispatch]);
+  }, [dispatch, user.docId]);
 
   const {
     order,

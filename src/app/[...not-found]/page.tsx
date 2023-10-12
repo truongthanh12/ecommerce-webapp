@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import SEO from "@/components/SEO";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import React from "react";
 import { useRouter } from "next/navigation";
-import NotFound from "../components/not-found";
+import NotFound from "@/components/not-found";
 
 const Error404 = () => {
   const router = useRouter();
@@ -14,7 +14,9 @@ const Error404 = () => {
   return (
     <FlexRowCenter px={2} minHeight="100vh" flexDirection="column">
       <SEO title="Nothing found" />
-      <NotFound />
+      <Box sx={{ maxWidth: "50%", mx: "auto" }}>
+        <NotFound />
+      </Box>
 
       <FlexBox flexWrap="wrap">
         <Button

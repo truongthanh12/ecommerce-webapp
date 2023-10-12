@@ -23,7 +23,7 @@ const ProductRating = ({ productId }: { productId: string }) => {
     } else {
       return sum / count;
     }
-  }, [comments, productId]);
+  }, [comments]);
 
   useEffect(() => {
     if (productId) {

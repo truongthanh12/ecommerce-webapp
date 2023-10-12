@@ -5,7 +5,6 @@ import {
   ExpandMore,
   Facebook,
   Instagram,
-  Remove,
   Twitter,
 } from "@mui/icons-material";
 import {
@@ -21,6 +20,7 @@ import { Span } from "@/components/Typography";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import Menu from "@/components/Menu";
 import { layoutConstant } from "@/utils/constants";
+import { usePathname, useRouter } from "next/navigation";
 // import { useTranslation } from "react-i18next";
 
 // styled component
@@ -81,9 +81,11 @@ type TypePropsTopbar = {
   bgColor?: string;
 };
 const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
+  const router = useRouter()
+  const pathname = usePathname()
 
   const handleLanguageClick = (lang: string) => () => {
-    //
+    // router.push(pathname, pathname, { locale: lang })
   };
 
   return (

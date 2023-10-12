@@ -68,7 +68,7 @@ export default function ProductList() {
 
   useEffect(() => {
     dispatch(fetchProducts({ userId: user.docId }));
-  }, [dispatch]);
+  }, [dispatch, user.docId]);
 
   const {
     order,

@@ -84,7 +84,7 @@ const ProductCard = ({
       );
       setIsFavorite(isItemInWishlist);
     }
-  }, [user]);
+  }, [user, slug]);
 
   const toggleIsFavorite = async () => {
     setIsFavorite((fav) => !fav);

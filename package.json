@@ -2,6 +2,10 @@
   "name": "ecommerce-webapp",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Truong Thanh",
+    "email": "nguyentruongthanhdev@gmail.com"
+  },
   "scripts": {
     "start": "next dev",
     "build": "next build",
@@ -30,6 +34,7 @@
     "firebase": "^10.3.0",
     "lodash": "^4.17.21",
     "merge": "^2.1.1",
+    "negotiator": "^0.6.3",
     "next": "13.4.19",
     "query-string": "^8.1.0",
     "react": "18.2.0",
@@ -47,8 +52,6 @@
   "devDependencies": {
     "@types/lodash": "^4.14.197",
     "@types/negotiator": "^0.6.1",
-    "@types/react-lazy-load-image-component": "^1.6.1",
-    "encoding": "^0.1.13",
-    "negotiator": "^0.6.3"
+    "@types/react-lazy-load-image-component": "^1.6.1"
   }
 }

@@ -33,6 +33,17 @@ const Orders = () => {
     dispatch(fetchOrders(user.docId));
   }, [dispatch, user.docId]);
 
+  // useEffect(() => {
+  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+  // .then((idToken) => {
+  //   // Send the ID token to your server
+  //   console.log("User ID token: ", idToken);
+  // })
+  // .catch((error) => {
+  //   console.error("Error getting user ID token: ", error);
+  // });
+  // }, [])
+
   return (
     <Suspense fallback={<BackdropLoading />}>
       <CustomerDashboardLayout>

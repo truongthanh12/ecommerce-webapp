@@ -22,6 +22,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/components/*": ["./src/app/components/*"],
+      "@/pages/*": ["./src/app/pages/*"],
       "@/utils/*": ["./src/app/utils/*"],
       "@/page-sections/*": ["./src/app/page-sections/*"],
       "@/data/*": ["./src/app/data/*"],
@@ -29,6 +30,8 @@
       "@/models/*": ["./src/app/models/*"],
       "@/redux/*": ["./src/redux/*"],
       "@/firebase": ["./firebase.ts"],
+      "@/middleware": ["./middleware.ts"],
+      "@/content": ["./content.ts"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

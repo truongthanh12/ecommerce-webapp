@@ -182,10 +182,10 @@ const ProductsSearch = ({
           facebook={facebook || ""}
           youtube={youtube || ""}
           email={email || ""}
-          name={displayName || ""}
-          description={description || ""}
-          address={address || ""}
-          phone={phoneNumber || ""}
+          name={displayName || "Name not updated"}
+          description={description || "Description not updated"}
+          address={address || "Address not updated"}
+          phone={phoneNumber || "Phone not updated"}
           coverPicture={pictureCover || ""}
           profilePicture={photoURL || ""}
         />

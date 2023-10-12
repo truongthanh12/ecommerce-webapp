@@ -153,8 +153,8 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     }
   }, [arrayOfStringRating, arrayOfStringOptions, arrayOfStringBrands]);
 
-  useEffect(
-    debounce(() => {
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
       let updatedQuery: any = { ...searchParams };
 
       if (selectedBrands.length !== 0) {
@@ -164,12 +164,16 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
       }
 
       router.push(`?${objectToQueryString(updatedQuery, true)}`);
-    }, 400),
-    [selectedBrands]
-  );
+    }, 400);
 
-  useEffect(
-    debounce(() => {
+    debouncedUpdate();
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [selectedBrands, router, searchParams]);
+
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
       let updatedQuery: any = { ...searchParams };
 
       if (selectedOptions.length !== 0) {
@@ -177,14 +181,17 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
       } else {
         delete updatedQuery.options;
       }
-
       router.push(`?${objectToQueryString(updatedQuery, true)}`);
-    }, 400),
-    [selectedOptions]
-  );
+    }, 400);
 
-  useEffect(
-    debounce(() => {
+    debouncedUpdate();
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [selectedOptions, router, searchParams]);
+
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
       let updatedQuery: any = { ...searchParams };
 
       if (selectedRating.length !== 0) {
@@ -192,11 +199,14 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
       } else {
         delete updatedQuery.ratings;
       }
-
       router.push(`?${objectToQueryString(updatedQuery, true)}`);
-    }, 400),
-    [selectedRating]
-  );
+    }, 400);
+
+    debouncedUpdate();
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [selectedRating, router, searchParams]);
 
   return (
     <Card

@@ -96,7 +96,7 @@ export default function Checkout() {
       (calcCodeVoucher || 0) -
       (userType === "Premium" ? 20000 : userType === "Gold" ? 15000 : 10000)
     );
-  }, [cartList]);
+  }, [cartList, totalVoucherDeduction, calcCodeVoucher, userType]);
 
   return (
     <CheckoutNavLayout>

@@ -21,7 +21,6 @@ export default function ShopList() {
     listData: users,
     rowsPerPage: 6,
   });
-  console.log(filteredList);
 
   useEffect(() => {
     dispatch(fetchUsers({ isVendor: true }));

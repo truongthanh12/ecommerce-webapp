@@ -71,7 +71,7 @@ const FormAuth = ({
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
-  }, []);
+  }, [setPasswordVisibility]);
 
   const onBlur = useCallback(() => {
     setErrorMessage("");

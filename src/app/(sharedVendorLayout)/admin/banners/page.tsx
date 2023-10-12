@@ -68,7 +68,7 @@ export default function BannerList() {
 
   useEffect(() => {
     dispatch(fetchBanners(false, user.docId));
-  }, [dispatch]);
+  }, [dispatch, user.docId]);
 
   const {
     order,

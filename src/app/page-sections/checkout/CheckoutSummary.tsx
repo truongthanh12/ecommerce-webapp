@@ -82,7 +82,7 @@ const CheckoutSummary = ({
         setVoucher("");
       }
     }
-  }, [getTotalPrice, foundVoucher]);
+  }, [getTotalPrice, foundVoucher, setVoucher]);
 
   useEffect(() => {
     dispatch(fetchVouchers());

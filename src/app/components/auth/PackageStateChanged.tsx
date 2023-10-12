@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
+import {
+  updateUserAsync,
+  updateUserData,
+} from "@/redux/features/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 
@@ -24,7 +27,7 @@ const PackageStateChanged = ({ children }: { children: React.ReactNode }) => {
         );
       }
     }
-  }, [user.expiredPackage, dispatch]);
+  }, [user, dispatch, currentDate, data]);
   return <>{children}</>;
 };
 

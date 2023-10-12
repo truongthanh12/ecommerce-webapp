@@ -63,7 +63,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
         Type: brand.type,
       });
     }
-  }, [brand]);
+  }, [brand, reset]);
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files: any) => {
@@ -251,14 +251,22 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
               {files.map((file: any, index: number) => {
                 return (
                   <UploadImageBox size="medium" key={index}>
-                    <Image src={file.preview} width="100%" />
+                    <Image
+                      alt={"preview " + file.preview}
+                      src={file.preview}
+                      width="100%"
+                    />
                     <StyledClear onClick={handleFileDelete(file)} />
                   </UploadImageBox>
                 );
               })}
               {isEmpty(files) && brand?.image && (
                 <UploadImageBox size="medium">
-                  <Image src={brand?.image} width="100%" />
+                  <Image
+                    alt={brand.image + " brand"}
+                    src={brand?.image}
+                    width="100%"
+                  />
                 </UploadImageBox>
               )}
             </FlexBox>
