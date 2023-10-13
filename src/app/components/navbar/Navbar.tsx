@@ -69,7 +69,7 @@ const CategoryMenuButton = styled(Button)(({ theme }) => ({
   width: "278px",
   height: "40px",
   backgroundColor: theme.palette.grey[100],
-  position: "relative"
+  position: "relative",
 }));
 const ChildNavsWrapper = styled(Box)({
   zIndex: 5,
@@ -94,9 +94,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
     return list.map((nav: any) => {
       if (isRoot) {
         if (nav.megaMenu2) {
-          return (
-            <MegaMenu key={nav.title} data={nav.child} />
-          );
+          return <MegaMenu key={nav.title} data={nav.child} />;
         }
 
         if (nav.url) {
@@ -187,7 +185,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
       <InnerContainer>
         {/* Category megamenu */}
         <CategoryMenu open={navListOpen || false}>
-          <CategoryMenuButton sx={{height: "40px"}}  variant="text">
+          <CategoryMenuButton sx={{ height: "40px" }} variant="text">
             <Category fontSize="small" />
             <Paragraph
               fontWeight="600"

@@ -90,7 +90,7 @@ const Navigations = () => {
         if (item.title === "Wishlist") {
           return {
             ...item,
-            count: user.wishlist.length,
+            count: user?.wishlist?.length,
           };
         }
         return item;

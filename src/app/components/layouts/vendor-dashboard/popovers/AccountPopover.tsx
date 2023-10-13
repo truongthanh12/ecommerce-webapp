@@ -156,12 +156,23 @@ const AccountPopover = () => {
         </Box>
 
         <Divider />
-        <Link href="/profile">
-          <MenuItem>Profile</MenuItem>
-        </Link>
-        <Link href="/orders">
-          <MenuItem>My Orders</MenuItem>
-        </Link>
+        {isVendor ? (
+          <Link href="/dashboard">
+            <MenuItem>Dashboard</MenuItem>
+          </Link>
+        ) : (
+          <Box>
+            <Link href="/profile">
+              <MenuItem>Profile</MenuItem>
+            </Link>
+            <Link href="/orders">
+              <MenuItem>My Orders</MenuItem>
+            </Link>
+            <Link href="/wish-list">
+              <MenuItem>My Wishlist</MenuItem>
+            </Link>
+          </Box>
+        )}
 
         <Divider />
         <MenuItem onClick={handleLogout}>Logout</MenuItem>

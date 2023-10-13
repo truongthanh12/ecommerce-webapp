@@ -93,6 +93,9 @@ export default function Profile() {
     </Link>
   );
 
+  if (!user?.uid) {
+    return null
+  }
   return (
     <Fragment>
       <Suspense fallback={<BackdropLoading />}>

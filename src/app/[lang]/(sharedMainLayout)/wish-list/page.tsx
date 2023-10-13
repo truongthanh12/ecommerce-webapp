@@ -19,6 +19,7 @@ import TablePagination from "@/app/components/data-table/TablePagination";
 
 const Wishlist = () => {
   const { wishlist } = useSelector((state: RootState) => state.auth.user);
+  const { user } = useSelector((state: RootState) => state.auth);
   const {
     rowsPerPage,
     handleChangePage,
@@ -28,6 +29,9 @@ const Wishlist = () => {
     rowsPerPage: 6
   });
 
+  if (!user?.uid) {
+    return null
+  }
   return (
     <Suspense fallback={<BackdropLoading />}>
       <Grid container spacing={3}>

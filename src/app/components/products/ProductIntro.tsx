@@ -154,6 +154,7 @@ const ProductIntro = ({
                   alt={title}
                   width={0}
                   height={0}
+                  sizes="100%"
                   layout="responsive"
                   loading="eager"
                   objectFit="cover"

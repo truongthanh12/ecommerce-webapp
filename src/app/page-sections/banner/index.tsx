@@ -17,9 +17,10 @@ const BannerAds = () => {
               width={385}
               height={342}
               alt="banner"
+              sizes="100%"
               layout="responsive"
               objectFit="contain"
-              src="/assets/images/banners/banner-1.png"
+              src="/public/assets/images/banners/banner-1.png"
             />
           </Link>
         </Grid>
@@ -29,10 +30,11 @@ const BannerAds = () => {
             <LazyImage
               width={790}
               height={342}
+              sizes="100%"
               alt="banner"
               layout="responsive"
               objectFit="contain"
-              src="/assets/images/banners/banner-2.png"
+              src="/public/assets/images/banners/banner-2.png"
             />
           </Link>
         </Grid>

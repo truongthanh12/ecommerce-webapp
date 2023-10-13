@@ -12,8 +12,9 @@ type TypeLazyImage = {
   layout?: string;
   objectFit?: string;
   mx?: string;
-  loading?: "eager" | "lazy" | undefined
-  style?: any
+  loading?: "eager" | "lazy" | undefined;
+  style?: any;
+  sizes?: string;
 };
 const LazyImage: React.FC<Partial<TypeLazyImage>> = styled(
   ({ borderRadius, ...rest }: TypeLazyImage) => (

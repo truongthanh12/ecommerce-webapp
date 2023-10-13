@@ -2,8 +2,6 @@ import { Menu } from "@mui/material";
 import React, { Children, cloneElement, Fragment, useState } from "react";
 
 // ===============================================================
-
-// ===============================================================
 type TypeMenu = {
   open?: boolean;
   handler: React.ReactElement;

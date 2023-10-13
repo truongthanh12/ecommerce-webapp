@@ -20,7 +20,7 @@ import NotFound from "@/app/components/not-found";
 import CheckoutSummary from "@/page-sections/checkout/CheckoutSummary";
 import { Suspense, useMemo, useState } from "react";
 import { IVoucher } from "@/app/models/Voucher";
-import BackdropLoading from "@/components/backdrop"
+import BackdropLoading from "@/components/backdrop";
 import { RootState } from "@/redux/store";
 
 // styled components
@@ -143,6 +143,10 @@ const Cart = () => {
       })
     );
   };
+
+  if (!user?.uid) {
+    return null;
+  }
 
   return (
     <Suspense fallback={<BackdropLoading />}>

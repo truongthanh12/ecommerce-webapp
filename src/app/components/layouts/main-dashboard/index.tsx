@@ -5,11 +5,6 @@ import SearchInputWithCategory from "@/components/search-box/SearchInputWithCate
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
 import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
-// import { i18n } from "../../../../../next-i18next.config";
-
-// // export async function generateStaticParams() {
-// //   return i18n.locales.map((locale) => ({ lang: locale }))
-// // }
 
 const MainLayout = ({ children }: React.PropsWithChildren) => {
   return (

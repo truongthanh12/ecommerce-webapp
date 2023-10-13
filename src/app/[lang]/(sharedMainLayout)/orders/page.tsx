@@ -44,6 +44,10 @@ const Orders = () => {
   // });
   // }, [])
 
+  if (!user?.uid) {
+    return null
+  }
+
   return (
     <Suspense fallback={<BackdropLoading />}>
       <CustomerDashboardLayout>

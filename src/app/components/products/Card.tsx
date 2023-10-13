@@ -165,6 +165,7 @@ const ProductCard = ({
           <LazyImage
             src={thumbnail}
             layout="fill"
+            sizes="100%"
             objectFit="cover"
             borderRadius="8px"
             alt={title}
@@ -185,8 +186,7 @@ const ProductCard = ({
         >
           <LazyImage
             src={thumbnail}
-            width={0}
-            height={0}
+            sizes="100%"
             layout="fill"
             objectFit="cover"
             alt={title}
@@ -252,9 +252,8 @@ const ProductCard = ({
         <HoverBox position="relative" height="188px" borderRadius="5px" mb={1}>
           <LazyImage
             alt={title}
-            width={0}
             src={thumbnail}
-            height={0}
+            sizes="100%"
             objectFit="cover"
             layout="fill"
           />
@@ -326,6 +325,7 @@ const ProductCard = ({
                 src={thumbnail}
                 width={0}
                 height={0}
+                sizes="100%"
                 layout="responsive"
                 alt={title}
               />

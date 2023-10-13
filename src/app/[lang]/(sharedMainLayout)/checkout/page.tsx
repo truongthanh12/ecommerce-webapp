@@ -98,6 +98,10 @@ export default function Checkout() {
     );
   }, [cartList, totalVoucherDeduction, calcCodeVoucher, userType]);
 
+  if (!user?.uid) {
+    return null
+  }
+  
   return (
     <CheckoutNavLayout>
       <SEO title="Checkout" />

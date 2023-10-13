@@ -1,3 +1,6 @@
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
   images: { domains: ["firebasestorage.googleapis.com"] },
   devIndicators: {},
@@ -6,9 +9,9 @@ const nextConfig = {
     theme: "DEFAULT",
     currency: "VND",
   },
-  api: {
-    externalResolver: true,
-  },
+  // api: {
+  //   externalResolver: true,
+  // },
   env: {
     SITE_URL: process.env.SITE_URL,
     API_URL: process.env.API_URL,

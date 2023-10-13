@@ -91,6 +91,7 @@ const SearchInputWithCategory = () => {
       direction="left"
       sx={{
         zIndex: breakpoints.down("md") ? 99999 : 1502,
+        padding: "10px"
       }}
       handler={
         <DropDownHandler
@@ -147,16 +148,6 @@ const SearchInputWithCategory = () => {
           startAdornment: <SearchOutlinedIcon fontSize="small" />,
         }}
       />
-
-      {/* {resultList.length > 0 && (
-        <SearchResultCard elevation={2}>
-          {resultList.map((item) => (
-            <Link href={`/product/search/${item}`} key={item} passHref>
-              <MenuItem key={item}>{item}</MenuItem>
-            </Link>
-          ))}
-        </SearchResultCard>
-      )} */}
     </Box>
   );
 };

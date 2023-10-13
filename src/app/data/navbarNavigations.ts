@@ -180,80 +180,58 @@ const navbarNavigations = [
     megaMenuWithSub: false,
   },
   {
-    megaMenu: false,
-    megaMenuWithSub: true,
-    title: "Full Screen Menu",
-    child: categoriesMegaMenu,
-  },
-  {
+    title: "Shops",
+    url: "/shops",
     megaMenu: false,
     megaMenuWithSub: false,
-    title: "Pages",
-    child: [
-      // {
-      //   title: "Sale Page",
-      //   child: [
-      //     {
-      //       title: "Version 1",
-      //       url: "/sale-page-1",
-      //     },
-      //     {
-      //       title: "Version 2",
-      //       url: "/sale-page-2",
-      //     },
-      //   ],
-      // },
-      {
-        title: "Shops",
-        url: "/shops",
-      },
-      {
-        title: "Products",
-        url: "/product/search/products",
-      },
-    ],
   },
   {
+    title: "Products",
+    url: "/product/search/products",
     megaMenu: false,
     megaMenuWithSub: false,
-    title: "User Account",
-    child: [
-      {
-        title: "Profile",
-        url: "/profile",
-      },
-      {
-        title: "Orders",
-        url: "/orders",
-      },
-      {
-        title: "Wishlist",
-        url: "/wish-list",
-      },
-    ],
   },
-  {
-    megaMenu: false,
-    megaMenuWithSub: false,
-    title: "Vendor Account",
-    child: [
-      {
-        title: "Dashboard",
-        url: "/vendor/dashboard",
-      },
-      {
-        title: "Products",
-        url: "/vendor/products",
-      },
-      {
-        title: "Orders",
-        url: "/vendor/orders",
-      },
-      {
-        title: "Profile",
-        url: "/vendor/account-setting",
-      },
-    ],
-  },
+  // {
+  //   megaMenu: false,
+  //   megaMenuWithSub: false,
+  //   title: "User Account",
+  //   child: [
+  //     {
+  //       title: "Profile",
+  //       url: "/profile",
+  //     },
+  //     {
+  //       title: "Orders",
+  //       url: "/orders",
+  //     },
+  //     {
+  //       title: "Wishlist",
+  //       url: "/wish-list",
+  //     },
+  //   ],
+  // },
+  // {
+  //   megaMenu: false,
+  //   megaMenuWithSub: false,
+  //   title: "Vendor Account",
+  //   child: [
+  //     {
+  //       title: "Dashboard",
+  //       url: "/vendor/dashboard",
+  //     },
+  //     {
+  //       title: "Products",
+  //       url: "/vendor/products",
+  //     },
+  //     {
+  //       title: "Orders",
+  //       url: "/vendor/orders",
+  //     },
+  //     {
+  //       title: "Profile",
+  //       url: "/vendor/account-setting",
+  //     },
+  //   ],
+  // },
 ];
 export default navbarNavigations;

@@ -30,8 +30,8 @@
       "@/models/*": ["./src/app/models/*"],
       "@/redux/*": ["./src/redux/*"],
       "@/firebase": ["./firebase.ts"],
-      "@/middleware": ["./middleware.ts"],
-      "@/content": ["./content.ts"],
+      "@/public": ["./public"],
+      "@/middleware": ["./src/middleware.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
