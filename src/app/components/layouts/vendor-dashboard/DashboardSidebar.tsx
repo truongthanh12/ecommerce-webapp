@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, Box, useMediaQuery } from "@mui/material";
 import LayoutDrawer from "../LayoutDrawer";

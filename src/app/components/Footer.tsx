@@ -9,7 +9,7 @@ import Youtube from "@/components/icons/Youtube";
 import Facebook from "@/components/icons/Facebook";
 import Instagram from "@/components/icons/Instagram";
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 // styled component
 const StyledLink = styled("footer")(({ theme }) => ({

@@ -1,7 +1,7 @@
 import { FC, Fragment, memo } from "react";
 import { Box, Button, Divider } from "@mui/material";
 import { FlexBox } from "@/components/flex-box";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 // =======================================
 type TypeProps = {

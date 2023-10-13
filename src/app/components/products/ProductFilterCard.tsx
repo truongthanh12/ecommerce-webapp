@@ -170,7 +170,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     return () => {
       debouncedUpdate.cancel();
     };
-  }, [selectedBrands, router, searchParams]);
+  }, [selectedBrands, searchParams]);
 
   useEffect(() => {
     const debouncedUpdate = debounce(() => {
@@ -188,7 +188,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     return () => {
       debouncedUpdate.cancel();
     };
-  }, [selectedOptions, router, searchParams]);
+  }, [selectedOptions, searchParams]);
 
   useEffect(() => {
     const debouncedUpdate = debounce(() => {
@@ -206,7 +206,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     return () => {
       debouncedUpdate.cancel();
     };
-  }, [selectedRating, router, searchParams]);
+  }, [selectedRating, searchParams]);
 
   return (
     <Card

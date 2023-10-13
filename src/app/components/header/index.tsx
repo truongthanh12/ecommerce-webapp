@@ -17,7 +17,7 @@ import MobileMenu from "@/components/navbar/MobileMenu";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import CategoryMenu from "@/components/categories/CategoryMenu";
 import ShoppingBagOutlined from "@/components/icons/ShoppingBagOutlined";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
 import { HeaderWrapper, StyledContainer } from "./styles";

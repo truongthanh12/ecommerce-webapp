@@ -93,7 +93,7 @@ const CarouselCard = ({
         <Grid item sm={5} xs={12}>
           <Image
             src={imgUrl}
-            alt="apple-watch-1"
+            alt={title}
             sx={{
               mx: "auto",
               maxHeight: 400,

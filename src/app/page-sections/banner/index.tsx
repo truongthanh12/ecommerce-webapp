@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Container, Grid } from "@mui/material";
 import LazyImage from "@/components/LazyImage";
 import React from "react";
+import Banner1 from "../../../../public/assets/images/banners/banner-1.png";
+import Banner2 from "../../../../public/assets/images/banners/banner-2.png";
 
 const BannerAds = () => {
   return (
@@ -16,11 +18,11 @@ const BannerAds = () => {
             <LazyImage
               width={385}
               height={342}
-              alt="banner"
+              alt="banner ads"
               sizes="100%"
               layout="responsive"
               objectFit="contain"
-              src="/public/assets/images/banners/banner-1.png"
+              src={Banner1}
             />
           </Link>
         </Grid>
@@ -31,10 +33,10 @@ const BannerAds = () => {
               width={790}
               height={342}
               sizes="100%"
-              alt="banner"
+              alt="banner ads"
               layout="responsive"
               objectFit="contain"
-              src="/public/assets/images/banners/banner-2.png"
+              src={Banner2}
             />
           </Link>
         </Grid>

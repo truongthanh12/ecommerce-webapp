@@ -41,6 +41,7 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
 interface OrderProps {
   params: { id: string };
 }
+
 async function getOrderById(id = "") {
   try {
     const orderDocRef = doc(db, "orders", id);
@@ -73,19 +74,19 @@ const OrderDetails = ({ params }: OrderProps) => {
   const width = useWindowSize();
 
   const orderStatus = useMemo(() => order.status, [order.status]);
-  const orderStatusList = [
-    "packed",
-    "processing",
-    "shipping",
-    "delivered",
-    "cancelled",
-  ];
   const stepIconList = [PackageBox, TruckFilled, Delivery];
   const breakpoint = 350;
   const statusIndex = useMemo(() => {
+    const orderStatusList = [
+      "packed",
+      "processing",
+      "shipping",
+      "delivered",
+      "cancelled",
+    ];
     if (orderStatus === "cancelled") return 0;
     return orderStatusList.indexOf(orderStatus || "processing");
-  }, [orderStatusList, orderStatus]);
+  }, [orderStatus]);
 
   // SECTION TITLE HEADER
   const HEADER_BUTTON = (
@@ -122,7 +123,7 @@ const OrderDetails = ({ params }: OrderProps) => {
         : null,
     [order?.updatedDeliveredAt?.seconds]
   );
-  console.log(order)
+  console.log(order);
 
   const formatDeliveredDate = useMemo(
     () => (deliveredDate ? calculateFutureDate(deliveredDate, 0) : ""),

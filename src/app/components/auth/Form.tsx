@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { H1 } from "@/components/Typography";
 import TextFieldInput from "@/components/TextField";
 import EyeToggleButton from "./EyeToggleButton";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
