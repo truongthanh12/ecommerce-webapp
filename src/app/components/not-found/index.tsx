@@ -1,12 +1,13 @@
 import { Box } from "@mui/material";
 import React from "react";
 import Image from "../Image";
+import NotFoundImage from "../../../../public/assets/images/illustrations/404.svg";
 
 const NotFound = () => {
   return (
     <Box>
       <Image
-        src="/assets/images/illustrations/404.svg"
+        src={NotFoundImage}
         sx={{
           display: "block",
           width: "100%",

@@ -1,8 +1,7 @@
-import { Locale } from "../../../next-i18next.config";
+import { Locale } from "../../../../next-i18next.config";
 import HomePage from "@/pages/home";
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
-  console.log(params)
   return <HomePage params={params} />;
 }
 

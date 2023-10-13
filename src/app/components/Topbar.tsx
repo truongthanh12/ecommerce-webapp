@@ -1,26 +1,18 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { memo } from "react";
-import {
-  ExpandMore,
-  Facebook,
-  Instagram,
-  Twitter,
-} from "@mui/icons-material";
-import {
-  Box,
-  Chip,
-  Container,
-  IconButton,
-  MenuItem,
-  styled,
-} from "@mui/material";
+import { ExpandMore, Facebook, Instagram, Twitter } from "@mui/icons-material";
+import { Box, Chip, Container, MenuItem, styled } from "@mui/material";
 import TouchRipple from "@mui/material/ButtonBase";
 import { Span } from "@/components/Typography";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import Menu from "@/components/Menu";
 import { layoutConstant } from "@/utils/constants";
-import { usePathname, useRouter } from "next/navigation";
+import {
+  useParams,
+  useRouter,
+  useSelectedLayoutSegments,
+} from "next/navigation";
 // import { useTranslation } from "react-i18next";
 
 // styled component
@@ -81,15 +73,16 @@ type TypePropsTopbar = {
   bgColor?: string;
 };
 const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const params = useParams();
+  const urlSegments = useSelectedLayoutSegments();
 
-  const handleLanguageClick = (lang: string) => () => {
-    // router.push(pathname, pathname, { locale: lang })
+  const handleLocaleChange = (lang: string) => {
+    router.push(`/${lang}/${urlSegments.join("/")}`);
   };
 
   return (
-    <TopbarWrapper bgcolor={bgColor} >
+    <TopbarWrapper bgcolor={bgColor}>
       <StyledContainer>
         <FlexBetween width="100%">
           <FlexBox alignItems="center" gap={1}>
@@ -108,13 +101,6 @@ const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
             />
             <Span className="title">Free Express Shipping</Span>
           </FlexBox>
-
-          <IconButton
-            disableRipple
-            className="expand"
-          >
-            {/* {expand ? <Remove /> : <Add />} */}
-          </IconButton>
         </FlexBetween>
 
         <FlexBox className="topbarRight" alignItems="center">
@@ -122,8 +108,7 @@ const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
             handler={
               <TouchRipple className="handler marginRight">
                 <Span className="menuTitle">
-                  {/* {language === "en" ? "EN" : "DE"} */}
-                  EN
+                  {params.lang === "en" ? "EN" : "VI"}
                 </Span>
                 <ExpandMore fontSize="inherit" />
               </TouchRipple>
@@ -133,7 +118,7 @@ const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
               <MenuItem
                 key={item.title}
                 className="menuItem"
-                onClick={handleLanguageClick(item.value)}
+                onClick={() => handleLocaleChange(item.value)}
               >
                 <Span className="menuTitle">{item.title}</Span>
               </MenuItem>
@@ -143,11 +128,11 @@ const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
           <FlexBox alignItems="center" gap={1.5}>
             {socialLinks.map(({ id, Icon, url }) => (
               <Link href={url} key={id}>
-                  <Icon
-                    sx={{
-                      fontSize: 16,
-                    }}
-                  />
+                <Icon
+                  sx={{
+                    fontSize: 16,
+                  }}
+                />
               </Link>
             ))}
           </FlexBox>
