@@ -18,6 +18,10 @@ const nextConfig = {
   },
   experimental: {
     appDir: true,
+    esmExternals: true,
+    i18n: {
+      localeDetection: true,
+    },
   },
 };
 module.exports = nextConfig;

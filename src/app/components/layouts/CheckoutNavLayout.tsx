@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { selectCartItemsForUser } from "@/redux/features/cartSlice";
 import isEmpty from "lodash/isEmpty";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ======================================================
 
@@ -27,6 +28,8 @@ const stepperList = [
 const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
+  const { pushRouter } = useCustomRouter();
+
   const updatedStepper = useMemo(
     () =>
       stepperList.map((step) => {
@@ -47,13 +50,13 @@ const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
   const handleStepChange = (step: string | number) => {
     switch (step) {
       case 0:
-        router.push("/cart");
+        pushRouter("/cart");
         break;
       case 1:
-        router.push("/checkout");
+        pushRouter("/checkout")
         break;
       case 2:
-        router.push("/orders");
+        pushRouter("/orders");
         break;
       default:
         break;

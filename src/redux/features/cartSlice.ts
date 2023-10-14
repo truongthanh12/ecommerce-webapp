@@ -1,4 +1,4 @@
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 interface CartItem {

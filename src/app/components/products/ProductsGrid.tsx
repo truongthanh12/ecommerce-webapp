@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Grid } from "@mui/material";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import ProductCard from "@/components/products/Card";
 import NotFound from "../not-found";
 import isEmpty from "lodash/isEmpty";

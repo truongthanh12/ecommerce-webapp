@@ -10,17 +10,17 @@ import { ArrowBack } from "@mui/icons-material";
 import OrderedProductList from "@/page-sections/orders/OrderedProductList";
 import OrderedSummary from "@/page-sections/orders/OrderedSummary";
 import FiledItem from "@/page-sections/vendor/products/Item";
-import { tryFormatDate } from "@/app/utils/lib";
+import { tryFormatDate } from "@/utils/lib";
 import { Controller, useForm } from "react-hook-form";
-import { ORDER_STATUS } from "@/app/data/status";
+import { ORDER_STATUS } from "@/data/status";
 import { updateAsync } from "@/redux/features/orderSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
-import { useRouter } from "next/navigation";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // =============================================================================
 interface TypeProps {
-  params: { id: string };
+  params: { id: string; lang: string };
 }
 async function getOrderId(id = "") {
   try {
@@ -41,9 +41,9 @@ async function getOrderId(id = "") {
 
 export default function EditOrder({ params }: TypeProps) {
   const dispatch: any = useAppDispatch();
-  const { id } = params;
+  const { id, lang } = params;
   const [order, setOrder] = useState<any>({});
-  const router = useRouter()
+  const { pushRouter } = useCustomRouter();
   const {
     control,
     reset,
@@ -67,7 +67,7 @@ export default function EditOrder({ params }: TypeProps) {
             type: "success",
           })
         );
-        router.push("/vendor/orders")
+        pushRouter("/vendor/orders");
       })
       .catch((error: any) => {
         dispatch(
@@ -99,7 +99,7 @@ export default function EditOrder({ params }: TypeProps) {
     <Box py={4}>
       <FlexBox mb={2} gap={2} justifyContent="space-between" flexWrap="wrap">
         <H3 mb={2}>Edit order "{id}"</H3>
-        <Link href="/vendor/orders">
+        <Link href={`/${lang}/vendor/orders`}>
           <Button
             color="info"
             variant="contained"

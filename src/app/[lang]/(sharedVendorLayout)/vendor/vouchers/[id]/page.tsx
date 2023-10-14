@@ -5,13 +5,13 @@ import VoucherForm from "@/page-sections/vendor/vouchers/Form";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
 import { useEffect, useState } from "react";
-import { FlexBox } from "@/app/components/flex-box";
+import { FlexBox } from "@/components/flex-box";
 import { ArrowBack } from "@mui/icons-material";
 import Link from "next/link";
 
 // =============================================================================
 interface TypeProps {
-  params: { id: string };
+  params: { id: string; lang: string };
 }
 async function getVoucherId(id = "") {
   try {
@@ -31,24 +31,24 @@ async function getVoucherId(id = "") {
 }
 
 export default function EditVoucher({ params }: TypeProps) {
-  const { id } = params;
+  const { id, lang } = params;
   const [voucher, setVoucher] = useState<any>({});
 
   useEffect(() => {
     // Define an async function
     async function fetchData() {
-      const voucher = await getVoucherId(params.id);
+      const voucher = await getVoucherId(id);
       setVoucher(voucher || {});
     }
     // Call the async function
     fetchData();
-  }, [params.id]);
+  }, [id]);
 
   return (
     <Box py={4}>
       <FlexBox mb={2} gap={2} justifyContent="space-between" flexWrap="wrap">
         <H3 mb={2}>Edit voucher "{voucher?.title}"</H3>
-        <Link href="/vendor/vouchers">
+        <Link href={`/${lang}/vendor/vouchers`}>
           <Button
             color="info"
             variant="contained"

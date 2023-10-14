@@ -11,9 +11,11 @@ import { H6 } from "@/components/Typography";
 import Scrollbar from "@/components/Scrollbar";
 import { NavLink } from "@/components/nav-link";
 import navbarNavigations from "@/data/navbarNavigations";
+import { useParams } from "next/navigation";
 
 const MobileMenu = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const params = useParams()
 
   // MODIFY THE NAVIGATION WITH NEW STRUCTURE
   const updateNavigations = navbarNavigations.reduce((prev: any, curr: any) => {
@@ -87,13 +89,13 @@ const MobileMenu = () => {
       if (item.extLink) {
         return (
           <H6 key={index} py={1}>
-            <NavLink href={item.url}>{item.title}</NavLink>
+            <NavLink href={`/${params.lang}${item.url}`}>{item.title}</NavLink>
           </H6>
         );
       }
       return (
         <Box key={index} py={1}>
-          <NavLink href={item.url}>{item.title}</NavLink>
+          <NavLink href={`/${params.lang}${item.url}`}>{item.title}</NavLink>
         </Box>
       );
     });

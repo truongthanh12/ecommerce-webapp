@@ -1,5 +1,5 @@
 
-import Card from "@/app/components/Card";
+import Card from "@/components/Card";
 import { H3 } from "@/components/Typography";
 import { Box } from "@mui/material";
 import AccountSettingForm from "@/page-sections/vendor/account-setting"

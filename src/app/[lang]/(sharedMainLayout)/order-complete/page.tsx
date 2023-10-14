@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { Button, Container, styled } from "@mui/material";
 import SEO from "@/components/SEO";
@@ -6,6 +6,7 @@ import Image from "@/components/Image";
 import Card from "@/components/Card";
 import { H1, Paragraph } from "@/components/Typography";
 import React from "react";
+import { useParams } from "next/navigation";
 
 // custom styled components
 const Wrapper = styled(Card)({
@@ -19,6 +20,7 @@ const StyledButton = styled(Button)({
   padding: "11px 24px",
 });
 const OrderConfirmation = () => {
+  const params = useParams();
   return (
     <>
       <SEO title="Order Confirmation" />
@@ -44,7 +46,7 @@ const OrderConfirmation = () => {
             You will be receiving confirmation email with order details.
           </Paragraph>
 
-          <Link href="/" passHref>
+          <Link href={`/${params.lang}`} passHref>
             <StyledButton
               color="primary"
               disableElevation

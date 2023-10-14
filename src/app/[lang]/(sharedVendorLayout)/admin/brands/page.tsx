@@ -8,15 +8,15 @@ import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
 import BrandRow from "@/page-sections/admin/brands";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchBrands } from "@/redux/features/brandSlice";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
-import NotFound from "@/app/components/not-found";
-import { IBrand } from "@/app/models/Brand";
+import NotFound from "@/components/not-found";
+import { IBrand } from "@/models/Brand";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -50,12 +50,11 @@ const tableHeading = [
 // =============================================================================
 
 export default function BrandList() {
-  // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const router = useRouter();
   const { brands } = useSelector((state: RootState) => state.brands);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
   const { onSearchInputChange, filteredData } = useSearch(brands);
+  const { pushRouter } = useCustomRouter();
 
   useEffect(() => {
     dispatch(fetchBrands(false, user.docId));
@@ -75,7 +74,7 @@ export default function BrandList() {
   });
 
   const handleButtonClick = () => {
-    router.push("/admin/brands/create");
+    pushRouter("/admin/brands/create");
   };
 
   return (

@@ -9,13 +9,13 @@ import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
-import { H4 } from "@/app/components/Typography";
-import YoutubeFilled from "@/app/components/icons/YoutubeFilled";
-import FacebookFilled from "@/app/components/icons/FacebookFilled";
+import { H4 } from "@/components/Typography";
+import YoutubeFilled from "@/components/icons/YoutubeFilled";
+import FacebookFilled from "@/components/icons/FacebookFilled";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/firebase";
 import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
-import { currency } from "@/app/utils/lib";
+import { currency } from "@/utils/lib";
 import { RootState } from "@/redux/store";
 // upload button
 

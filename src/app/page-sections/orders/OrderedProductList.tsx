@@ -17,7 +17,10 @@ const OrderedProductList = ({
   order: Partial<IOrder>;
   formattedDate: string;
   futureDate?: string;
-  params: { id: string };
+  params: {
+    lang: string;
+    id: string;
+  };
 }) => {
   return (
     <Card
@@ -110,7 +113,11 @@ const OrderedProductList = ({
                   </Button>
                 </a>
               ) : (
-                <Link href={`/product/${formatToSlug(item.product.title)}`}>
+                <Link
+                  href={`/${params.lang}/product/${formatToSlug(
+                    item.product.title
+                  )}`}
+                >
                   <Button variant="text" color="primary">
                     <Typography fontSize="14px">Write a Review</Typography>
                   </Button>

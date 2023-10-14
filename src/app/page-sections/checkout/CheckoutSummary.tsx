@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { IVoucher } from "@/app/models/Voucher";
+import { IVoucher } from "@/models/Voucher";
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
 import { fetchVouchers } from "@/redux/features/voucherSlice";

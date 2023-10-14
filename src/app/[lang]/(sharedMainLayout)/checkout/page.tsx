@@ -7,7 +7,7 @@ import CheckoutSummary from "@/page-sections/checkout/CheckoutSummary";
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectCartItemsForUser } from "@/redux/features/cartSlice";
-import { IVoucher } from "@/app/models/Voucher";
+import { IVoucher } from "@/models/Voucher";
 import { RootState } from "@/redux/store";
 
 export default function Checkout() {

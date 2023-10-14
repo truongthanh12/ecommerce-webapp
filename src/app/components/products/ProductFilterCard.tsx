@@ -10,13 +10,13 @@ import {
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H5, H6, Span } from "@/components/Typography";
 import React, { useEffect, useMemo, useState } from "react";
-import { currency, objectToQueryString } from "@/app/utils/lib";
-import { useRouter } from "next/navigation";
+import { currency, objectToQueryString } from "@/utils/lib";
 import debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
-import { IBrand } from "@/app/models/Brand";
-import { colors } from "@/app/data/data";
+import { IBrand } from "@/models/Brand";
+import { colors } from "@/data/data";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 type TypeProps = {
   searchParams: { [key: string]: string | undefined };
@@ -25,7 +25,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
   const { minPrice, maxPrice, brand, options, ratings, color } =
     searchParams || {};
   const { brands } = useSelector((state: RootState) => state.brands);
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const arrayOfStringBrands = useMemo(() => {
     if (brand) {
@@ -66,7 +66,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     }
 
     const debouncedFunction = debounce(() => {
-      router.push(`?${objectToQueryString(updatedQuery)}`);
+      pushRouter(`?${objectToQueryString(updatedQuery)}`);
     }, 400);
 
     debouncedFunction();
@@ -95,7 +95,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
         }
 
         // Serialize the updated query object into a query string
-        router.push(`?${objectToQueryString(updatedQuery)}`);
+        pushRouter(`?${objectToQueryString(updatedQuery)}`);
       }, 50);
 
       // Call the debounced function
@@ -163,7 +163,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
         delete updatedQuery.brand;
       }
 
-      router.push(`?${objectToQueryString(updatedQuery, true)}`);
+      pushRouter(`?${objectToQueryString(updatedQuery, true)}`);
     }, 400);
 
     debouncedUpdate();
@@ -181,7 +181,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
       } else {
         delete updatedQuery.options;
       }
-      router.push(`?${objectToQueryString(updatedQuery, true)}`);
+      pushRouter(`?${objectToQueryString(updatedQuery, true)}`);
     }, 400);
 
     debouncedUpdate();
@@ -199,7 +199,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
       } else {
         delete updatedQuery.ratings;
       }
-      router.push(`?${objectToQueryString(updatedQuery, true)}`);
+      pushRouter(`?${objectToQueryString(updatedQuery, true)}`);
     }, 400);
 
     debouncedUpdate();

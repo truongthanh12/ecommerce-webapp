@@ -1,3 +1,3 @@
-import SalePage from "@/app/page-sections/sale-page";
+import SalePage from "@/page-sections/sale-page";
 
 export default SalePage

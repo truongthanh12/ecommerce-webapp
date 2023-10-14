@@ -4,12 +4,13 @@ import { Box, Button } from "@mui/material";
 import SEO from "@/components/SEO";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import NotFound from "@/components/not-found";
 
 const Error404 = () => {
   const router = useRouter();
   const handleGoBack = () => router.back();
+  const params = useParams();
 
   return (
     <FlexRowCenter px={2} minHeight="100vh" flexDirection="column">
@@ -30,7 +31,7 @@ const Error404 = () => {
           Go Back
         </Button>
 
-        <Link href="/" passHref legacyBehavior>
+        <Link href={`/${params.lang}`} passHref legacyBehavior>
           <Button
             variant="contained"
             color="primary"

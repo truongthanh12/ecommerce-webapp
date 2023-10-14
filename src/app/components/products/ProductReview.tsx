@@ -5,7 +5,7 @@ import { H2, H5 } from "@/components/Typography";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { IComments } from "@/app/models/Product";
+import { IComments } from "@/models/Product";
 import { useAppDispatch } from "@/redux/hooks";
 import {
   addCommentAsync,

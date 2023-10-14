@@ -4,14 +4,15 @@ import { Box, Container, Grid, Skeleton } from "@mui/material";
 import RankBadge from "@/components/icons/RankBadge";
 import DottedStar from "@/components/icons/DottedStar";
 import CategorySectionHeader from "@/components/CategorySectionHeader";
-import ProductCard from "@/app/components/products/Card";
+import ProductCard from "@/components/products/Card";
 import React, { useEffect, useMemo, useState } from "react";
-import { IProducts } from "@/app/models/Product";
-import Card from "@/app/components/Card";
-import { IBrand } from "@/app/models/Brand";
-import { calculateAverageRating, formatToSlug } from "@/app/utils/lib";
+import { IProducts } from "@/models/Product";
+import Card from "@/components/Card";
+import { IBrand } from "@/models/Brand";
+import { calculateAverageRating, formatToSlug } from "@/utils/lib";
 import { getProductsWithComments } from "@/redux/features/productSlice";
 import isEmpty from "lodash/isEmpty";
+import { useParams } from "next/navigation";
 // ==========================================================
 type TypeProps = {
   products: IProducts[];
@@ -19,6 +20,7 @@ type TypeProps = {
 };
 const Featured: React.FC<TypeProps> = ({ brands }) => {
   const [products, setProducts] = useState<IProducts[]>([]);
+  const params = useParams()
 
   const featuredBrand = useMemo(() => {
     return brands.filter((item) => item.image);
@@ -78,7 +80,7 @@ const Featured: React.FC<TypeProps> = ({ brands }) => {
                   products.map((item: IProducts) => (
                     <Grid item md={3} sm={6} xs={6} key={item.id}>
                       <Link
-                        href={`/product/${formatToSlug(item.slug)}`}
+                        href={`/${params.lang}/product/${formatToSlug(item.slug)}`}
                         passHref
                       >
                         <ProductCard
@@ -145,7 +147,7 @@ const Featured: React.FC<TypeProps> = ({ brands }) => {
                 {featuredBrand.slice(0, 2).map(({ id, name, image }) => (
                   <Grid item sm={6} xs={12} key={id}>
                     <Link
-                      href={`/product/search/products?brand=${name}`}
+                      href={`/${params.lang}/product/search/products?brand=${name}`}
                       passHref
                     >
                       <ProductCard isFeatured title={name} thumbnail={image} />

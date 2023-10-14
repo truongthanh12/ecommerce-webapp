@@ -7,6 +7,7 @@ import TwitterFilled from "@/components/icons/TwitterFilled";
 import YoutubeFilled from "@/components/icons/YoutubeFilled";
 import { H3, Small, Span } from "@/components/Typography";
 import React from "react";
+import { useParams } from "next/navigation";
 
 // =======================================================
 
@@ -32,6 +33,7 @@ const ShopIntroCard = ({
   youtube,
   email,
 }: CardShops) => {
+  const params = useParams()
   const socialLinks = [
     {
       icon: FacebookFilled,
@@ -94,7 +96,7 @@ const ShopIntroCard = ({
             <FlexBox my={1} gap={1.5}>
               {socialLinks.map((item, ind) => (
                 <a
-                  href={item.url}
+                  href={`/${params.lang}${item.url}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   key={ind}

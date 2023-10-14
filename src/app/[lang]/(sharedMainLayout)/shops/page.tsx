@@ -9,9 +9,9 @@ import { Suspense, useEffect } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { fetchUsers } from "@/redux/features/authSlice";
 import { RootState } from "@/redux/store";
-import useMuiTable from "@/app/hooks/useMuiTable";
-import TablePagination from "@/app/components/data-table/TablePagination";
-import NotFound from "@/app/components/not-found";
+import useMuiTable from "@/hooks/useMuiTable";
+import TablePagination from "@/components/data-table/TablePagination";
+import NotFound from "@/components/not-found";
 // =============================================
 
 export default function ShopList() {

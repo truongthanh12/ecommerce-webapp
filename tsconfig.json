@@ -31,7 +31,8 @@
       "@/redux/*": ["./src/redux/*"],
       "@/firebase": ["./firebase.ts"],
       "@/public": ["./public"],
-      "@/middleware": ["./src/middleware.ts"]
+      "@/middleware": ["./src/middleware.ts"],
+      "@/dictionary": ["./get-dictionary.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

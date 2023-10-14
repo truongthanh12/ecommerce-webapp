@@ -13,10 +13,11 @@ import useWindowSize from "@/hooks/useWindowSize";
 import { calculateFutureDate, tryFormatDate } from "@/utils/lib";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
-import { IOrder } from "@/app/models/Order";
+import { IOrder } from "@/models/Order";
 import Link from "next/link";
-import OrderedProductList from "@/app/page-sections/orders/OrderedProductList";
-import OrderedSummary from "@/app/page-sections/orders/OrderedSummary";
+import OrderedProductList from "@/page-sections/orders/OrderedProductList";
+import OrderedSummary from "@/page-sections/orders/OrderedSummary";
+import { useParams } from "next/navigation";
 
 // styled components
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
@@ -39,7 +40,7 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
 }));
 // =============================================================
 interface OrderProps {
-  params: { id: string };
+  params: { id: string, lang: string };
 }
 
 async function getOrderById(id = "") {
@@ -60,6 +61,7 @@ async function getOrderById(id = "") {
 }
 const OrderDetails = ({ params }: OrderProps) => {
   const [order, setOrder] = useState<Partial<IOrder>>({});
+  const localesParams = useParams();
 
   useEffect(() => {
     // Define an async function
@@ -90,7 +92,7 @@ const OrderDetails = ({ params }: OrderProps) => {
 
   // SECTION TITLE HEADER
   const HEADER_BUTTON = (
-    <Link href="/orders" passHref>
+    <Link href={`/${localesParams.lang}/orders`} passHref>
       <Button
         color="primary"
         sx={{

@@ -1,4 +1,4 @@
-import Carrot from "@/app/components/icons/Carrot";
+import Carrot from "@/components/icons/Carrot";
 import Car from "@/components/icons/Car";
 import Dress from "@/components/icons/Dress";
 

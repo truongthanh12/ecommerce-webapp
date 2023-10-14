@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import db from "@/firebase";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 
 // wishlist
 // comment actions

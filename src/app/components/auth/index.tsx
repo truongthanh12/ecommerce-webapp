@@ -4,13 +4,14 @@ import Link from "next/link";
 import { H6 } from "@/components/Typography";
 import SocialButtons from "@/components/auth/SocialButtons";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
-import Form from "@/app/components/auth/Form";
+import Form from "@/components/auth/Form";
 import db, { auth, providers } from "@/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setMessage } from "@/redux/features/messageSlice";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { login, userData } from "@/redux/features/authSlice";
+import { useParams } from "next/navigation";
 
 const fbStyle = {
   background: "#3B5998",
@@ -60,6 +61,7 @@ const AuthComp = ({ onClosePopup }: { onClosePopup: () => void }) => {
   const [authType, setAuthType] = useState("signin");
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const dispatch = useDispatch();
+  const params = useParams()
 
   const toggleAuth = useCallback((state: "signin" | "signup") => {
     setAuthType(state);
@@ -154,7 +156,7 @@ const AuthComp = ({ onClosePopup }: { onClosePopup: () => void }) => {
       >
         Forgot your password?
         <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-          <Link href="/reset-password" passHref legacyBehavior>
+          <Link href={`/${params.lang}/reset-password`} passHref legacyBehavior>
             Reset It
           </Link>
         </H6>

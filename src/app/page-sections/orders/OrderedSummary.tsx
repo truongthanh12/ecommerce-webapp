@@ -1,8 +1,8 @@
-import Card from "@/app/components/Card";
-import { H5, H6, Paragraph } from "@/app/components/Typography";
-import { FlexBetween } from "@/app/components/flex-box";
-import { IOrder } from "@/app/models/Order";
-import { currency } from "@/app/utils/lib";
+import Card from "@/components/Card";
+import { H5, H6, Paragraph } from "@/components/Typography";
+import { FlexBetween } from "@/components/flex-box";
+import { IOrder } from "@/models/Order";
+import { currency } from "@/utils/lib";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
 

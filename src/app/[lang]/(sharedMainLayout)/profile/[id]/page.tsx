@@ -4,13 +4,15 @@ import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard
 import { Fragment } from "react";
 import { Button } from "@mui/material";
 import { Person } from "@mui/icons-material";
-import EditForm from "@/app/page-sections/user/profile/EditForm";
+import EditForm from "@/page-sections/user/profile/EditForm";
+import { useParams } from "next/navigation";
 // ===========================================================
 
 const ProfileEditor = () => {
+  const params = useParams()
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href="/profile" passHref>
+    <Link href={`/${params.lang}/profile`} passHref>
       <Button
         color="primary"
         sx={{

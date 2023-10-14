@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const defaultLocale = "vi";
+export const locales = ["en", "vi"];
 export function middleware(request: NextRequest) {
-  const locales = ["en", "vi"];
   // Check if there is any supported locale in the pathname
   const pathname = request.nextUrl.pathname;
 
@@ -29,9 +29,6 @@ export function middleware(request: NextRequest) {
   );
 
   if (pathnameIsMissingLocale) {
-    // We are on the default locale
-    // Rewrite so Next.js understands
-
     // e.g. incoming request is /about
     // Tell Next.js it should pretend it's /en/about
     return NextResponse.rewrite(

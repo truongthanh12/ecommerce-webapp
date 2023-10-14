@@ -6,16 +6,16 @@ import { useEffect, useMemo } from "react";
 import { fetchOrders } from "@/redux/features/orderSlice";
 import { useSelector } from "react-redux";
 import { Box, Stack, Table, TableBody, TableContainer } from "@mui/material";
-import { useSearch } from "@/app/hooks/useSearch";
-import useMuiTable from "@/app/hooks/useMuiTable";
-import SearchArea from "@/app/components/dashboard/SearchArea";
-import TablePagination from "@/app/components/data-table/TablePagination";
-import Card from "@/app/components/Card";
-import Scrollbar from "@/app/components/Scrollbar";
-import TableHeader from "@/app/components/data-table/TableHeader";
+import { useSearch } from "@/hooks/useSearch";
+import useMuiTable from "@/hooks/useMuiTable";
+import SearchArea from "@/components/dashboard/SearchArea";
+import TablePagination from "@/components/data-table/TablePagination";
+import Card from "@/components/Card";
+import Scrollbar from "@/components/Scrollbar";
+import TableHeader from "@/components/data-table/TableHeader";
 import { isEmpty } from "lodash";
-import NotFound from "@/app/components/not-found";
-import TableRow from "@/app/components/TableRow";
+import NotFound from "@/components/not-found";
+import TableRow from "@/components/TableRow";
 import { RootState } from "@/redux/store";
 
 // ====================================================

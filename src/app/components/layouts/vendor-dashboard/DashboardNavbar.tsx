@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-import { Search } from "@mui/icons-material";
 import { Box, Button, Typography, styled, useMediaQuery } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,6 +12,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Span } from "@/components/Typography";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // custom styled components
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -64,9 +63,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // ===================================================================
 
 const DashboardNavbar = ({ handleDrawerToggle }: any) => {
-  const router = useRouter();
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
   const { user } = useSelector((state: RootState) => state.auth);
+  const { pushRouter } = useCustomRouter();
 
   return (
     <DashboardNavbarRoot position="sticky">
@@ -79,7 +78,7 @@ const DashboardNavbar = ({ handleDrawerToggle }: any) => {
           )}
 
           <CustomButton
-            onClick={() => router.push("/")}
+            onClick={() => pushRouter("/")}
             startIcon={
               <Globe
                 sx={{

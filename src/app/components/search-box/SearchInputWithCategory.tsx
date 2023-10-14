@@ -8,10 +8,10 @@ import { FlexBox } from "@/components/flex-box";
 import { SearchOutlinedIcon } from "./styled";
 import { useSelector } from "react-redux";
 import { CategoryIcon } from "@/common";
-import { useRouter } from "next/navigation";
 import debounce from "lodash/debounce";
-import { objectToQueryString } from "@/app/utils/lib";
+import { objectToQueryString } from "@/utils/lib";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 const DropDownHandler = styled(FlexBox)(
   ({ theme }: { component: any; theme?: any }) => ({
@@ -29,7 +29,7 @@ const SearchInputWithCategory = () => {
   const { breakpoints } = useTheme();
   const [categoryTitle, setCategoryTitle] = useState("All Categories");
   const [query, setQuery] = useState("");
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const search = window.location.search;
   const params = new URLSearchParams(search);
@@ -60,7 +60,7 @@ const SearchInputWithCategory = () => {
       }
       let updatedQuery = { ...searchParams };
       delete updatedQuery.query;
-      router.push(`/product/search/products?${objectToQueryString(updatedQuery)}`);
+      pushRouter(`/product/search/products?${objectToQueryString(updatedQuery)}`);
     }
   };
 
@@ -79,7 +79,7 @@ const SearchInputWithCategory = () => {
         };
 
         // Serialize the updated query object into a query string
-        router.push(`/product/search/products?${objectToQueryString(updatedQuery)}`);
+        pushRouter(`/product/search/products?${objectToQueryString(updatedQuery)}`);
       }
     }, 400),
     [query]

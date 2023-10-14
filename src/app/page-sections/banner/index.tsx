@@ -4,8 +4,10 @@ import LazyImage from "@/components/LazyImage";
 import React from "react";
 import Banner1 from "../../../../public/assets/images/banners/banner-1.png";
 import Banner2 from "../../../../public/assets/images/banners/banner-2.png";
+import { useParams } from "next/navigation";
 
 const BannerAds = () => {
+  const params = useParams();
   return (
     <Container
       sx={{
@@ -14,7 +16,7 @@ const BannerAds = () => {
     >
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Link href="/" passHref>
+          <Link href={`/${params.lang}`} passHref>
             <LazyImage
               width={385}
               height={342}
@@ -28,7 +30,7 @@ const BannerAds = () => {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <Link href="/" passHref>
+          <Link href={`/${params.lang}`} passHref>
             <LazyImage
               width={790}
               height={342}

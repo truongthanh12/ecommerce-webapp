@@ -12,7 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import db from "@/firebase";
-import { IOrder } from "@/app/models/Order";
+import { IOrder } from "@/models/Order";
 
 interface OderState {
   orders: Partial<IOrder[]>;

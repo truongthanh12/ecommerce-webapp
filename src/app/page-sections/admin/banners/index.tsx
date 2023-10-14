@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { Avatar } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { Delete, Edit } from "@mui/icons-material";
 import SwitchButton from "@/components/Switch";
 import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
@@ -11,18 +10,19 @@ import { deleteBannerAsync } from "@/redux/features/bannerSlice";
 import { useSelector } from "react-redux";
 import { ADMIN_ID } from "@/app/constant";
 import { updateAsync } from "@/redux/features/rechargeSlice";
-import { ICarouselCard } from "@/app/models/Brand";
+import { ICarouselCard } from "@/models/Brand";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ========================================================================
 
 const BannerRow = ({ banner }: { banner: Partial<ICarouselCard> }) => {
   const { title, published, imgUrl, id, description, userId } = banner || {};
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
   const [featured, setFeatured] = useState(published);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const handleNavigate = () => router.push(`/admin/banners/${id}`);
+  const handleNavigate = () => pushRouter(`/admin/banners/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleChangeStatus = async () => {

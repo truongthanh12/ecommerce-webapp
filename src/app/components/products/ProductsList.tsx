@@ -1,5 +1,5 @@
 import ProductCard from "@/components/products/Card";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import NotFound from "../not-found";

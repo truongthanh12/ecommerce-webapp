@@ -9,7 +9,7 @@ import React, {
 import CategoryMenuCard from "./CategoryMenuCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNaviagtions } from "@/redux/features/navigationSlice";
-import { ICategory } from "@/app/models/Category";
+import { ICategory } from "@/models/Category";
 import { RootState } from "@/redux/store";
 // Define the styled component type
 type TypeProps = {

@@ -12,14 +12,14 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storageRef } from "@/firebase";
 import isEmpty from "lodash/isEmpty";
-import { useRouter } from "next/navigation";
 import {
   addBannerAsync,
   bannerDataForm,
   updateBannerAsync,
 } from "@/redux/features/bannerSlice";
-import { ICarouselCard } from "@/app/models/Brand";
+import { ICarouselCard } from "@/models/Brand";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ================================================================
 
@@ -50,7 +50,7 @@ const BannerForm = ({
   const { error, loading } = useSelector((state: RootState) => state.banners);
   const { user } = useSelector((state: RootState) => state.auth);
   const { status } = useSelector((state: RootState) => state.statusAdmin);
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const {
     handleSubmit,
@@ -148,7 +148,7 @@ const BannerForm = ({
             }
             reset();
             handleFileDelete(files);
-            router.push("/admin/banners");
+            pushRouter("/admin/banners");
             dispatch(
               setMessage({
                 message:
@@ -194,7 +194,7 @@ const BannerForm = ({
     }
     reset();
     handleFileDelete(files);
-    router.push("/admin/banners");
+    pushRouter("/admin/banners");
     dispatch(
       setMessage({
         message:

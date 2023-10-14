@@ -7,11 +7,10 @@ import ProductCard from "@/components/products/Card";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import { H1, H5 } from "@/components/Typography";
 import useScroller from "@/hooks/useScroller";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import { useSelector } from "react-redux";
 import { CategoryIcon } from "@/common";
 import { useRouter } from "next/navigation";
-import { objectToQueryString, removeAccents } from "@/app/utils/lib";
 import debounce from "lodash/debounce";
 import { RootState } from "@/redux/store";
 
@@ -69,7 +68,6 @@ export default function SalePage({ searchParams }: PageProps) {
   const { type } = searchParams;
 
   const categoryRef = useRef(null);
-  const router = useRouter();
   const { isFixedHeader } = useScroller(categoryRef);
   const { products } = useSelector((state: RootState) => state.products);
   const { parentCategories } = useSelector((state: RootState) => state.categories);
@@ -82,10 +80,6 @@ export default function SalePage({ searchParams }: PageProps) {
   // HANDLE THE CHANGE CATEGORY
   const handleCategoryChange = (cate: string) => () => {
     setSelectedCategory(cate);
-    // let updatedQuery = { ...searchParams, category: removeAccents(cate) || "" };
-    // if (category) {
-    //   router.push(`/sale-page/?${objectToQueryString(updatedQuery)}`);
-    // }
   };
 
   useEffect(() => {

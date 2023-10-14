@@ -14,9 +14,9 @@ import { fetchOrders } from "@/redux/features/orderSlice";
 import { useSelector } from "react-redux";
 import BackdropLoading from "@/components/backdrop";
 import { RootState } from "@/redux/store";
-import useMuiTable from "@/app/hooks/useMuiTable";
-import TablePagination from "@/app/components/data-table/TablePagination";
-import NotFound from "@/app/components/not-found";
+import useMuiTable from "@/hooks/useMuiTable";
+import TablePagination from "@/components/data-table/TablePagination";
+import NotFound from "@/components/not-found";
 
 // ====================================================
 

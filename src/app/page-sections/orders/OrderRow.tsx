@@ -4,7 +4,8 @@ import { Box, Chip, IconButton, Typography } from "@mui/material";
 import TableRow from "@/components/TableRow";
 import { H5 } from "@/components/Typography";
 import { capitalizeStr, currency, tryFormatDate } from "@/utils/lib";
-import { IOrder } from "@/app/models/Order";
+import { IOrder } from "@/models/Order";
+import { useParams } from "next/navigation";
 // =================================================
 
 const OrderRow = ({
@@ -14,6 +15,7 @@ const OrderRow = ({
   order: IOrder;
   isSeller?: boolean;
 }) => {
+  const params = useParams()
   const getColor = (status: string) => {
     switch (status) {
       case "processing":
@@ -30,7 +32,7 @@ const OrderRow = ({
   const formattedDate = order?.createdAt ? tryFormatDate(order?.createdAt) : "";
 
   return (
-    <Link href={`${isSeller ? "/vendor" : ""}/orders/${order.id}`} passHref>
+    <Link href={`/${params.lang}${isSeller ? "/vendor" : ""}/orders/${order.id}`} passHref>
       <TableRow
         sx={{
           my: "1rem",

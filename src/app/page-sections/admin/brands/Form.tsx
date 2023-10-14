@@ -17,8 +17,8 @@ import {
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storageRef } from "@/firebase";
 import isEmpty from "lodash/isEmpty";
-import { useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ================================================================
 
@@ -41,7 +41,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
   const { error } = useSelector((state: RootState) => state.brands);
   const { user } = useSelector((state: RootState) => state.auth);
   const { status } = useSelector((state: RootState) => state.statusAdmin);
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const {
     handleSubmit,
@@ -133,7 +133,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
             }
             reset();
             handleFileDelete(files);
-            router.push("/admin/brands");
+            pushRouter("/admin/brands");
             dispatch(
               setMessage({
                 message:
@@ -174,7 +174,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
     }
     reset();
     handleFileDelete(files);
-    router.push("/admin/brands");
+    pushRouter("/admin/brands");
     dispatch(
       setMessage({
         message:

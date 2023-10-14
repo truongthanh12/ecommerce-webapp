@@ -1,4 +1,4 @@
-import { layoutConstant } from "@/app/utils/constants";
+import { layoutConstant } from "@/utils/constants";
 import { Box, keyframes, styled } from "@mui/material";
 import Container from "@mui/material/Container";
 

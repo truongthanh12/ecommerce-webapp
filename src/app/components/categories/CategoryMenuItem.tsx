@@ -3,7 +3,8 @@ import { Box, MenuItem, styled } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import React from "react";
 import { CategoryIcon } from "@/common";
-import { formatToSlug } from "@/app/utils/lib";
+import { formatToSlug } from "@/utils/lib";
+import { useParams } from "next/navigation";
 
 //styled component
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -36,10 +37,10 @@ const Wrapper = styled(Box)(({ theme }) => ({
 // =============================================================
 
 const CategoryMenuItem = ({ href, title, caret, children, ...rest }: any) => {
-
+  const params = useParams();
   return (
     <Wrapper>
-      <Link href={formatToSlug(href || "")}>
+      <Link href={formatToSlug("/" + params.lang + href || "")}>
         <MenuItem className="category-dropdown-link">
           {rest.icon && <>{CategoryIcon[rest.icon]}</>}
           <span className="title">{title}</span>

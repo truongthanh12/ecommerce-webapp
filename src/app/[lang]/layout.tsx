@@ -9,10 +9,14 @@ import ToastProvider from "@/redux/toastProvider";
 import React from "react";
 import PackageStateChanged from "@/components/auth/PackageStateChanged";
 import AuthStateChanged from "@/components/auth/AuthStateChanged";
-import { defaultLocale } from "@/middleware";
+import { defaultLocale, locales } from "@/middleware";
 import BackdropLoading from "@/components/backdrop";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export async function generateStaticParams() {
+  return locales.map((lng) => ({ lng }))
+}
 interface LayoutProps {
   children: ReactNode;
   params: { lang: string };

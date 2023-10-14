@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { H3 } from "@/components/Typography";
 import React from "react";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 
 // ======================================================
 const ProductDescription = ({ product }: { product: Partial<IProducts> }) => {

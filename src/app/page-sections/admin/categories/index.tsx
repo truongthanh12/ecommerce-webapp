@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { Avatar } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { Delete, Edit } from "@mui/icons-material";
 import SwitchButton from "@/components/Switch";
 import {
@@ -16,16 +15,17 @@ import { deleteCategoryAsync } from "@/redux/features/categorySlice";
 import { ADMIN_ID } from "@/app/constant";
 import { useSelector } from "react-redux";
 import { updateAsync } from "@/redux/features/rechargeSlice";
-import { ICategory } from "@/app/models/Category";
+import { ICategory } from "@/models/Category";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ========================================================================
 
 const CategoryRow = ({ category }: { category: Partial<ICategory> }) => {
   const { name, published, image, id, parent, userId } = category || {};
-  const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(published);
   const { user } = useSelector((state: RootState) => state.auth);
+  const { pushRouter } = useCustomRouter();
 
   const handleChangeStatus = async () => {
     if (user.docId === ADMIN_ID) {
@@ -57,7 +57,7 @@ const CategoryRow = ({ category }: { category: Partial<ICategory> }) => {
     }
   };
 
-  const handleNavigate = () => router.push(`/admin/categories/${id}`);
+  const handleNavigate = () => pushRouter(`/admin/categories/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

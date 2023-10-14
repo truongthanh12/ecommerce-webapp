@@ -8,15 +8,15 @@ import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
 import BannerRow from "@/page-sections/admin/banners";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchBanners } from "@/redux/features/bannerSlice";
-import NotFound from "@/app/components/not-found";
-import { ICarouselCard } from "@/app/models/Brand";
+import NotFound from "@/components/not-found";
+import { ICarouselCard } from "@/models/Brand";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -55,11 +55,10 @@ const tableHeading = [
 // =============================================================================
 
 export default function BannerList() {
-  // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const router = useRouter();
   const { banners } = useSelector((state: RootState) => state.banners);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
+  const { pushRouter } = useCustomRouter();
 
   const uniqueArrayBanners: any[] = useMemo(() => {
     return [...new Set(banners)];
@@ -84,7 +83,7 @@ export default function BannerList() {
   });
 
   const handleButtonClick = () => {
-    router.push("/admin/banners/create");
+    pushRouter("/admin/banners/create");
   };
 
   return (

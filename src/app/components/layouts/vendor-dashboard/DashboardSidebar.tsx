@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/legacy/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Avatar, Box, useMediaQuery } from "@mui/material";
 import LayoutDrawer from "../LayoutDrawer";
 import Scrollbar from "@/components/Scrollbar";
@@ -20,6 +20,7 @@ import {
   ChevronLeftIcon,
   ListIconWrapper,
 } from "./LayoutStyledComponents";
+import useCustomRouter from "@/hooks/usePushRouter";
 const TOP_HEADER_AREA = 70;
 
 // -----------------------------------------------------------------------------
@@ -35,10 +36,10 @@ const DashboardSidebar = ({
   setShowMobileSideBar,
   setSidebarCompact,
 }: PageProps) => {
-  const router = useRouter();
   const pathname = usePathname();
   const [onHover, setOnHover] = useState(false);
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
+  const { pushRouter } = useCustomRouter();
 
   // side hover when side bar is compacted
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
@@ -47,7 +48,7 @@ const DashboardSidebar = ({
 
   // handle navigate to another route and close sidebar drawer in mobile device
   const handleNavigation = (path: string) => {
-    router.push(path || "");
+    pushRouter(path || "");
     setShowMobileSideBar();
   };
   const renderLevels = (data: any) => {

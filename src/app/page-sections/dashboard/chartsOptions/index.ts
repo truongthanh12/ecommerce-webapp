@@ -1,4 +1,4 @@
-import { ICategory } from "@/app/models/Category";
+import { ICategory } from "@/models/Category";
 
 export const weeklyChartOptions = (theme: any) => ({
   grid: {

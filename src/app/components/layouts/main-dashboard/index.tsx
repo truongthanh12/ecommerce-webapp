@@ -1,6 +1,6 @@
 import React from "react";
 import Topbar from "@/components/Topbar";
-import Header from "@/app/components/header";
+import Header from "@/components/header";
 import SearchInputWithCategory from "@/components/search-box/SearchInputWithCategory";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";

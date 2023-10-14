@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "@/redux/features/cartSlice";
 import { IProducts } from "../models/Product";
 import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 
 // =========================================================
 
@@ -30,6 +31,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
   const { palette } = useTheme();
   const dispatch: any = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
+  const params = useParams()
 
   const getTotalPrice = useMemo(() => {
     // Calculate the total voucher deduction for the entire cart
@@ -121,7 +123,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
             >
               <CartAction isIncludeBtnAdd product={product} />
 
-              <Link href={`/product/${product.id}`}>
+              <Link href={`/${params.lang}/product/${product.id}`}>
                 <Avatar
                   alt={product.title}
                   src={product.thumbnail}
@@ -141,7 +143,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
                   textOverflow: "ellipsis",
                 }}
               >
-                <Link href={`/product/${product.slug}`}>
+                <Link href={`/${params.lang}/product/${product.slug}`}>
                   <H5 ellipsis fontSize="14px" className="title">
                     {product.title}
                   </H5>
@@ -185,7 +187,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
 
       {cartList.length > 0 && (
         <Box p={2.5}>
-          <Link href="/checkout" passHref>
+          <Link href={`/${params.lang}/checkout`} passHref>
             <Button
               fullWidth
               color="primary"
@@ -200,7 +202,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
             </Button>
           </Link>
 
-          <Link href="/cart" passHref>
+          <Link href={`/${params.lang}/cart`} passHref>
             <Button
               fullWidth
               color="primary"

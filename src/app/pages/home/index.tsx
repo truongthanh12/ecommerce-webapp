@@ -21,12 +21,11 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import { fetchUsers, getWishlistByUserId } from "@/redux/features/authSlice";
 import { fetchBrands } from "@/redux/features/brandSlice";
 import { RootState } from "@/redux/store";
-import { Locale } from "../../../../next-i18next.config";
 
 export default function HomePage ({
-  params: { lang },
+  dictionary,
 }: {
-  params: { lang: Locale };
+  dictionary: any
 }) {
   const dispatch: any = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.categories);
@@ -55,14 +54,12 @@ export default function HomePage ({
   useEffect(() => {
     dispatch(getWishlistByUserId(user.docId));
   }, [dispatch, user.docId]);
-  // const dictionary = await getDictionary(lang);
 
   return (
     <>
-      {/* {dictionary["server-component"].welcome} */}
       <SEO title="Taphoa Homepage" />
       <HeroBanner carouselData={mainCarouselData} />
-      <FlashDeal products={products} />
+      <FlashDeal dictionary={dictionary} products={products} />
       <TopCategories categories={categories} />
       <BannerAds />
       <Discount products={products} />

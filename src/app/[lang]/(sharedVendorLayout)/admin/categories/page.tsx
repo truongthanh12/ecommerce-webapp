@@ -8,15 +8,15 @@ import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
 import CategoryRow from "@/page-sections/admin/categories";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchCategories } from "@/redux/features/categorySlice";
-import NotFound from "@/app/components/not-found";
-import { ICategory } from "@/app/models/Category";
+import NotFound from "@/components/not-found";
+import { ICategory } from "@/models/Category";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -55,11 +55,10 @@ const tableHeading = [
 // =============================================================================
 
 export default function CategoriesList() {
-  // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const router = useRouter();
   const { categories } = useSelector((state: RootState) => state.categories);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
+  const { pushRouter } = useCustomRouter();
 
   const uniqueArrayCategories: any[] = useMemo(() => {
     return [...new Set(categories)];
@@ -86,7 +85,7 @@ export default function CategoriesList() {
   });
 
   const handleButtonClick = () => {
-    router.push("/admin/categories/create");
+    pushRouter("/admin/categories/create");
   };
 
   return (

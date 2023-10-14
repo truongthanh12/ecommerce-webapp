@@ -1,4 +1,4 @@
-import { Paragraph } from "@/app/components/Typography";
+import { Paragraph } from "@/components/Typography";
 import {
   Box,
   Button,

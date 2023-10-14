@@ -27,6 +27,7 @@ import {
 } from "@/redux/features/cartSlice";
 import AccountPopover from "../layouts/vendor-dashboard/popovers/AccountPopover";
 import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 
 // ==============================================================
 
@@ -41,6 +42,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [isfixed, setFixed] = useState(false);
+  const params = useParams()
 
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
@@ -121,7 +123,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
             </Box>
 
             {/* MIDDLE CONTENT - LOGO */}
-            <Link href="/">
+            <Link href={`/${params.lang}`}>
               <Image
                 src="/assets/images/logo2.png"
                 alt="logo"
@@ -195,7 +197,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
       <StyledContainer>
         {/* LEFT CONTENT - LOGO AND CATEGORY */}
         <FlexBox mr={2} minWidth="170px" alignItems="center">
-          <Link href="/">
+          <Link href={`/${params.lang}`}>
             <Image
               width={205}
               height={50}

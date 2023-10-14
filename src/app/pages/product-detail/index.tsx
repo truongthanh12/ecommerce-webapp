@@ -11,7 +11,7 @@ import BackdropLoading from "@/components/backdrop";
 import { getCommentsByProductId } from "@/redux/features/productSlice";
 import RelatedProducts from "@/components/products/RelatedProducts";
 import { useSelector } from "react-redux";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import { RootState } from "@/redux/store";
 
 // styled component

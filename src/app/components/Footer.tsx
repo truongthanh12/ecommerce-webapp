@@ -10,6 +10,7 @@ import Facebook from "@/components/icons/Facebook";
 import Instagram from "@/components/icons/Instagram";
 import React from "react";
 import Image from "next/legacy/image";
+import { useParams } from "next/navigation";
 
 // styled component
 const StyledLink = styled("footer")(({ theme }) => ({
@@ -24,6 +25,7 @@ const StyledLink = styled("footer")(({ theme }) => ({
   },
 }));
 const Footer: React.FC = () => {
+  const params = useParams()
   return (
     <footer>
       <Box bgcolor="#222935">
@@ -36,7 +38,7 @@ const Footer: React.FC = () => {
           <Box py={10} overflow="hidden">
             <Grid container spacing={3}>
               <Grid item lg={4} md={6} sm={6} xs={12}>
-                <Link href="/">
+                <Link href={`/${params.lang}`}>
                   <Image
                     width={205}
                     height={50}
@@ -68,7 +70,7 @@ const Footer: React.FC = () => {
 
                 <div>
                   {aboutLinks.map((item, ind) => (
-                    <Link href="/" key={ind} passHref>
+                    <Link href={`/${params.lang}`} key={ind} passHref>
                       <StyledLink>{item}</StyledLink>
                     </Link>
                   ))}
@@ -88,7 +90,7 @@ const Footer: React.FC = () => {
 
                 <div>
                   {customerCareLinks.map((item, ind) => (
-                    <Link href="/" key={ind} passHref>
+                    <Link href={`/${params.lang}`} key={ind} passHref>
                       <StyledLink>{item}</StyledLink>
                     </Link>
                   ))}
@@ -121,7 +123,7 @@ const Footer: React.FC = () => {
                 <FlexBox className="flex" mx={-0.625}>
                   {iconList.map((item, ind) => (
                     <a
-                      href={item.url}
+                      href={`/${params.lang}${item.url}`}
                       target="_blank"
                       rel="noreferrer noopenner"
                       key={ind}

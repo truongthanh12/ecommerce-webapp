@@ -4,11 +4,11 @@ import { Avatar } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
 import { useAppDispatch } from "@/redux/hooks";
-import { FlexBox } from "@/app/components/flex-box";
-import { Paragraph } from "@/app/components/Typography";
+import { FlexBox } from "@/components/flex-box";
+import { Paragraph } from "@/components/Typography";
 import { deleteUserAsync } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
-import { currency } from "@/app/utils/lib";
+import { currency } from "@/utils/lib";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 

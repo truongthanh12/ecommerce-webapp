@@ -3,13 +3,13 @@ import React, { useCallback, useState } from "react";
 import { Delete } from "@mui/icons-material";
 import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles";
 import { useAppDispatch } from "@/redux/hooks";
-import { FlexBox } from "@/app/components/flex-box";
+import { FlexBox } from "@/components/flex-box";
 import { setMessage } from "@/redux/features/messageSlice";
 import {
   deleteChargeAsync,
   updateChargeAsync,
 } from "@/redux/features/rechargeSlice";
-import { currency } from "@/app/utils/lib";
+import { currency } from "@/utils/lib";
 import SwitchButton from "@/components/Switch";
 import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
 import { ADMIN_ID } from "@/app/constant";

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "@/redux/store";
 import db from "@/firebase";
-import { ICategory } from "@/app/models/Category";
+import { ICategory } from "@/models/Category";
 import {
   addDoc,
   collection,

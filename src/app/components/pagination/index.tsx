@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import { FlexBetween } from "../flex-box";
 import { Span } from "../Typography";
 import { Pagination } from "@mui/material";
-import { IProducts } from "@/app/models/Product";
-import { formatNumberWithThousandSeparators } from "@/app/utils/lib";
-import { useRouter } from "next/navigation";
+import { IProducts } from "@/models/Product";
+import { formatNumberWithThousandSeparators } from "@/utils/lib";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 interface PageProps {
   products: IProducts[];
@@ -18,7 +18,8 @@ const PaginationItem = ({
   startProductNumber,
   searchParams,
 }: PageProps) => {
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
+
   const currentPage = useMemo(
     () => Number(searchParams.page) || 1,
     [searchParams.page]
@@ -34,7 +35,7 @@ const PaginationItem = ({
 
   const hasPagination = useMemo(() => totalProducts / 10 > 1, [totalProducts]);
   const handleChange = (page: number) => {
-    router.push(`?page=${page}`);
+    pushRouter(`?page=${page}`);
   };
 
   return (

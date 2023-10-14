@@ -8,14 +8,16 @@ import GiftBox from "@/components/icons/GiftBox";
 import useWindowSize from "@/hooks/useWindowSize";
 import Carousel from "@/components/carousel/Carousel";
 import CategorySectionCreator from "@/components/CategorySectionCreator";
-import { IProducts } from "@/app/models/Product";
-import { formatToSlug } from "@/app/utils/lib";
+import { IProducts } from "@/models/Product";
+import { formatToSlug } from "@/utils/lib";
+import { useParams } from "next/navigation";
 
 // ========================================================
 type TypeProps = {
   products: IProducts[];
 };
 const Discount: React.FC<TypeProps> = ({ products }) => {
+  const params = useParams()
   const width = useWindowSize();
   const [visibleSlides, setVisibleSlides] = useState(6);
   useEffect(() => {
@@ -47,7 +49,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
                     p: "1rem",
                   }}
                 >
-                  <Link href={`/product/${formatToSlug(slug)}`} passHref>
+                  <Link href={`/${params.lang}/product/${formatToSlug(slug)}`} passHref>
                     <ProductCard
                       isBasicCard
                       title={title}

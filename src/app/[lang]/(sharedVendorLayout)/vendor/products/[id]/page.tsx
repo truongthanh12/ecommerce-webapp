@@ -5,13 +5,13 @@ import ProductForm from "@/page-sections/vendor/products/Form";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/firebase";
 import { useEffect, useState } from "react";
-import { FlexBox } from "@/app/components/flex-box";
+import { FlexBox } from "@/components/flex-box";
 import Link from "next/link";
 import { ArrowBack } from "@mui/icons-material";
 
 // =============================================================================
 interface TypeProps {
-  params: { id: string };
+  params: { id: string; lang: string };
 }
 async function getProductById(id = "") {
   try {
@@ -31,24 +31,24 @@ async function getProductById(id = "") {
 }
 
 export default function EditProduct({ params }: TypeProps) {
-  const { id } = params;
+  const { id, lang } = params;
   const [product, setProduct] = useState<any>({});
 
   useEffect(() => {
     // Define an async function
     async function fetchData() {
-      const productData = await getProductById(params.id);
+      const productData = await getProductById(id);
       setProduct(productData || {});
     }
     // Call the async function
     fetchData();
-  }, [params.id]);
+  }, [id]);
 
   return (
     <Box py={4}>
       <FlexBox mb={2} gap={2} justifyContent="space-between" flexWrap="wrap">
         <H3 mb={2}>Edit product ID "{id}"</H3>
-        <Link href="/vendor/products">
+        <Link href={`/${lang}/vendor/products`}>
           <Button
             color="info"
             variant="contained"

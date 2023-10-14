@@ -2,7 +2,7 @@
 import { Box, Button, Grid, styled } from "@mui/material";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H2 } from "@/components/Typography";
-import { currency } from "@/app/utils/lib";
+import { currency } from "@/utils/lib";
 import TextFieldInput from "@/components/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";

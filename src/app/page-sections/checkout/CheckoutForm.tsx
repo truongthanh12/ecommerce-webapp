@@ -13,22 +13,23 @@ import {
 } from "@mui/material";
 import Card from "@/components/Card";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { FlexBox } from "@/app/components/flex-box";
-import { Span } from "@/app/components/Typography";
+import { FlexBox } from "@/components/flex-box";
+import { Span } from "@/components/Typography";
 import CheckoutMethod from "./CheckoutMethod";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import TextFieldInput from "@/components/TextField";
-import { IUser } from "@/app/models/User";
+import { IUser } from "@/models/User";
 import { serverTimestamp } from "firebase/firestore";
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { clearItemsInCart } from "@/redux/features/cartSlice";
-import { ICart, IOrder } from "@/app/models/Order";
+import { ICart, IOrder } from "@/models/Order";
 import { addOrdersSync } from "@/redux/features/orderSlice";
 import { updateProductQuantities } from "@/redux/features/productSlice";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -54,7 +55,8 @@ const CheckoutForm = ({
   user: IUser;
 }) => {
   const dispatch: any = useAppDispatch();
-  const router = useRouter();
+  const params = useParams()
+  const { pushRouter } = useCustomRouter();
 
   const getIdList = useMemo(() => cartList.map((cart: any) => cart.product.id), [cartList])
   const getQuantityList = useMemo(() => cartList.map((cart: any) => cart.quantity), [cartList])
@@ -98,7 +100,7 @@ const CheckoutForm = ({
         cartList,
       };
       dispatch(addOrdersSync(mergedData));
-      router.push("/order-complete");
+      pushRouter("/order-complete");
       dispatch(setMessage({ message: "Your order is successfully!", type: "success" }));
       dispatch(clearItemsInCart(user.docId || ""));
       dispatch(updateProductQuantities(getIdList, getQuantityList))
@@ -282,7 +284,7 @@ const CheckoutForm = ({
 
       <Grid container spacing={6}>
         <Grid item sm={6} xs={12}>
-          <Link href="/cart" passHref>
+          <Link href={`/${params.lang}/cart`} passHref>
             <Button variant="outlined" color="primary" type="button" fullWidth>
               Back to Cart
             </Button>

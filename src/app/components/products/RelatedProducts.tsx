@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import ProductCard from "@/components/products/Card";
 import { H3 } from "@/components/Typography";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import React from "react";
 // ===================================================
 type TypeProps = {

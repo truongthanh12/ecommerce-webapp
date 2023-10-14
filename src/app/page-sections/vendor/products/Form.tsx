@@ -11,21 +11,21 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/firebase";
 import isEmpty from "lodash/isEmpty";
-import { useRouter } from "next/navigation";
 import { ErrorMessage, schema } from "./styles";
 import { fetchCategories } from "@/redux/features/categorySlice";
 import { fetchBrands } from "@/redux/features/brandSlice";
 import FiledItem from "./Item";
-import { colors, sizes, types } from "@/app/data/data";
+import { colors, sizes, types } from "@/data/data";
 import {
   addProductSync,
   productDataForm,
   updateProductAsync,
 } from "@/redux/features/productSlice";
-import { IProducts } from "@/app/models/Product";
-import { currency } from "@/app/utils/lib";
-import Tags from "@/app/components/products/Tags";
+import { IProducts } from "@/models/Product";
+import { currency } from "@/utils/lib";
+import Tags from "@/components/products/Tags";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 // ================================================================
 
 const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
@@ -40,7 +40,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
   const { status } = useSelector((state: RootState) => state.statusAdmin);
   const { categories } = useSelector((state: RootState) => state.categories);
   const { brands } = useSelector((state: RootState) => state.brands);
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const {
     handleSubmit,
@@ -186,7 +186,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
               type: "error",
             })
           );
-          router.push("/vendor/products");
+          pushRouter("/vendor/products");
         } else {
           dispatch(
             setMessage({
@@ -213,7 +213,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
               type: "error",
             })
           );
-          router.push("/vendor/products");
+          pushRouter("/vendor/products");
         } else {
           dispatch(
             setMessage({

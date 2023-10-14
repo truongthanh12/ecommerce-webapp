@@ -2,7 +2,7 @@ import Carousel from "@/components/carousel/Carousel";
 import CarouselCard from "@/components/carousel/Card";
 import { Box, Container } from "@mui/material";
 import React from "react";
-import { ICarouselCard } from "@/app/models/Brand";
+import { ICarouselCard } from "@/models/Brand";
 // ======================================================
 
 interface TypeProps {

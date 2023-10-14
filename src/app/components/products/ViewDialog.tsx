@@ -5,7 +5,7 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
-import { IProducts } from "@/app/models/Product";
+import { IProducts } from "@/models/Product";
 import { ContentWrapperView } from "./styles";
 import ProductIntro from "./ProductIntro";
 import { useEffect, useState } from "react";

@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import { Button, Grid, styled } from "@mui/material";
 import Image from "@/components/Image";
 import { FlexBetween } from "@/components/flex-box";
 import { Paragraph } from "@/components/Typography";
 import React from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 // styled component
 const StyledBox = styled(FlexBetween)(({ theme }) => ({
@@ -13,7 +14,7 @@ const StyledBox = styled(FlexBetween)(({ theme }) => ({
     marginTop: 0,
     lineHeight: 1.2,
     marginBottom: "1.35rem",
-    color: "#2B3445"
+    color: "#2B3445",
   },
   [theme.breakpoints.up("sm")]: {
     ".grid-item": {
@@ -64,6 +65,7 @@ const CarouselCard = ({
   description,
   buttonColor = "primary",
 }: TypeCarouselCardProps) => {
+  const params = useParams();
   return (
     <StyledBox>
       <Grid container spacing={3} alignItems="center" justifyContent="center">
@@ -73,7 +75,7 @@ const CarouselCard = ({
             {description}
           </Paragraph>
 
-          <Link href={buttonLink || ""}>
+          <Link href={`/${params.lang}${buttonLink}`}>
             <Button
               size="large"
               color={buttonColor}

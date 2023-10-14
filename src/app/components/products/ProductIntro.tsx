@@ -17,14 +17,15 @@ import { H1, H2, H4, H6, Span } from "@/components/Typography";
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import { calculateDiscount, capitalizeStr, currency } from "@/utils/lib";
 import Chip from "@mui/material/Chip";
-import { IComments, IProducts } from "@/app/models/Product";
+import { IComments, IProducts } from "@/models/Product";
 import CartAction from "./CartAction";
 import { addDays, format } from "date-fns";
 import Card from "../Card";
-import voucherCode from "@/app/data/voucher-code";
+import voucherCode from "@/data/voucher-code";
 import { useSelector } from "react-redux";
 import { selectCartItemsForUser } from "@/redux/features/cartSlice";
 import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 
 const ContentWrapper = styled(Box)(() => ({
   borderRadius: "8px",
@@ -52,6 +53,7 @@ const ProductIntro = ({
     id,
     tags,
   } = product || {};
+  const params = useParams()
   const [selectedImage, setSelectedImage] = useState(0);
   const [voucher, setVoucher] = useState(0);
 
@@ -228,7 +230,7 @@ const ProductIntro = ({
               {(sizes || []).map((size: string, index: number) => (
                 <Link
                   key={size + index}
-                  href={`?${new URLSearchParams({
+                  href={`/${params.lang}?${new URLSearchParams({
                     size,
                     color: selectedColor,
                   })}`}
@@ -253,7 +255,7 @@ const ProductIntro = ({
               {(colors || []).map((color: string, index: number) => (
                 <Link
                   key={color + index}
-                  href={`?${new URLSearchParams({
+                  href={`/${params.lang}?${new URLSearchParams({
                     color,
                     size: selectedSize,
                   })}`}
@@ -396,7 +398,7 @@ const ProductIntro = ({
                 return (
                   <Link
                     key={tag + ind}
-                    href={`/product/search/products?tag=${tag}`}
+                    href={`/${params.lang}/product/search/products?tag=${tag}`}
                     passHref
                   >
                     <H6 ml={1}>{tag + (isLastItem ? "" : ", ")}</H6>
@@ -408,7 +410,7 @@ const ProductIntro = ({
 
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>
-            <Link href={`/shops/${shop?.uid || shop?.id}`} passHref>
+            <Link href={`/${params.lang}/shops/${shop?.uid || shop?.id}`} passHref>
               <H6 ml={1}>{shop?.displayName || "Not updated"}</H6>
             </Link>
           </FlexBox>

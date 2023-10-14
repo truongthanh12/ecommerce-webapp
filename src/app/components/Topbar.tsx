@@ -127,7 +127,7 @@ const Topbar: React.FC<TypePropsTopbar> = ({ bgColor }) => {
 
           <FlexBox alignItems="center" gap={1.5}>
             {socialLinks.map(({ id, Icon, url }) => (
-              <Link href={url} key={id}>
+              <Link href={"/" + params.lang + url} key={id}>
                 <Icon
                   sx={{
                     fontSize: 16,

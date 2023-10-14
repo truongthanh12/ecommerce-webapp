@@ -1,6 +1,6 @@
 "use client";
 
-import Message from "@/app/components/message";
+import Message from "@/components/message";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "./features/messageSlice";

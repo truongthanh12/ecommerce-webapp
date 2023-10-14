@@ -12,9 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
-import NotFound from "@/app/components/not-found";
+import NotFound from "@/components/not-found";
 import { fetchRecharge } from "@/redux/features/rechargeSlice";
-import { ADMIN_ID } from "@/app/constant";
+import { ADMIN_ID } from "@/constant";
 import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST

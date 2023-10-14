@@ -13,9 +13,9 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { IComments, IProducts } from "@/app/models/Product";
-import { IUser } from "@/app/models/User";
-import { formatToSlug } from "@/app/utils/lib";
+import { IComments, IProducts } from "@/models/Product";
+import { IUser } from "@/models/User";
+import { formatToSlug } from "@/utils/lib";
 import { ADMIN_ID } from "@/app/constant";
 interface productstate {
   products: IProducts[];

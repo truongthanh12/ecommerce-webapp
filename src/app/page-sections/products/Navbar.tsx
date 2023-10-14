@@ -12,8 +12,8 @@ import Sidenav from "@/components/Sidenav";
 import { FlexBox } from "@/components/flex-box";
 import { H5, Paragraph } from "@/components/Typography";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
-import { useRouter } from "next/navigation";
-import { objectToQueryString } from "@/app/utils/lib";
+import { objectToQueryString } from "@/utils/lib";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 const sortOptions = [
   {
@@ -53,7 +53,7 @@ const ProductsNavbar = ({
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v: any) => () => setView(v), [setView]);
   const { query, orderBy, category, subcategory } = searchParams || {};
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
   const [selectedValue, setSelectedValue] = useState(
     orderBy || sortOptions[0].value
   );
@@ -71,7 +71,7 @@ const ProductsNavbar = ({
     }
 
     // Serialize the updated query object into a query string
-    router.push(`?${objectToQueryString(updatedQuery)}`);
+    pushRouter(`?${objectToQueryString(updatedQuery)}`);
   };
 
   const showFilter =

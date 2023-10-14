@@ -11,7 +11,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { ICarouselCard } from "@/app/models/Brand";
+import { ICarouselCard } from "@/models/Brand";
 import { ADMIN_ID } from "@/app/constant";
 
 interface BannerState {

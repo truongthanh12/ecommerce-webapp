@@ -13,7 +13,7 @@ import { useEffect, useMemo } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchUsers } from "@/redux/features/authSlice";
-import NotFound from "@/app/components/not-found";
+import NotFound from "@/components/not-found";
 import { RootState } from "@/redux/store";
 
 // TABLE HEADING DATA LIST
@@ -110,7 +110,11 @@ export default function UserList() {
               <TableBody>
                 {!isEmpty(filteredList) ? (
                   filteredList.map((user: any) => (
-                    <UserRow user={user} key={user.id} selected={selected} />
+                    <UserRow
+                      user={user}
+                      key={user.id + Math.random().toFixed(2)}
+                      selected={selected}
+                    />
                   ))
                 ) : (
                   <tr>

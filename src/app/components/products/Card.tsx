@@ -28,6 +28,7 @@ import {
   getWishlistByUserId,
 } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
+import { useParams } from "next/navigation";
 
 // ========================================================
 interface TypeProps {
@@ -76,6 +77,7 @@ const ProductCard = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const dispatch: any = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
+  const params = useParams()
 
   useEffect(() => {
     if (user && user.wishlist) {
@@ -320,7 +322,7 @@ const ProductCard = ({
               </Tooltip>
             </HoverIconWrapper>
 
-            <Link href={`/product/${formattedSlug}`} passHref>
+            <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
               <LazyImage
                 src={thumbnail}
                 width={0}
@@ -336,7 +338,7 @@ const ProductCard = ({
           <ContentWrapper>
             <FlexBox>
               <Box flex="1 1 0" minWidth="0px" mr={1}>
-                <Link href={`/product/${formattedSlug}`} passHref>
+                <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
                   <H3
                     mb={1}
                     title={title}
@@ -386,7 +388,7 @@ const ProductCard = ({
                 flexDirection="column-reverse"
                 justifyContent={isInShop ? "center" : "flex-start"}
               >
-                <Link href={`/product/${formattedSlug}`} passHref>
+                <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
                   <Button
                     color="primary"
                     variant="outlined"

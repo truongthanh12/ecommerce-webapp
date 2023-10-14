@@ -8,14 +8,14 @@ import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
 import ProductRow from "@/page-sections/vendor/products";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import { fetchProducts } from "@/redux/features/productSlice";
-import NotFound from "@/app/components/not-found";
+import NotFound from "@/components/not-found";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -59,12 +59,11 @@ const tableHeading = [
 // =============================================================================
 
 export default function ProductList() {
-  // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const router = useRouter();
   const { products } = useSelector((state: RootState) => state.products);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useDispatch();
   const { onSearchInputChange, filteredData } = useSearch(products);
+  const { pushRouter } = useCustomRouter();
 
   useEffect(() => {
     dispatch(fetchProducts({ userId: user.docId }));
@@ -84,7 +83,7 @@ export default function ProductList() {
   });
 
   const handleButtonClick = () => {
-    router.push("/vendor/products/create");
+    pushRouter("/vendor/products/create");
   };
 
   return (

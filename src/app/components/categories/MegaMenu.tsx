@@ -2,7 +2,7 @@ import CardComp from "@/components/Card";
 import React from "react";
 import StyledMegaMenu from "./StyledMegaMenu";
 import CategoryMenuItem from "./CategoryMenuItem";
-import { removeAccents } from "@/app/utils/lib";
+import { removeAccents } from "@/utils/lib";
 
 type TypeProps = {
   data: any;

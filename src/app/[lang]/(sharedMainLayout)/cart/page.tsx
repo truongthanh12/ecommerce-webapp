@@ -11,17 +11,18 @@ import {
   removeFromCart,
   selectCartItemsForUser,
 } from "@/redux/features/cartSlice";
-import Image from "@/app/components/Image";
+import Image from "@/components/Image";
 import { Close } from "@mui/icons-material";
-import CartAction from "@/app/components/products/CartAction";
-import { IProducts } from "@/app/models/Product";
+import CartAction from "@/components/products/CartAction";
+import { IProducts } from "@/models/Product";
 import { isEmpty } from "lodash";
-import NotFound from "@/app/components/not-found";
+import NotFound from "@/components/not-found";
 import CheckoutSummary from "@/page-sections/checkout/CheckoutSummary";
 import { Suspense, useMemo, useState } from "react";
-import { IVoucher } from "@/app/models/Voucher";
+import { IVoucher } from "@/models/Voucher";
 import BackdropLoading from "@/components/backdrop";
 import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 
 // styled components
 const Wrapper = styled(Card)(({ theme }: { theme: any }) => ({
@@ -47,6 +48,7 @@ const Cart = () => {
   const cartList: any = useSelector(selectCartItemsForUser(user.docId));
   const dispatch: any = useDispatch();
   const { vouchers } = useSelector((state: RootState) => state.vouchers);
+  const params = useParams();
 
   const [voucher, setVoucher] = useState("");
 
@@ -187,7 +189,9 @@ const Cart = () => {
                       width="100%"
                       flexDirection="column"
                     >
-                      <Link href={`/product/${formatToSlug(title)}`}>
+                      <Link
+                        href={`/${params.lang}/product/${formatToSlug(title)}`}
+                      >
                         <Span ellipsis fontWeight="600" fontSize={18}>
                           {title}
                         </Span>
@@ -245,7 +249,7 @@ const Cart = () => {
                   }}
                 />
 
-                <Link href="/checkout" passHref legacyBehavior>
+                <Link href={`/${params.lang}/checkout`} passHref legacyBehavior>
                   <Button variant="contained" color="primary" fullWidth>
                     Checkout Now
                   </Button>

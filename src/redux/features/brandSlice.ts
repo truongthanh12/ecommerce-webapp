@@ -11,7 +11,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { IBrand } from "@/app/models/Brand";
+import { IBrand } from "@/models/Brand";
 import { ADMIN_ID } from "@/app/constant";
 
 interface BrandState {

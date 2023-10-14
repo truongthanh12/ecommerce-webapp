@@ -2,22 +2,18 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
 import { Box, Button, MenuItem, TextField } from "@mui/material";
 import { SearchOutlinedIcon, SearchResultCard } from "./styled";
-// import api from "utils/__api__/products";
+import { useParams } from "next/navigation";
 
 const SearchInput = () => {
+  const params = useParams();
   const parentRef = useRef<HTMLInputElement>();
   const [_, startTransition] = useTransition();
   const [resultList, setResultList] = useState<string[]>([]);
-  const getProducts = async (searchText: string) => {
-    // const data = await api.searchProducts(searchText);
-    setResultList([]);
-  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     startTransition(() => {
       const value = e.target?.value;
       if (!value) setResultList([]);
-      else getProducts(value);
     });
   };
 
@@ -75,7 +71,11 @@ const SearchInput = () => {
       {resultList.length > 0 && (
         <SearchResultCard elevation={2}>
           {resultList.map((item) => (
-            <Link href={`/product/search/${item}`} key={item} passHref>
+            <Link
+              href={`/${params.lang}/product/search/${item}`}
+              key={item}
+              passHref
+            >
               <MenuItem key={item}>{item}</MenuItem>
             </Link>
           ))}

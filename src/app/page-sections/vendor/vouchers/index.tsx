@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { Delete, Edit } from "@mui/icons-material";
 import {
   StyledIconButton,
@@ -10,7 +9,8 @@ import {
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
 import { deleteVoucherAsync } from "@/redux/features/voucherSlice";
-import { currency } from "@/app/utils/lib";
+import { currency } from "@/utils/lib";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ========================================================================
 
@@ -24,9 +24,9 @@ const VoucherRow = ({ voucher }: any) => {
     id,
     totalBill,
   } = voucher || {};
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
-  const handleNavigate = () => router.push(`/vendor/vouchers/${id}`);
+  const handleNavigate = () => pushRouter(`/vendor/vouchers/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {
@@ -59,7 +59,9 @@ const VoucherRow = ({ voucher }: any) => {
 
       <StyledTableCell align="center">{name}</StyledTableCell>
 
-      <StyledTableCell align="center">Bill{" >= " + currency(totalBill)}</StyledTableCell>
+      <StyledTableCell align="center">
+        Bill{" >= " + currency(totalBill)}
+      </StyledTableCell>
       <StyledTableCell align="center">{amount}</StyledTableCell>
       <StyledTableCell align="center">
         {discountAmount ||

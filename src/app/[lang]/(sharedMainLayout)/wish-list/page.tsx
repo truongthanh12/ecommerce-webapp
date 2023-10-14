@@ -7,13 +7,13 @@ import { Suspense } from "react";
 import { useSelector } from "react-redux";
 import BackdropLoading from "@/components/backdrop";
 import { RootState } from "@/redux/store";
-import NotFound from "@/app/components/not-found";
+import NotFound from "@/components/not-found";
 import isEmpty from "lodash/isEmpty";
 import ProductCard from "@/components/products/Card";
-import { IProducts } from "@/app/models/Product";
-import Heart from "@/app/components/icons/Heart";
-import useMuiTable from "@/app/hooks/useMuiTable";
-import TablePagination from "@/app/components/data-table/TablePagination";
+import { IProducts } from "@/models/Product";
+import Heart from "@/components/icons/Heart";
+import useMuiTable from "@/hooks/useMuiTable";
+import TablePagination from "@/components/data-table/TablePagination";
 
 // ====================================================
 

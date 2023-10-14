@@ -13,11 +13,12 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/authSlice";
 import { auth } from "@/firebase";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { setMessage } from "@/redux/features/messageSlice";
 import Link from "next/link";
 import { ADMIN_ID } from "@/app/constant";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // styled components
 const Divider = styled(Box)(({ theme }) => ({
@@ -58,8 +59,9 @@ const AccountPopover = () => {
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: any = useAppDispatch();
-  const router = useRouter();
   const { displayName, isVendor, photoURL, docId } = user || {};
+  const params = useParams();
+  const { pushRouter } = useCustomRouter();
 
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
@@ -68,7 +70,7 @@ const AccountPopover = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    router.push("/");
+    pushRouter("/");
     // sign out function from firebase
     auth
       .signOut()
@@ -157,18 +159,18 @@ const AccountPopover = () => {
 
         <Divider />
         {isVendor ? (
-          <Link href="/dashboard">
+          <Link href={`/${params.lang}/dashboard`}>
             <MenuItem>Dashboard</MenuItem>
           </Link>
         ) : (
           <Box>
-            <Link href="/profile">
+            <Link href={`/${params.lang}/profile`}>
               <MenuItem>Profile</MenuItem>
             </Link>
-            <Link href="/orders">
+            <Link href={`/${params.lang}/orders`}>
               <MenuItem>My Orders</MenuItem>
             </Link>
-            <Link href="/wish-list">
+            <Link href={`/${params.lang}/wish-list`}>
               <MenuItem>My Wishlist</MenuItem>
             </Link>
           </Box>

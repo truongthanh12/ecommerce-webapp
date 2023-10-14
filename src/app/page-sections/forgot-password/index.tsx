@@ -15,6 +15,7 @@ import { auth } from "@/firebase";
 import { setMessage } from "@/redux/features/messageSlice";
 import { loading, loginError } from "@/redux/features/authSlice";
 import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 
 export const ErrorMessage = styled("span")(() => ({
   display: "flex",
@@ -31,6 +32,7 @@ type FormValues = {
   Email: string;
 };
 const ResetPassword = () => {
+  const params = useParams()
   const [errorMessage, setErrorMessage] = useState("");
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
 
@@ -139,7 +141,7 @@ const ResetPassword = () => {
 
           <FlexRowCenter mt="1.25rem" justifyContent="center" width="100%">
             <Box>Back to</Box>
-            <Link href="/" passHref>
+            <Link href={`/${params.lang}`} passHref>
               <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
                 Home
               </H6>

@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { Avatar } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { Delete, Edit } from "@mui/icons-material";
 import SwitchButton from "@/components/Switch";
 import {
@@ -11,15 +10,16 @@ import {
   StyledTableRow,
 } from "@/page-sections/admin/styles";
 import { useAppDispatch } from "@/redux/hooks";
-import { FlexBox } from "@/app/components/flex-box";
-import { Paragraph } from "@/app/components/Typography";
-import { currency } from "@/app/utils/lib";
+import { FlexBox } from "@/components/flex-box";
+import { Paragraph } from "@/components/Typography";
+import { currency } from "@/utils/lib";
 import { deleteProductAsync } from "@/redux/features/productSlice";
 import { setMessage } from "@/redux/features/messageSlice";
 import { useSelector } from "react-redux";
 import { updateAsync } from "@/redux/features/rechargeSlice";
 import { ADMIN_ID } from "@/app/constant";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ========================================================================
 const ProductRow = ({ product }: any) => {
@@ -34,7 +34,7 @@ const ProductRow = ({ product }: any) => {
     stock,
     userId,
   } = product || {};
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
   const [featured, setFeatured] = useState(published);
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -64,7 +64,7 @@ const ProductRow = ({ product }: any) => {
     }
   };
 
-  const handleNavigate = () => router.push(`/vendor/products/${id}`);
+  const handleNavigate = () => pushRouter(`/vendor/products/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

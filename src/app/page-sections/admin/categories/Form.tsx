@@ -20,15 +20,15 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storageRef } from "@/firebase";
 import isEmpty from "lodash/isEmpty";
-import { useRouter } from "next/navigation";
 import {
   addCategoryAsync,
   categoryDataForm,
   updateCategoryAsync,
 } from "@/redux/features/categorySlice";
 import { CategoryIcon } from "@/common";
-import Car from "@/app/components/icons/Car";
+import Car from "@/components/icons/Car";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ================================================================
 
@@ -60,7 +60,7 @@ const CategoryForm = ({
   const { status } = useSelector((state: RootState) => state.statusAdmin);
   const { user } = useSelector((state: RootState) => state.auth);
   const { parentCategories } = useSelector((state: RootState) => state.categories);
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const {
     handleSubmit,
@@ -159,7 +159,7 @@ const CategoryForm = ({
             }
             reset();
             handleFileDelete(files);
-            router.push("/admin/categories");
+            pushRouter("/admin/categories");
             dispatch(
               setMessage({
                 message:
@@ -203,7 +203,7 @@ const CategoryForm = ({
     }
     reset();
     handleFileDelete(files);
-    router.push("/admin/categories");
+    pushRouter("/admin/categories");
     dispatch(
       setMessage({
         message:

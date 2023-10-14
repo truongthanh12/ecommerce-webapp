@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import Card from "@/components/Card";
@@ -7,11 +7,13 @@ import CategoryIcon from "@/components/icons/Category";
 import Carousel from "@/components/carousel/Carousel";
 import ProductCard from "@/components/products/Card";
 import CategorySectionCreator from "@/components/CategorySectionCreator";
-import { ICategory } from "@/app/models/Category";
-import { formatToSlug } from "@/app/utils/lib";
+import { ICategory } from "@/models/Category";
+import { formatToSlug } from "@/utils/lib";
+import { useParams } from "next/navigation";
 
 type TypeCategory = { categories: ICategory[] };
 const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
+  const params = useParams();
   const [visibleSlides, setVisibleSlides] = useState(3);
 
   const categoriesData = useMemo(
@@ -38,7 +40,9 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
       <Carousel visibleSlides={visibleSlides}>
         {categoriesData.map((item) => (
           <Link
-            href={`/product/search/cate?subcategory=${formatToSlug(item.slug)}`}
+            href={`/${
+              params.lang
+            }/product/search/cate?subcategory=${formatToSlug(item.slug)}`}
             key={item.id}
             passHref
           >

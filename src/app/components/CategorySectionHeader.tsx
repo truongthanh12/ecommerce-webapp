@@ -4,6 +4,7 @@ import { ArrowRight } from "@mui/icons-material";
 import { H2 } from "./Typography";
 import { FlexBetween, FlexBox } from "./flex-box";
 import React from "react";
+import { useParams } from "next/navigation";
 
 // ===================================================
 interface TypeProps {
@@ -18,6 +19,7 @@ const CategorySectionHeader = ({
   icon = "",
   length = 0,
 }: TypeProps) => {
+  const params = useParams();
   return (
     <FlexBetween mb={3}>
       <FlexBox alignItems="center" gap={1}>
@@ -28,7 +30,7 @@ const CategorySectionHeader = ({
       </FlexBox>
 
       {seeMoreLink && (length || 0) > 4 ? (
-        <Link href={seeMoreLink}>
+        <Link href={"/" + params.lang + seeMoreLink}>
           <FlexBox alignItems="center" color="grey.600">
             View all
             <ArrowRight fontSize="small" color="inherit" />

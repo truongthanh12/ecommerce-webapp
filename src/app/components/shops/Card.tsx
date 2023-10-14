@@ -13,7 +13,8 @@ import {
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H3, Span } from "@/components/Typography";
 import React from "react";
-import { IUser } from "@/app/models/User";
+import { IUser } from "@/models/User";
+import { useParams } from "next/navigation";
 
 // styled components
 const ContentWrapper = styled(Box)(
@@ -51,6 +52,7 @@ const ShopCard = ({
   id,
   user,
 }: CardShops) => {
+  const params = useParams()
   return (
     <Card sx={id === user.docId ? { border: "2px solid red" } : {}}>
       <ContentWrapper img={coverPicture}>
@@ -102,7 +104,7 @@ const ShopCard = ({
             borderColor: "grey.100",
           }}
         />
-        <Link href={`/shops/${id}`}>
+        <Link href={`/${params.lang}/shops/${id}`}>
           <IconButton
             sx={{
               my: 0.5,

@@ -24,6 +24,7 @@ import { IOrder } from "@/models/Order";
 import { INFO_LIST } from "@/data/status";
 import BackdropLoading from "@/components/backdrop";
 import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 // ============================================================
 
 export default function Profile() {
@@ -31,6 +32,7 @@ export default function Profile() {
   const { user } = useSelector((state: RootState) => state.auth);
   const { orders } = useSelector((state: RootState) => state.orders);
   const dispatch: any = useAppDispatch();
+  const params = useParams()
 
   const ordersAwating = useMemo(
     () => orders.filter((item: IOrder) => item.status === "processing"),
@@ -80,7 +82,7 @@ export default function Profile() {
   }, [dispatch, user.docId]);
 
   const HEADER_LINK = (
-    <Link href={`/profile/${user.docId}`}>
+    <Link href={`/${params.lang}/profile/${user.docId}`}>
       <Button
         color="primary"
         sx={{

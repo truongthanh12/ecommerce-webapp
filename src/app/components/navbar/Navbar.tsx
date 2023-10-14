@@ -10,6 +10,7 @@ import { Paragraph } from "@/components/Typography";
 import CategoryMenu from "@/components/categories/CategoryMenu";
 import MegaMenu from "@/components/categories/MegaMenu";
 import navbarNavigations from "@/data/navbarNavigations";
+import { useParams } from "next/navigation";
 
 // const common css style
 const navLinkStyle = {
@@ -90,6 +91,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
     list: any;
     isRoot?: boolean;
   };
+  const params = useParams()
   const renderNestedNav = ({ list = [], isRoot = false }: TypeProps) => {
     return list.map((nav: any) => {
       if (isRoot) {
@@ -99,7 +101,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
 
         if (nav.url) {
           return (
-            <StyledNavLink href={nav.url} key={nav.title}>
+            <StyledNavLink href={`/${params.lang}${nav.url}`} key={nav.title}>
               {nav.title}
             </StyledNavLink>
           );
@@ -120,7 +122,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
               }}
             >
               <FlexBox alignItems="flex-end" gap={0.3} sx={navLinkStyle}>
-                {nav.title}{" "}
+                {nav.title}
                 <KeyboardArrowDown
                   sx={{
                     color: "grey.500",
@@ -147,7 +149,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
       } else {
         if (nav.url) {
           return (
-            <NavLink href={nav.url} key={nav.title}>
+            <NavLink href={`/${params.lang}${nav.url}`} key={nav.title}>
               <MenuItem>{nav.title}</MenuItem>
             </NavLink>
           );

@@ -1,6 +1,6 @@
+import useCustomRouter from "@/hooks/usePushRouter";
 import { MenuItem, TextField } from "@mui/material";
 import isEmpty from "lodash/isEmpty";
-import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo } from "react";
 
 type PageProps = {
@@ -34,7 +34,7 @@ const FieldItem = ({
   rows = 3,
   disabled,
 }: Partial<PageProps>) => {
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   const renderInfo = useMemo(() => {
     const map: any = {
@@ -60,7 +60,7 @@ const FieldItem = ({
 
   const handleAddNowClick = useCallback(() => {
     if (renderInfo) {
-      router.push(renderInfo?.link);
+      pushRouter(renderInfo?.link);
       return;
     }
   }, [renderInfo]);

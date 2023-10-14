@@ -8,17 +8,17 @@ import Scrollbar from "@/components/Scrollbar";
 import { H3 } from "@/components/Typography";
 import useMuiTable from "@/hooks/useMuiTable";
 import VoucherRow from "@/page-sections/vendor/vouchers";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
-import NotFound from "@/app/components/not-found";
+import NotFound from "@/components/not-found";
 import {
   fetchVouchers,
   selectVoucherForUser,
 } from "@/redux/features/voucherSlice";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -56,13 +56,12 @@ const tableHeading = [
 
 // =============================================================================
 export default function VoucherList() {
-  // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const router = useRouter();
   const dispatch: any = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const vouchers: any = useSelector((state: RootState) =>
     selectVoucherForUser(state, user.docId)
   );
+  const { pushRouter } = useCustomRouter();
 
   const { onSearchInputChange, filteredData } = useSearch(vouchers);
 
@@ -83,7 +82,7 @@ export default function VoucherList() {
   });
 
   const handleButtonClick = () => {
-    router.push("/vendor/vouchers/create");
+    pushRouter("/vendor/vouchers/create");
   };
 
   return (

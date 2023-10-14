@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 const AuthStateChanged = ({ children }: { children: React.ReactNode }) => {
   const { user } = useSelector((state: RootState) => state.auth);
 
   const pathname = usePathname();
-  const router = useRouter();
+  const { pushRouter } = useCustomRouter();
 
   useEffect(() => {
     if (
@@ -21,7 +22,7 @@ const AuthStateChanged = ({ children }: { children: React.ReactNode }) => {
       pathname.includes("wishlist")
     ) {
       if (!user?.uid) {
-        router.push("/");
+        pushRouter("/");
       }
     }
   }, [user, pathname]);

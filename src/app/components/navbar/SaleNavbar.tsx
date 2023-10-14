@@ -3,7 +3,7 @@ import { Box, Container } from "@mui/material";
 import appIcons from "@/components/icons";
 import { FlexRowCenter } from "@/components/flex-box";
 import React from "react";
-import { ICategory } from "@/app/models/Category";
+import { ICategory } from "@/models/Category";
 import { Title } from "./styles";
 import Scrollbar from "@/components/Scrollbar";
 import { CategoryIcon } from "@/common";

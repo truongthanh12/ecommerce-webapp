@@ -10,7 +10,7 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { IVoucher } from "@/app/models/Voucher";
+import { IVoucher } from "@/models/Voucher";
 
 interface VoucherState {
   vouchers: IVoucher[];

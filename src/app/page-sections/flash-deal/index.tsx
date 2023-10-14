@@ -7,10 +7,11 @@ import Carousel from "@/components/carousel/Carousel";
 import ProductCard from "@/components/products/Card";
 import CategorySectionCreator from "@/components/CategorySectionCreator";
 import { IProducts } from "@/models/Product";
+import { DICTIONARY } from "@/dictionary";
 
 // =============================================================
 
-const FlashDeal = ({ products }: { products: IProducts[] }) => {
+const FlashDeal = ({ products, dictionary }: { products: IProducts[], dictionary: any }) => {
   const productsList = useMemo(() => {
     return products?.filter((item) => item.type === "flash-deals").slice(0, 8);
   }, [products]);
@@ -27,7 +28,7 @@ const FlashDeal = ({ products }: { products: IProducts[] }) => {
   return (
     <CategorySectionCreator
       icon={<Light color="primary" />}
-      title="Flash Deals"
+      title={dictionary[DICTIONARY.HOME].flashDeals}
       seeMoreLink={`/sale-page?${new URLSearchParams({
         type: "flash-deals",
       })}`}

@@ -10,17 +10,18 @@ import { deleteBrandAsync } from "@/redux/features/brandSlice";
 import { setMessage } from "@/redux/features/messageSlice";
 import { ADMIN_ID } from "@/app/constant";
 import { useSelector } from "react-redux";
-import { IBrand } from "@/app/models/Brand";
+import { IBrand } from "@/models/Brand";
 import { updateAsync } from "@/redux/features/rechargeSlice";
 import { RootState } from "@/redux/store";
+import useCustomRouter from "@/hooks/usePushRouter";
 
 // ========================================================================
 
 const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
   const { name, published, image, id, userId } = brand || {};
-  const router = useRouter();
   const [featuredBrand, setFeatured] = useState(published);
   const { user } = useSelector((state: RootState) => state.auth);
+  const { pushRouter } = useCustomRouter();
 
   const handleChangeStatus = async () => {
     if (user.docId === ADMIN_ID) {
@@ -47,7 +48,7 @@ const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
       }
     }
   };
-  const handleNavigate = () => router.push(`/admin/brands/${id}`);
+  const handleNavigate = () => pushRouter(`/admin/brands/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {
