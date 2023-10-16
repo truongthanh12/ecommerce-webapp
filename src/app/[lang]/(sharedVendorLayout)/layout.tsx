@@ -2,9 +2,7 @@ import VenderLayout from "@/components/layouts/vendor-dashboard"
 
 export default VenderLayout
 
-// export async function generateMetadata(): Promise<Metadata> {
-//   return {
-//     title: "Vendor page",
-//     description: "Vendor page",
-//   };
-// }
+export const metadata = {
+  title: "TapHoa Admin Page",
+  description: "How to do i18n in Next.js 13 within app directory in admin page",
+};

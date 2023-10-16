@@ -6,7 +6,7 @@ import { Avatar, Box, useMediaQuery } from "@mui/material";
 import LayoutDrawer from "../LayoutDrawer";
 import Scrollbar from "@/components/Scrollbar";
 import { FlexBetween } from "@/components/flex-box";
-import { navigations } from "./NavigationList";
+import { navigations, navigationsVendor } from "./NavigationList";
 import SidebarAccordion from "./SidebarAccordion";
 import {
   ListLabel,
@@ -21,6 +21,8 @@ import {
   ListIconWrapper,
 } from "./LayoutStyledComponents";
 import useCustomRouter from "@/hooks/usePushRouter";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 const TOP_HEADER_AREA = 70;
 
 // -----------------------------------------------------------------------------
@@ -39,6 +41,7 @@ const DashboardSidebar = ({
   const pathname = usePathname();
   const [onHover, setOnHover] = useState(false);
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
+  const { user } = useSelector((state: RootState) => state.auth);
   const { pushRouter } = useCustomRouter();
 
   // side hover when side bar is compacted
@@ -131,7 +134,7 @@ const DashboardSidebar = ({
       }}
     >
       <NavWrapper compact={sidebarCompact}>
-        {renderLevels(navigations)}
+        {renderLevels(user.isVendor ? navigationsVendor : navigations)}
       </NavWrapper>
     </Scrollbar>
   );

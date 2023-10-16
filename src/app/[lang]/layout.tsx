@@ -11,6 +11,7 @@ import PackageStateChanged from "@/components/auth/PackageStateChanged";
 import AuthStateChanged from "@/components/auth/AuthStateChanged";
 import { defaultLocale, locales } from "@/middleware";
 import BackdropLoading from "@/components/backdrop";
+import Popup from "@/components/popup";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children, params }: LayoutProps) {
               <ToastProvider>
                 <Suspense fallback={<BackdropLoading />}>
                   <MuiTheme>{children}</MuiTheme>
+                  <Popup />
                 </Suspense>
               </ToastProvider>
             </AuthStateChanged>

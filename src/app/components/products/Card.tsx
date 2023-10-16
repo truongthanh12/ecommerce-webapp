@@ -29,6 +29,8 @@ import {
 } from "@/redux/features/authSlice";
 import { setMessage } from "@/redux/features/messageSlice";
 import { useParams } from "next/navigation";
+import { setPopup } from "@/redux/features/popupSlice";
+import { popupName } from "@/app/utils/constants";
 
 // ========================================================
 interface TypeProps {
@@ -77,7 +79,7 @@ const ProductCard = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const dispatch: any = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
-  const params = useParams()
+  const params = useParams();
 
   useEffect(() => {
     if (user && user.wishlist) {
@@ -87,11 +89,9 @@ const ProductCard = ({
       setIsFavorite(isItemInWishlist);
     }
   }, [user, slug]);
-
   const toggleIsFavorite = async () => {
-    setIsFavorite((fav) => !fav);
-
-    if (user) {
+    if (user?.uid) {
+      setIsFavorite((fav) => !fav);
       if (!isFavorite) {
         await dispatch(
           addWishlistAsync({
@@ -117,8 +117,10 @@ const ProductCard = ({
         );
         const wishlistId = wishlistItem?.id;
         await dispatch(deleteWishlistAsync({ wishlistId, userId: user.docId }));
-        dispatch(getWishlistByUserId(user.docId))
+        dispatch(getWishlistByUserId(user.docId));
       }
+    } else {
+      dispatch(setPopup({ popup: popupName.auth }));
     }
   };
 
@@ -338,7 +340,10 @@ const ProductCard = ({
           <ContentWrapper>
             <FlexBox>
               <Box flex="1 1 0" minWidth="0px" mr={1}>
-                <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
+                <Link
+                  href={`/${params.lang}/product/${formattedSlug}`}
+                  passHref
+                >
                   <H3
                     mb={1}
                     title={title}
@@ -388,7 +393,10 @@ const ProductCard = ({
                 flexDirection="column-reverse"
                 justifyContent={isInShop ? "center" : "flex-start"}
               >
-                <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
+                <Link
+                  href={`/${params.lang}/product/${formattedSlug}`}
+                  passHref
+                >
                   <Button
                     color="primary"
                     variant="outlined"

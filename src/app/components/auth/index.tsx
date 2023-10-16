@@ -57,7 +57,7 @@ export const Wrapper = styled(
   },
 }));
 
-const AuthComp = ({ onClosePopup }: { onClosePopup: () => void }) => {
+const AuthComp = () => {
   const [authType, setAuthType] = useState("signin");
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const dispatch = useDispatch();
@@ -112,7 +112,6 @@ const AuthComp = ({ onClosePopup }: { onClosePopup: () => void }) => {
       <Form
         passwordVisibility={passwordVisibility}
         setPasswordVisibility={setPasswordVisibility}
-        onClosePopup={onClosePopup}
         authType={authType}
       />
       <SocialButtons

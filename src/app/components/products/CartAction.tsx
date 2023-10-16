@@ -5,6 +5,8 @@ import { addToCart, selectCartItemsForUser } from "@/redux/features/cartSlice";
 import { Box, Button } from "@mui/material";
 import { FlexBox } from "@/components/flex-box";
 import { Add, Remove } from "@mui/icons-material";
+import { setPopup } from "@/redux/features/popupSlice";
+import { popupName } from "@/utils/constants";
 
 const CartAction = ({
   product,
@@ -26,17 +28,21 @@ const CartAction = ({
 
   // Function to add an item to the cart
   const addItemToCart = (quantity: number) => {
-    dispatch(
-      addToCart({
-        product,
-        userId: user.docId,
-        quantity,
-        size,
-        color,
-        stock,
-        voucherSelected
-      })
-    );
+    if (user?.uid) {
+      dispatch(
+        addToCart({
+          product,
+          userId: user.docId,
+          quantity,
+          size,
+          color,
+          stock,
+          voucherSelected,
+        })
+      );
+    } else {
+      dispatch(setPopup({ popup: popupName.auth }));
+    }
   };
 
   // Get the current quantity of this item in the cart

@@ -141,7 +141,7 @@ const initialState: InitialState = {
   wishlist: undefined,
 };
 
-export const userSlice = createSlice({
+export const userSlice: any = createSlice({
   name: "user",
   initialState,
   reducers: {

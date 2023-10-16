@@ -96,33 +96,33 @@ const Orders = () => {
             }}
           >
             <Table>
-            <TableRow
-            elevation={0}
-            sx={{
-              padding: "20px 18px",
-              background: "none",
-              display: {
-                xs: "none",
-                md: "flex",
-              },
-            }}
-          >
-            <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
-              Order #
-            </H5>
+              <TableRow
+                elevation={0}
+                sx={{
+                  padding: "20px 18px",
+                  background: "none",
+                  display: {
+                    xs: "none",
+                    md: "flex",
+                  },
+                }}
+              >
+                <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
+                  Order #
+                </H5>
 
-            <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
-              Status
-            </H5>
+                <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
+                  Status
+                </H5>
 
-            <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
-              Date purchased
-            </H5>
+                <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
+                  Date purchased
+                </H5>
 
-            <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
-              Total
-            </H5>
-          </TableRow>
+                <H5 color="grey.600" my={0} mx={0.75} textAlign="left">
+                  Total
+                </H5>
+              </TableRow>
 
               <TableBody>
                 {!isEmpty(filteredList) ? (

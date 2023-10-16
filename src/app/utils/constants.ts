@@ -6,3 +6,7 @@ export enum layoutConstant {
   mobileHeaderHeight = 64,
   grocerySidenavWidth = 280,
 }
+
+export enum popupName {
+  auth = "auth",
+}

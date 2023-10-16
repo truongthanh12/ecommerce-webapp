@@ -1,15 +1,14 @@
 "use client";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
-import { Badge, Box, Button, Dialog, Drawer } from "@mui/material";
+import { Badge, Box, Button, Drawer } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Clear, KeyboardArrowDown, PersonOutline } from "@mui/icons-material";
 import clsx from "clsx";
 import Icon from "@/components/icons";
-import { layoutConstant } from "@/utils/constants";
-import Auth from "@/components/auth";
+import { layoutConstant, popupName } from "@/utils/constants";
 import MiniCart from "@/components/MiniCart";
 import Category from "@/components/icons/Category";
 import { Paragraph } from "@/components/Typography";
@@ -28,6 +27,8 @@ import {
 import AccountPopover from "../layouts/vendor-dashboard/popovers/AccountPopover";
 import { RootState } from "@/redux/store";
 import { useParams } from "next/navigation";
+import { setPopup } from "@/redux/features/popupSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 // ==============================================================
 
@@ -38,20 +39,19 @@ type TypeHeader = {
 };
 const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
   const theme = useTheme();
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [isfixed, setFixed] = useState(false);
-  const params = useParams()
+  const params = useParams();
+  const dispatch = useAppDispatch()
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
 
   const { user } = useSelector((state: RootState) => state.auth);
   const userCartItems = useSelector(selectCartItemsForUser(user.docId));
   const totalQuantity = useSelector(selectTotalQuantityForUser(user.docId));
 
-  const toggleDialog = () => setDialogOpen(!dialogOpen);
+  const openAuthPopup = () => dispatch(setPopup({ popup: popupName.auth }))
   const toggleSidenav = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => {
     setSearchBarOpen(!searchBarOpen);
@@ -67,27 +67,9 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
     return () => window.removeEventListener("scroll", scrollListener);
   }, []);
 
-  useEffect(() => {
-    if (user?.uid) {
-      setDialogOpen(false);
-    }
-  }, [user?.uid]);
-
   // LOGIN AND MINICART DRAWER
   const DIALOG_DRAWER = (
     <Fragment>
-      <Dialog
-        scroll="body"
-        open={dialogOpen}
-        fullWidth={isMobile}
-        onClose={toggleDialog}
-        sx={{
-          zIndex: 9999,
-        }}
-      >
-        <Auth onClosePopup={toggleDialog} />
-      </Dialog>
-
       <Drawer
         open={sidenavOpen}
         anchor="right"
@@ -139,7 +121,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
                 <Icon.Search sx={ICON_STYLE} />
               </Box>
 
-              <Box component={IconButton} onClick={toggleDialog}>
+              <Box component={IconButton} onClick={openAuthPopup}>
                 <Icon.User sx={ICON_STYLE} />
               </Box>
 
@@ -226,7 +208,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
 
         {/* Auth AND CART BUTTON */}
         <FlexBox gap={1.5} alignItems="center">
-          {/* <Avatar toggleDialog={toggleDialog} /> */}
+          {/* <Avatar openAuthPopup={openAuthPopup} /> */}
           {user?.uid ? (
             <AccountPopover />
           ) : (
@@ -234,7 +216,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
               component={IconButton}
               p={1.25}
               bgcolor="grey.200"
-              onClick={toggleDialog}
+              onClick={openAuthPopup}
             >
               <PersonOutline />
             </Box>

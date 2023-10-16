@@ -23,6 +23,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Checkbox, FormControlLabel, FormGroup, styled } from "@mui/material";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { RootState } from "@/redux/store";
+import { clearPopup } from "@/redux/features/popupSlice";
 
 type FormValues = {
   Email: string;
@@ -30,7 +31,6 @@ type FormValues = {
 };
 interface FormProps {
   authType: "signin" | "signup" | string;
-  onClosePopup: () => void;
   passwordVisibility: "text" | "password" | boolean;
   setPasswordVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -48,7 +48,6 @@ const schema = yup.object().shape({
 
 const FormAuth = ({
   authType,
-  onClosePopup,
   passwordVisibility,
   setPasswordVisibility,
 }: FormProps) => {
@@ -102,8 +101,8 @@ const FormAuth = ({
         userDataWithOptionalData.docId = docRef.id;
 
         dispatch(login(userDataWithOptionalData));
-        onClosePopup();
         dispatch(setMessage({ message: "Register successfully!" }));
+        dispatch(clearPopup());
       } else {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -118,7 +117,7 @@ const FormAuth = ({
         const userQuerySnapshot = await getDocs(userQuery);
         if (userQuerySnapshot?.empty) {
           dispatch(loginError("User data not found."));
-          setErrorMessage("User data not found.")
+          setErrorMessage("User data not found.");
           dispatch(
             setMessage({ message: "User data not found.", type: "error" })
           );
@@ -132,6 +131,7 @@ const FormAuth = ({
 
           // Handle successful login
           dispatch(setMessage({ message: "Login successfully!" }));
+          dispatch(clearPopup());
         }
       }
     } catch (err: any) {
@@ -156,7 +156,7 @@ const FormAuth = ({
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
-      <div className="relative">
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Image
           width={90}
           height={80}

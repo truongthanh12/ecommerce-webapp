@@ -1,6 +1,6 @@
 "use client";
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Box, Chip, Container, Grid, styled } from "@mui/material";
+import { Box, Chip, Container, Grid, Stack, styled } from "@mui/material";
 import SEO from "@/components/SEO";
 import SaleNavbar from "@/components/navbar/SaleNavbar";
 import ProductCard from "@/components/products/Card";
@@ -13,6 +13,8 @@ import { CategoryIcon } from "@/common";
 import { useRouter } from "next/navigation";
 import debounce from "lodash/debounce";
 import { RootState } from "@/redux/store";
+import useMuiTable from "@/app/hooks/useMuiTable";
+import TablePagination from "@/app/components/data-table/TablePagination";
 
 //  custom styled components
 const StyledChip = styled(Chip)(
@@ -70,12 +72,19 @@ export default function SalePage({ searchParams }: PageProps) {
   const categoryRef = useRef(null);
   const { isFixedHeader } = useScroller(categoryRef);
   const { products } = useSelector((state: RootState) => state.products);
-  const { parentCategories } = useSelector((state: RootState) => state.categories);
+  const { parentCategories } = useSelector(
+    (state: RootState) => state.categories
+  );
   const [selectedCategory, setSelectedCategory] = useState(
     parentCategories?.[0]?.title
   );
 
   const [searchItems, setSearchItems] = useState(products);
+
+  const { rowsPerPage, handleChangePage, filteredList } = useMuiTable({
+    listData: searchItems,
+    rowsPerPage: 9,
+  });
 
   // HANDLE THE CHANGE CATEGORY
   const handleCategoryChange = (cate: string) => () => {
@@ -98,7 +107,7 @@ export default function SalePage({ searchParams }: PageProps) {
 
       <Container
         sx={{
-          mt: "2rem",
+          my: "2rem",
         }}
       >
         {/* CATEGORY HEADER NAV */}
@@ -163,7 +172,7 @@ export default function SalePage({ searchParams }: PageProps) {
 
         {/* PRODUCT LIST AREA */}
         <Grid container spacing={3} minHeight={500}>
-          {searchItems.map((item: IProducts) => (
+          {filteredList.map((item: IProducts) => (
             <Grid item lg={3} md={4} sm={6} xs={12} key={item.id}>
               <ProductCard
                 id={item.id}
@@ -180,16 +189,14 @@ export default function SalePage({ searchParams }: PageProps) {
         </Grid>
 
         {/* PAGINATION AREA */}
-        {/* <FlexBetween flexWrap="wrap" my={8}>
-          <Span>{renderProductCount(page, PRODUCT_PER_PAGE, 10)}</Span>
-          <Pagination
-            page={page}
-            color="primary"
-            variant="outlined"
-            onChange={handlePageChange}
-            count={Math.ceil(10 / PRODUCT_PER_PAGE)}
-          />
-        </FlexBetween> */}
+        {Math.ceil(searchItems.length / rowsPerPage) > 1 && (
+          <Stack alignItems="center" my={4}>
+            <TablePagination
+              onChange={handleChangePage}
+              count={Math.ceil(searchItems.length / rowsPerPage)}
+            />
+          </Stack>
+        )}
       </Container>
     </Fragment>
   );
