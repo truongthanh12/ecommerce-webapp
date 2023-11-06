@@ -4,7 +4,7 @@ import { Span } from "../Typography";
 import { Pagination } from "@mui/material";
 import { IProducts } from "@/models/Product";
 import { formatNumberWithThousandSeparators } from "@/utils/lib";
-import useCustomRouter from "@/hooks/usePushRouter";
+import { useRouter } from "next/navigation";
 
 interface PageProps {
   products: IProducts[];
@@ -18,12 +18,10 @@ const PaginationItem = ({
   startProductNumber,
   searchParams,
 }: PageProps) => {
-  const { pushRouter } = useCustomRouter();
+  const router = useRouter();
+  const { page } = searchParams || {};
 
-  const currentPage = useMemo(
-    () => Number(searchParams.page) || 1,
-    [searchParams.page]
-  );
+  const currentPage = useMemo(() => Number(page) || 1, [page]);
 
   const pageStartNumber = useMemo(() => {
     return startProductNumber + (currentPage > 1 ? (currentPage - 1) * 10 : 0);
@@ -35,7 +33,7 @@ const PaginationItem = ({
 
   const hasPagination = useMemo(() => totalProducts / 10 > 1, [totalProducts]);
   const handleChange = (page: number) => {
-    pushRouter(`?page=${page}`);
+    router.push(`?page=${page}`);
   };
 
   return (

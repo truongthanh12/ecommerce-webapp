@@ -14,10 +14,6 @@ import BackdropLoading from "@/components/backdrop";
 import Popup from "@/components/popup";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export async function generateStaticParams() {
-  return locales.map((lng) => ({ lng }))
-}
 interface LayoutProps {
   children: ReactNode;
   params: { lang: string };

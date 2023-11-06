@@ -13,7 +13,7 @@ import { FlexBox } from "@/components/flex-box";
 import { H5, Paragraph } from "@/components/Typography";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
 import { objectToQueryString } from "@/utils/lib";
-import useCustomRouter from "@/hooks/usePushRouter";
+import { useParams, useRouter } from "next/navigation";
 
 const sortOptions = [
   {
@@ -41,22 +41,21 @@ const sortOptions = [
 interface PageProps {
   setView: (view: any) => void;
   view: "grid" | "list" | string;
-  searchParams: { [key: string]: string | undefined };
   productsLength: number;
 }
 const ProductsNavbar = ({
   setView,
   view,
-  searchParams,
   productsLength,
 }: PageProps) => {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v: any) => () => setView(v), [setView]);
+  const searchParams = useParams()
   const { query, orderBy, category, subcategory } = searchParams || {};
-  const { pushRouter } = useCustomRouter();
   const [selectedValue, setSelectedValue] = useState(
     orderBy || sortOptions[0].value
   );
+  const router = useRouter();
 
   const handleSortChange = (event: any) => {
     const newValue = event.target.value;
@@ -71,7 +70,7 @@ const ProductsNavbar = ({
     }
 
     // Serialize the updated query object into a query string
-    pushRouter(`?${objectToQueryString(updatedQuery)}`);
+    router.push(`?${objectToQueryString(updatedQuery)}`);
   };
 
   const showFilter =
@@ -159,7 +158,7 @@ const ProductsNavbar = ({
                 </IconButton>
               }
             >
-              <ProductFilterCard searchParams={searchParams} />
+              <ProductFilterCard />
             </Sidenav>
           )}
         </FlexBox>

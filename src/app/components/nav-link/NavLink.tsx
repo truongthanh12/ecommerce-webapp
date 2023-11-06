@@ -1,51 +1,53 @@
-"use client";
 import { styled } from "@mui/material";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// styled component
-const StyledLink = styled(Link)(({ theme, active_route }: TypeNavLink) => ({
-  position: "relative",
-  transition: "color 150ms ease-in-out",
-  color: active_route === "active" ? theme.palette.primary.main : "inherit",
-  "&:hover": {
-    color: `${theme.palette.primary.main} !important`,
-  },
-}));
-type TypeNavLink = {
+import { useMemo } from "react";
+
+const StyledLink = styled(Link)<{ active_route?: string }>(
+  ({ theme, active_route }) => ({
+    position: "relative",
+    transition: "color 150ms ease-in-out",
+    color: active_route === "active" ? theme.palette.primary.main : "inherit",
+    "&:hover": {
+      color: `${theme.palette.primary.main} !important`,
+    },
+  })
+);
+
+type NavLinkProps = {
   href: string;
   children: React.ReactNode;
-  style?: any;
+  style?: React.CSSProperties;
   className?: string;
-  active_route?: string | "active";
-  theme?: any;
 };
-const NavLink: React.FC<TypeNavLink> = ({
+
+const NavLink: React.FC<NavLinkProps> = ({
   href,
   children,
   style,
   className,
-  ...props
 }) => {
   const pathname = usePathname();
+  const currentRoute = useMemo(() => {
+    if (href === "/en/") {
+      return pathname === "/en";
+    }
 
-  const checkRouteMatch = () => {
-    if (href === "/") return pathname === href;
-    return pathname.includes(href);
-  };
-  // active route
-  const currentRoute = checkRouteMatch();
+    const newPath = href.replace("/vi", "");
+    return pathname === newPath;
+  }, [pathname, href]);
 
   return (
     <StyledLink
       href={href}
       style={style}
       className={clsx(className)}
-      active_route={currentRoute ? "active" : ""}
-      {...props}
+      active_route={currentRoute ? "active" : undefined}
     >
       {children}
     </StyledLink>
   );
 };
+
 export default NavLink;

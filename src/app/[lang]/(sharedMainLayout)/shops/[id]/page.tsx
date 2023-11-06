@@ -1,5 +1,6 @@
 "use client";
 import ProductsSearch from "@/page-sections/products";
+import Chats from "@/components/floating-button";
 import { Suspense, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import { doc, getDoc } from "firebase/firestore";
@@ -62,6 +63,7 @@ export default function ShopDetails({ params, searchParams }: PageProps) {
           type="shop"
           productsByUser={products}
         />
+        <Chats />
       </Container>
     </Suspense>
   );

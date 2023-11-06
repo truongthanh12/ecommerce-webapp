@@ -12,36 +12,43 @@ import Scrollbar from "@/components/Scrollbar";
 import { NavLink } from "@/components/nav-link";
 import navbarNavigations from "@/data/navbarNavigations";
 import { useParams } from "next/navigation";
+import first from "lodash/first";
 
 const MobileMenu = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const params = useParams()
+  const params = useParams();
+  const lang = ((Array.isArray(params.lang)
+    ? first(params.lang)
+    : params.lang) || "vi") as "en" | "vi";
 
   // MODIFY THE NAVIGATION WITH NEW STRUCTURE
-  const updateNavigations = navbarNavigations.reduce((prev: any, curr: any) => {
-    const newArr: any = [...prev];
+  const updateNavigations = navbarNavigations[lang].reduce(
+    (prev: any, curr: any) => {
+      const newArr: any = [...prev];
 
-    if (!curr.child) {
-      newArr.push({
-        ...curr,
-        extLink: true,
-      });
-    } else if (curr.megaMenu || curr.megaMenuWithSub) {
-      const flated = curr.child.flat();
-      newArr.push({
-        title: curr.title,
-        child: flated,
-      });
-    } else {
-      newArr.push(curr);
-    }
+      if (!curr.child) {
+        newArr.push({
+          ...curr,
+          extLink: true,
+        });
+      } else if (curr.megaMenu || curr.megaMenuWithSub) {
+        const flated = curr.child.flat();
+        newArr.push({
+          title: curr.title,
+          child: flated,
+        });
+      } else {
+        newArr.push(curr);
+      }
 
-    return newArr;
-  }, []);
-  
+      return newArr;
+    },
+    []
+  );
+
   const toggleOpenMenu = () => {
-    setOpenDrawer(!openDrawer)
-  }
+    setOpenDrawer(!openDrawer);
+  };
 
   const renderLevels = (data: any) => {
     return data.map((item: any, index: any) => {
@@ -89,13 +96,13 @@ const MobileMenu = () => {
       if (item.extLink) {
         return (
           <H6 key={index} py={1}>
-            <NavLink href={`/${params.lang}${item.url}`}>{item.title}</NavLink>
+            <NavLink href={`/${lang}${item.url}`}>{item.title}</NavLink>
           </H6>
         );
       }
       return (
         <Box key={index} py={1}>
-          <NavLink href={`/${params.lang}${item.url}`}>{item.title}</NavLink>
+          <NavLink href={`/${lang}${item.url}`}>{item.title}</NavLink>
         </Box>
       );
     });

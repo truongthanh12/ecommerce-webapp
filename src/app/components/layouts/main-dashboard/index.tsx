@@ -5,8 +5,15 @@ import SearchInputWithCategory from "@/components/search-box/SearchInputWithCate
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
 import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
+import { Ilang } from "@/app/models/Lang";
 
-const MainLayout = ({ children }: React.PropsWithChildren) => {
+const MainLayout = async ({
+  children,
+  dictionary
+}: {
+  children?: React.ReactNode,
+  dictionary: Ilang
+}) => {
   return (
     <React.Fragment>
       <Topbar />
@@ -18,7 +25,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
       <main className="section-after-sticky">{children}</main>
 
       <MobileNavigationBar />
-      <Footer />
+      <Footer dictionary={dictionary} />
     </React.Fragment>
   );
 };

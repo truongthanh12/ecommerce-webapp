@@ -1,7 +1,10 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import {
   FirebaseStorage,
   StorageReference,

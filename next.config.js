@@ -22,6 +22,6 @@ const nextConfig = {
     i18n: {
       localeDetection: true,
     },
-  },
+  }
 };
 module.exports = nextConfig;

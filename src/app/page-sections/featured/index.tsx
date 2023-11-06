@@ -13,12 +13,14 @@ import { calculateAverageRating, formatToSlug } from "@/utils/lib";
 import { getProductsWithComments } from "@/redux/features/productSlice";
 import isEmpty from "lodash/isEmpty";
 import { useParams } from "next/navigation";
+import { Ilang } from "@/app/models/Lang";
 // ==========================================================
 type TypeProps = {
   products: IProducts[];
   brands: IBrand[];
+  dictionary: Ilang
 };
-const Featured: React.FC<TypeProps> = ({ brands }) => {
+const Featured: React.FC<TypeProps> = ({ brands, dictionary }) => {
   const [products, setProducts] = useState<IProducts[]>([]);
   const params = useParams()
 
@@ -60,7 +62,7 @@ const Featured: React.FC<TypeProps> = ({ brands }) => {
           <Grid item lg={6} xs={12}>
             <CategorySectionHeader
               icon={<RankBadge />}
-              title="Top Ratings"
+              title={dictionary.HOME.topRating}
               seeMoreLink={
                 products?.length > 4
                   ? `/sale-page?${new URLSearchParams({
@@ -128,7 +130,7 @@ const Featured: React.FC<TypeProps> = ({ brands }) => {
           <Grid item md={6} xs={12}>
             <CategorySectionHeader
               icon={<DottedStar />}
-              title="Featured Brands"
+              title={dictionary.HOME.featureBrand}
               seeMoreLink={
                 brands?.length > 4
                   ? `/sale-page?${new URLSearchParams({

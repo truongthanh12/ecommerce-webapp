@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Stack } from "@mui/material";
 import ProductFilterCard from "@/components/products/ProductFilterCard";
 import ProductsGrid from "@/components/products/ProductsGrid";
 import ProductsList from "@/components/products/ProductsList";
@@ -12,29 +12,37 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import { removeAccents } from "@/utils/lib";
 import { IProducts } from "@/models/Product";
 import debounce from "lodash/debounce";
-import Pagination from "@/components/pagination";
 import BackdropLoading from "@/components/backdrop";
 import CircularWithValueLabel from "@/components/loading/LoadingWithLabel";
-import { fetchUsers } from "@/redux/features/authSlice";
 import { RootState } from "@/redux/store";
+import TablePagination from "@/app/components/data-table/TablePagination";
+import useMuiTable from "@/app/hooks/useMuiTable";
+import { useParams } from "next/navigation";
 
 interface PageProps {
   type?: "shop" | "product";
   shopData?: Partial<IShop>;
-  searchParams: { [key: string]: string | undefined };
   productsByUser?: Partial<IProducts[]>;
 }
-const ProductsSearch = ({
-  type,
-  shopData,
-  searchParams,
-  productsByUser,
-}: PageProps) => {
+
+interface SearchParamType {
+  query: string;
+  orderBy: string;
+  minPrice: string;
+  maxPrice: string;
+  brand: string;
+  options: string;
+  color: string;
+  subcategory: string;
+  tag: string;
+}
+const ProductsSearch = ({ type, shopData, productsByUser }: PageProps) => {
   const { products } = useSelector((state: RootState) => state.products);
   const [view, setView] = useState("grid");
   const [loadingLayout, setLoadingLayout] = useState(true);
   const dispatch: any = useDispatch();
   const [searchItems, setSearchItems] = useState(products);
+  const searchParams = useParams() as Partial<SearchParamType>;
   const {
     query,
     orderBy,
@@ -42,13 +50,17 @@ const ProductsSearch = ({
     maxPrice,
     brand,
     options,
-    ratings,
     color,
     subcategory,
-    page = 0,
     tag,
   } = searchParams || {};
+  
   const timerRef = useRef<NodeJS.Timeout | undefined>();
+
+  const { rowsPerPage, handleChangePage, filteredList } = useMuiTable({
+    listData: searchItems,
+    isScrollFunction: true,
+  });
 
   useEffect(() => {
     timerRef.current = setTimeout(() => {
@@ -132,14 +144,7 @@ const ProductsSearch = ({
         } else if (orderBy === "Price Low to High") {
           sortedProducts.sort((a, b) => a.price - b.price);
         }
-
-        const pageNumber = Number(page) > 0 ? Number(page) - 1 : 0;
-        const itemsPerPage = 10;
-        const startIndex = pageNumber * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-
-        const productsForPage = sortedProducts.slice(startIndex, endIndex);
-        setSearchItems(productsForPage);
+        setSearchItems(sortedProducts);
       }
     }, 400),
     [
@@ -153,7 +158,6 @@ const ProductsSearch = ({
       color,
       subcategory,
       productsByUser,
-      page,
     ]
   );
 
@@ -192,7 +196,6 @@ const ProductsSearch = ({
       ) : (
         <ProductNavbar
           productsLength={searchItems?.length}
-          searchParams={searchParams}
           view={view}
           setView={setView}
         />
@@ -210,7 +213,7 @@ const ProductsSearch = ({
             },
           }}
         >
-          <ProductFilterCard searchParams={searchParams} />
+          <ProductFilterCard />
         </Grid>
 
         {/* PRODUCT VIEW AREA */}
@@ -219,19 +222,22 @@ const ProductsSearch = ({
             {loadingLayout ? (
               <CircularWithValueLabel />
             ) : view === "grid" ? (
-              <ProductsGrid products={searchItems} />
+              <ProductsGrid products={filteredList} />
             ) : (
-              <ProductsList products={searchItems} />
+              <ProductsList products={filteredList} />
             )}
           </Grid>
         </Suspense>
       </Grid>
-      <Pagination
-        products={searchItems}
-        totalProducts={products.length}
-        startProductNumber={1}
-        searchParams={searchParams}
-      />
+
+      {Math.ceil(searchItems.length / rowsPerPage) > 1 && (
+        <Stack alignItems="center" my={4}>
+          <TablePagination
+            onChange={handleChangePage}
+            count={Math.ceil(searchItems.length / rowsPerPage)}
+          />
+        </Stack>
+      )}
     </Container>
   );
 };

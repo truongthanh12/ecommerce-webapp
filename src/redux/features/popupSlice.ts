@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const popupSlice = createSlice({
-  name: "message",
+  name: "popup",
   initialState: {
     popup: null,
   },

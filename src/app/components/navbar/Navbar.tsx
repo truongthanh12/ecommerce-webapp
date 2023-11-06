@@ -11,6 +11,7 @@ import CategoryMenu from "@/components/categories/CategoryMenu";
 import MegaMenu from "@/components/categories/MegaMenu";
 import navbarNavigations from "@/data/navbarNavigations";
 import { useParams } from "next/navigation";
+import first from "lodash/first";
 
 // const common css style
 const navLinkStyle = {
@@ -92,8 +93,11 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
     isRoot?: boolean;
   };
   const params = useParams()
+  const lang = ((Array.isArray(params.lang)
+    ? first(params.lang)
+    : params.lang) || "vi") as "en" | "vi";
   const renderNestedNav = ({ list = [], isRoot = false }: TypeProps) => {
-    return list.map((nav: any) => {
+    return list[lang].map((nav: any) => {
       if (isRoot) {
         if (nav.megaMenu2) {
           return <MegaMenu key={nav.title} data={nav.child} />;

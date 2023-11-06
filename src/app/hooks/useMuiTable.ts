@@ -31,6 +31,7 @@ const useMuiTable = (props: any) => {
     defaultSort = "name",
     defaultOrder = "asc",
     rowsPerPage = 10,
+    isScrollFunction = false,
   } = props;
   const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState(defaultSort);
@@ -74,7 +75,15 @@ const useMuiTable = (props: any) => {
     }
     setSelected(newSelected);
   };
-  const handleChangePage = (_: string, newPage: number) => setPage(newPage - 1);
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const handleChangePage = (_: string, newPage: number) => {
+    setPage(newPage - 1);
+    if (isScrollFunction) {
+      handleScrollToTop();
+    }
+  };
   const filteredList = stableSort(
     listData,
     getComparator(order, orderBy)
@@ -90,6 +99,7 @@ const useMuiTable = (props: any) => {
     handleChangePage,
     handleRequestSort,
     handleSelectAllClick,
+    handleScrollToTop,
   };
 };
 export default useMuiTable;

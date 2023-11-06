@@ -11,6 +11,7 @@ import Instagram from "@/components/icons/Instagram";
 import React from "react";
 import Image from "next/legacy/image";
 import { useParams } from "next/navigation";
+import { Ilang } from "../models/Lang";
 
 // styled component
 const StyledLink = styled("footer")(({ theme }) => ({
@@ -24,8 +25,21 @@ const StyledLink = styled("footer")(({ theme }) => ({
     color: theme.palette.grey[100],
   },
 }));
-const Footer: React.FC = () => {
-  const params = useParams()
+const Footer = ({ dictionary }: { dictionary: Ilang }) => {
+  const params = useParams();
+
+  const aboutLinks = [
+    dictionary.HOME.career,
+    dictionary.HOME.store,
+    dictionary.HOME.terms,
+    dictionary.HOME.privacy,
+  ];
+  const customerCareLinks = [
+    dictionary.HOME.help,
+    dictionary.HOME.trackOrder,
+    dictionary.HOME.contact,
+  ];
+
   return (
     <footer>
       <Box bgcolor="#222935">
@@ -49,9 +63,7 @@ const Footer: React.FC = () => {
                 </Link>
 
                 <Paragraph mb={2.5} color="grey.500">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Auctor libero id et, in gravida. Sit diam duis mauris nulla
-                  cursus. Erat et lectus vel ut sollicitudin elit at amet.
+                  {dictionary.HOME.footerDesc}
                 </Paragraph>
 
                 {/* <AppStore /> */}
@@ -65,7 +77,7 @@ const Footer: React.FC = () => {
                   lineHeight="1"
                   color="white"
                 >
-                  About Us
+                  {dictionary.HOME.contact}
                 </Box>
 
                 <div>
@@ -85,7 +97,7 @@ const Footer: React.FC = () => {
                   lineHeight="1"
                   color="white"
                 >
-                  Customer Care
+                  {dictionary.HOME.customerCare}
                 </Box>
 
                 <div>
@@ -105,11 +117,11 @@ const Footer: React.FC = () => {
                   lineHeight="1"
                   color="white"
                 >
-                  Contact Us
+                  {dictionary.HOME.contact}
                 </Box>
 
                 <Box py={0.6} color="grey.500">
-                  01 Taphoa, Cu Chi, Ho Chi Minh city
+                  {dictionary.HOME.address}
                 </Box>
 
                 <Box py={0.6} color="grey.500">
@@ -155,20 +167,6 @@ const Footer: React.FC = () => {
   );
 };
 
-const aboutLinks = [
-  "Careers",
-  "Our Stores",
-  "Our Cares",
-  "Terms & Conditions",
-  "Privacy Policy",
-];
-const customerCareLinks = [
-  "Help Center",
-  "How to Buy",
-  "Track Your Order",
-  "Corporate & Bulk Purchasing",
-  "Returns & Refunds",
-];
 const iconList = [
   {
     icon: Facebook,

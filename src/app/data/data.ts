@@ -1,30 +1,58 @@
 // service
-export const serviceList = [
-  {
-    id: "5f9bd366-9583-4e6d-9b11-abe74b9c5d96",
-    icon: "Truck",
-    title: "Worldwide Delivery",
-    description: null,
-  },
-  {
-    id: "121cffea-6972-41f8-8094-98dca22d17bb",
-    icon: "CreditCardVerified",
-    title: "Safe Payment",
-    description: null,
-  },
-  {
-    id: "5b94f5d8-71ec-40a6-b5b8-401286deba24",
-    icon: "Shield",
-    title: "Shop With Confidence",
-    description: null,
-  },
-  {
-    id: "8c4bb18f-d914-4269-9c7c-3c6728ba33e9",
-    icon: "CustomerService",
-    title: "24/7 Support",
-    description: null,
-  },
-];
+export const serviceList = {
+  en: [
+    {
+      id: "5f9bd366-9583-4e6d-9b11-abe74b9c5d96",
+      icon: "Truck",
+      title: "Worldwide Delivery",
+      description: "Engish description ....",
+    },
+    {
+      id: "121cffea-6972-41f8-8094-98dca22d17bb",
+      icon: "CreditCardVerified",
+      title: "Safe Payment",
+      description: "Engish description ....",
+    },
+    {
+      id: "5b94f5d8-71ec-40a6-b5b8-401286deba24",
+      icon: "Shield",
+      title: "Shop With Confidence",
+      description: "Engish description ....",
+    },
+    {
+      id: "8c4bb18f-d914-4269-9c7c-3c6728ba33e9",
+      icon: "CustomerService",
+      title: "24/7 Support",
+      description: "Engish description ....",
+    },
+  ],
+  vi: [
+    {
+      id: "5f9bd366-9583-4e6d-9b11-abe74b9c5d96",
+      icon: "Truck",
+      title: "Giao hàng toàn quốc",
+      description: "Mô tả tiếng Việt ....",
+    },
+    {
+      id: "121cffea-6972-41f8-8094-98dca22d17bb",
+      icon: "CreditCardVerified",
+      title: "Giao dịch an toàn",
+      description: "Mô tả tiếng Việt ....",
+    },
+    {
+      id: "5b94f5d8-71ec-40a6-b5b8-401286deba24",
+      icon: "Shield",
+      title: "An toàn khi mua sắm",
+      description: "Mô tả tiếng Việt ....",
+    },
+    {
+      id: "8c4bb18f-d914-4269-9c7c-3c6728ba33e9",
+      icon: "CustomerService",
+      title: "Hỗ trợ 24/7",
+      description: "Mô tả tiếng Việt ....",
+    },
+  ],
+};
 
 // sizes
 export const sizes = [

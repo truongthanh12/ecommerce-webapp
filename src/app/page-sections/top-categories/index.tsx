@@ -10,9 +10,10 @@ import CategorySectionCreator from "@/components/CategorySectionCreator";
 import { ICategory } from "@/models/Category";
 import { formatToSlug } from "@/utils/lib";
 import { useParams } from "next/navigation";
+import { Ilang } from "@/app/models/Lang";
 
-type TypeCategory = { categories: ICategory[] };
-const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
+type TypeCategory = { categories: ICategory[]; dictionary: Ilang };
+const TopCategories: React.FC<TypeCategory> = ({ categories, dictionary }) => {
   const params = useParams();
   const [visibleSlides, setVisibleSlides] = useState(3);
 
@@ -33,7 +34,7 @@ const TopCategories: React.FC<TypeCategory> = ({ categories }) => {
       seeMoreLink={`/sale-page?${new URLSearchParams({
         type: "top-categories",
       })}`}
-      title="Top Categories"
+      title={dictionary.HOME.topCate}
       length={categoriesData.length}
       icon={<CategoryIcon color="primary" />}
     >

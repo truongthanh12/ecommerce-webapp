@@ -16,16 +16,21 @@ import { useSelector } from "react-redux";
 import { IBrand } from "@/models/Brand";
 import { colors } from "@/data/data";
 import { RootState } from "@/redux/store";
-import useCustomRouter from "@/hooks/usePushRouter";
-
-type TypeProps = {
-  searchParams: { [key: string]: string | undefined };
-};
-const ProductFilterCard = ({ searchParams }: TypeProps) => {
+import { useParams, useRouter } from "next/navigation";
+interface SearchParamType {
+  minPrice: number;
+  maxPrice: number
+  brand: string
+  options: string
+  ratings: string
+  color: string
+} 
+const ProductFilterCard = () => {
+  const searchParams = useParams() as Partial<SearchParamType>;
   const { minPrice, maxPrice, brand, options, ratings, color } =
     searchParams || {};
   const { brands } = useSelector((state: RootState) => state.brands);
-  const { pushRouter } = useCustomRouter();
+  const router = useRouter();
 
   const arrayOfStringBrands = useMemo(() => {
     if (brand) {
@@ -66,7 +71,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     }
 
     const debouncedFunction = debounce(() => {
-      pushRouter(`?${objectToQueryString(updatedQuery)}`);
+      router.push(`?${objectToQueryString(updatedQuery)}`);
     }, 400);
 
     debouncedFunction();
@@ -94,8 +99,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
           delete updatedQuery[name];
         }
 
-        // Serialize the updated query object into a query string
-        pushRouter(`?${objectToQueryString(updatedQuery)}`);
+        router.push(`?${objectToQueryString(updatedQuery)}`);
       }, 50);
 
       // Call the debounced function
@@ -153,60 +157,60 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
     }
   }, [arrayOfStringRating, arrayOfStringOptions, arrayOfStringBrands]);
 
-  useEffect(() => {
-    const debouncedUpdate = debounce(() => {
-      let updatedQuery: any = { ...searchParams };
+  // useEffect(() => {
+  //   const debouncedUpdate = debounce(() => {
+  //     let updatedQuery: any = { ...searchParams };
 
-      if (selectedBrands.length !== 0) {
-        updatedQuery.brand = selectedBrands;
-      } else {
-        delete updatedQuery.brand;
-      }
+  //     if (selectedBrands.length !== 0) {
+  //       updatedQuery.brand = selectedBrands;
+  //     } else {
+  //       delete updatedQuery.brand;
+  //     }
+  //     router.push(`?${objectToQueryString(updatedQuery)}`);
+  //   }, 400);
 
-      pushRouter(`?${objectToQueryString(updatedQuery, true)}`);
-    }, 400);
+  //   debouncedUpdate();
+  //   return () => {
+  //     debouncedUpdate.cancel();
+  //   };
+  // }, [selectedBrands, searchParams]);
 
-    debouncedUpdate();
-    return () => {
-      debouncedUpdate.cancel();
-    };
-  }, [selectedBrands, searchParams]);
+  // useEffect(() => {
+  //   const debouncedUpdate = debounce(() => {
+  //     let updatedQuery: any = { ...searchParams };
+  //     console.log(updatedQuery);
 
-  useEffect(() => {
-    const debouncedUpdate = debounce(() => {
-      let updatedQuery: any = { ...searchParams };
+  //     if (selectedOptions.length !== 0) {
+  //       updatedQuery.options = selectedOptions;
+  //     } else {
+  //       delete updatedQuery.options;
+  //     }
+  //     router.push(`?${objectToQueryString(updatedQuery)}`);
+  //   }, 400);
 
-      if (selectedOptions.length !== 0) {
-        updatedQuery.options = selectedOptions;
-      } else {
-        delete updatedQuery.options;
-      }
-      pushRouter(`?${objectToQueryString(updatedQuery, true)}`);
-    }, 400);
+  //   debouncedUpdate();
+  //   return () => {
+  //     debouncedUpdate.cancel();
+  //   };
+  // }, [selectedOptions, searchParams]);
 
-    debouncedUpdate();
-    return () => {
-      debouncedUpdate.cancel();
-    };
-  }, [selectedOptions, searchParams]);
+  // useEffect(() => {
+  //   const debouncedUpdate = debounce(() => {
+  //     let updatedQuery: any = { ...searchParams };
 
-  useEffect(() => {
-    const debouncedUpdate = debounce(() => {
-      let updatedQuery: any = { ...searchParams };
+  //     if (selectedRating.length !== 0) {
+  //       updatedQuery.ratings = selectedRating;
+  //     } else {
+  //       delete updatedQuery.ratings;
+  //     }
+  //     router.push(`?${objectToQueryString(updatedQuery)}`);
+  //   }, 400);
 
-      if (selectedRating.length !== 0) {
-        updatedQuery.ratings = selectedRating;
-      } else {
-        delete updatedQuery.ratings;
-      }
-      pushRouter(`?${objectToQueryString(updatedQuery, true)}`);
-    }, 400);
-
-    debouncedUpdate();
-    return () => {
-      debouncedUpdate.cancel();
-    };
-  }, [selectedRating, searchParams]);
+  //   debouncedUpdate();
+  //   return () => {
+  //     debouncedUpdate.cancel();
+  //   };
+  // }, [selectedRating, searchParams]);
 
   return (
     <Card
@@ -266,7 +270,7 @@ const ProductFilterCard = ({ searchParams }: TypeProps) => {
           control={
             <Checkbox
               name={item.name}
-              checked={selectedBrands.includes(item.name)} // Check if the brand is selected
+              checked={selectedBrands.includes(item.name)}
               onChange={handleChangeBrands}
               size="small"
               color="secondary"

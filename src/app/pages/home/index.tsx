@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import SEO from "@/components/SEO";
 import { serviceList } from "@/data/data";
 import FlashDeal from "@/page-sections/flash-deal";
@@ -21,11 +21,14 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import { fetchUsers, getWishlistByUserId } from "@/redux/features/authSlice";
 import { fetchBrands } from "@/redux/features/brandSlice";
 import { RootState } from "@/redux/store";
+import { Ilang } from "@/app/models/Lang";
 
-export default function HomePage ({
+export default function HomePage({
   dictionary,
+  lang,
 }: {
-  dictionary: any
+  dictionary: Ilang;
+  lang: "en" | "vi";
 }) {
   const dispatch: any = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.categories);
@@ -60,12 +63,12 @@ export default function HomePage ({
       <SEO title="Taphoa Homepage" />
       <HeroBanner carouselData={mainCarouselData} />
       <FlashDeal dictionary={dictionary} products={products} />
-      <TopCategories categories={categories} />
+      <TopCategories dictionary={dictionary} categories={categories} />
       <BannerAds />
-      <Discount products={products} />
-      <Featured products={products} brands={brands} />
-      <NewArrival products={products} />
-      <Services serviceList={serviceList} />
+      <Discount dictionary={dictionary} products={products} />
+      <Featured dictionary={dictionary} products={products} brands={brands} />
+      <NewArrival dictionary={dictionary} products={products} />
+      <Services dictionary={dictionary} serviceList={serviceList[lang]} />
     </>
   );
 }

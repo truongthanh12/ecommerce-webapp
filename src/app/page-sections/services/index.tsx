@@ -3,6 +3,7 @@ import { Container, Grid, IconButton } from "@mui/material";
 import appIcons from "@/components/icons";
 import Card from "@/components/Card";
 import { H4, Span } from "@/components/Typography";
+import { Ilang } from "@/app/models/Lang";
 const CARD_STYLE = {
   p: "3rem",
   height: "100%",
@@ -18,12 +19,12 @@ interface TypeService {
   icon: keyof typeof appIcons;
   title: string;
   description: string | null;
-  fontSize: string
 }
-type TypeProps = TypeService & {
+type TypeProps = {
   serviceList: TypeService[];
+  dictionary: Ilang;
 };
-const Services: React.FC<Partial<TypeProps> | any> = ({ serviceList }) => {
+const Services: React.FC<TypeProps> = ({ serviceList, dictionary }) => {
   return (
     <Container
       sx={{
@@ -31,7 +32,7 @@ const Services: React.FC<Partial<TypeProps> | any> = ({ serviceList }) => {
       }}
     >
       <Grid container spacing={3}>
-        {serviceList.map((item: TypeProps) => {
+        {(serviceList || []).map((item) => {
           const Icon = appIcons[item.icon || "AlarmClock"];
 
           return (
@@ -53,8 +54,7 @@ const Services: React.FC<Partial<TypeProps> | any> = ({ serviceList }) => {
                 </H4>
 
                 <Span textAlign="center" color="grey.600">
-                  We offer competitive prices on our 100 million plus product
-                  any range.
+                  {item.description}
                 </Span>
               </Card>
             </Grid>

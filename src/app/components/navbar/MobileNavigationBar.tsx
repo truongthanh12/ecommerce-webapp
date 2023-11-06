@@ -36,19 +36,14 @@ const list = [
     href: "/",
   },
   {
-    title: "Category",
-    icon: CategoryOutlined,
-    href: "/mobile-category-nav",
-  },
-  {
-    title: "Cart",
+    title: "Shops",
     icon: ShoppingBagOutlined,
-    href: "/cart",
+    href: "/shops",
   },
   {
-    title: "Account",
+    title: "Products",
     icon: User2,
-    href: "/profile",
+    href: "/product/search/products",
   },
 ];
 

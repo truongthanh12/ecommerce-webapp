@@ -11,12 +11,14 @@ import CategorySectionCreator from "@/components/CategorySectionCreator";
 import { IProducts } from "@/models/Product";
 import { formatToSlug } from "@/utils/lib";
 import { useParams } from "next/navigation";
+import { Ilang } from "@/app/models/Lang";
 
 // ========================================================
 type TypeProps = {
   products: IProducts[];
+  dictionary: Ilang
 };
-const Discount: React.FC<TypeProps> = ({ products }) => {
+const Discount: React.FC<TypeProps> = ({ products, dictionary }) => {
   const params = useParams()
   const width = useWindowSize();
   const [visibleSlides, setVisibleSlides] = useState(6);
@@ -34,7 +36,7 @@ const Discount: React.FC<TypeProps> = ({ products }) => {
   return (
     <CategorySectionCreator
       icon={<GiftBox />}
-      title="Big Discounts"
+      title={dictionary.HOME.bigDiscount}
       seeMoreLink={`/sale-page?${new URLSearchParams({
         type: "big-discount",
       })}`}

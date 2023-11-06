@@ -8,12 +8,14 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { formatToSlug } from "@/utils/lib";
 import { useParams } from "next/navigation";
+import { Ilang } from "@/app/models/Lang";
 // =======================================================
 type TypeProps = {
   products: IProducts[];
+  dictionary: Ilang;
 };
-const NewArrivals: React.FC<TypeProps> = ({ products }) => {
-  const params = useParams()
+const NewArrivals: React.FC<TypeProps> = ({ products, dictionary }) => {
+  const params = useParams();
   const newArrivalsList = useMemo(() => {
     return products.filter((item) => item.type === "new-arrivals");
   }, [products]);
@@ -21,7 +23,7 @@ const NewArrivals: React.FC<TypeProps> = ({ products }) => {
   return (
     <CategorySectionCreator
       icon={<NewArrival />}
-      title="New Arrivals"
+      title={dictionary.HOME.newArrival}
       seeMoreLink={`/sale-page?${new URLSearchParams({
         type: "new-arrivals",
       })}`}
