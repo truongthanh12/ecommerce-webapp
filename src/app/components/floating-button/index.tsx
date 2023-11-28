@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChatSharp, Close } from "@mui/icons-material";
 import {
   Box,
@@ -10,6 +10,20 @@ import {
 } from "@mui/material";
 import { H6 } from "@/components/Typography";
 import { FlexBox } from "@/components/flex-box";
+import socketIOClient from "socket.io-client";
+import {
+  doc,
+  setDoc,
+  collection,
+  serverTimestamp,
+  query,
+  onSnapshot,
+  orderBy,
+  DocumentData,
+} from "firebase/firestore";
+import db from "@/firebase";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 // custom styled components
 const MainContainer = styled(Box)(({ theme }) => ({
@@ -52,6 +66,72 @@ const BodyWrapper = styled(Box, {
 
 const Chats = () => {
   const [showBody, setShowBody] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  let socketio = socketIOClient("http://localhost:5001");
+  const [chats, setChats] = useState<DocumentData[]>([]);
+  const avatar = localStorage.getItem("avatar");
+  const chatsRef = collection(db, "messages");
+  const messagesEndRef = useRef<HTMLElement>(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats]);
+
+  useEffect(() => {
+    socketio.on("chat", (senderChats) => {
+      setChats(senderChats);
+    });
+  }, [socketio]);
+
+  useEffect(() => {
+    const q = query(chatsRef, orderBy("createdAt", "asc"));
+
+    const unsub = onSnapshot(q, (querySnapshot) => {
+      const fireChats: DocumentData[] = [];
+      querySnapshot.forEach((doc) => {
+        fireChats.push(doc.data());
+      });
+      setChats(fireChats);
+    });
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  function addToFirrebase(chat: any) {
+    const newChat = {
+      avatar,
+      createdAt: serverTimestamp(),
+      user,
+      message: chat.message,
+    };
+
+    const chatRef = doc(chatsRef);
+    setDoc(chatRef, newChat)
+      .then(() => console.log("Chat added succesfully"))
+      .catch(console.log);
+  }
+
+  function sendChatToSocket(chat: any) {
+    socketio.emit("chat", chat);
+  }
+
+  function addMessage(chat: any) {
+    const newChat = { ...chat, user: localStorage.getItem("user"), avatar };
+    addToFirrebase(chat);
+    setChats([...chats, newChat]);
+    sendChatToSocket([...chats, newChat]);
+  }
+
+  function logout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("avatar");
+  }
+
   return (
     <ClickAwayListener onClickAway={() => setShowBody(false)}>
       <MainContainer>
