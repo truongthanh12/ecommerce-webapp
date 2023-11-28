@@ -23,26 +23,15 @@ interface PageProps {
   type?: "shop" | "product";
   shopData?: Partial<IShop>;
   productsByUser?: Partial<IProducts[]>;
+  searchParams: { [key: string]: string | undefined };
 }
 
-interface SearchParamType {
-  query: string;
-  orderBy: string;
-  minPrice: string;
-  maxPrice: string;
-  brand: string;
-  options: string;
-  color: string;
-  subcategory: string;
-  tag: string;
-}
-const ProductsSearch = ({ type, shopData, productsByUser }: PageProps) => {
+const ProductsSearch = ({ type, shopData, productsByUser, searchParams }: PageProps) => {
   const { products } = useSelector((state: RootState) => state.products);
   const [view, setView] = useState("grid");
   const [loadingLayout, setLoadingLayout] = useState(true);
   const dispatch: any = useDispatch();
   const [searchItems, setSearchItems] = useState(products);
-  const searchParams = useParams() as Partial<SearchParamType>;
   const {
     query,
     orderBy,
@@ -213,7 +202,7 @@ const ProductsSearch = ({ type, shopData, productsByUser }: PageProps) => {
             },
           }}
         >
-          <ProductFilterCard />
+          <ProductFilterCard searchParams={searchParams} />
         </Grid>
 
         {/* PRODUCT VIEW AREA */}

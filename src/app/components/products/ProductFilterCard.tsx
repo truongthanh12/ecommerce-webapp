@@ -17,16 +17,10 @@ import { IBrand } from "@/models/Brand";
 import { colors } from "@/data/data";
 import { RootState } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
-interface SearchParamType {
-  minPrice: number;
-  maxPrice: number
-  brand: string
-  options: string
-  ratings: string
-  color: string
-} 
-const ProductFilterCard = () => {
-  const searchParams = useParams() as Partial<SearchParamType>;
+interface TypeProps {
+  searchParams: { [key: string]: string | undefined };
+}
+const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
   const { minPrice, maxPrice, brand, options, ratings, color } =
     searchParams || {};
   const { brands } = useSelector((state: RootState) => state.brands);
@@ -69,9 +63,14 @@ const ProductFilterCard = () => {
       setSelectedColor(colorName);
       updatedQuery.color = colorName;
     }
+    // Remove slug and lang parameters
+    delete updatedQuery.slug;
+    delete updatedQuery.lang;
 
     const debouncedFunction = debounce(() => {
-      router.push(`?${objectToQueryString(updatedQuery)}`);
+      router.push(
+        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+      );
     }, 400);
 
     debouncedFunction();
@@ -98,8 +97,13 @@ const ProductFilterCard = () => {
         } else {
           delete updatedQuery[name];
         }
+        // Remove slug and lang parameters
+        delete updatedQuery.slug;
+        delete updatedQuery.lang;
 
-        router.push(`?${objectToQueryString(updatedQuery)}`);
+        router.push(
+          `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+        );
       }, 50);
 
       // Call the debounced function
@@ -157,60 +161,69 @@ const ProductFilterCard = () => {
     }
   }, [arrayOfStringRating, arrayOfStringOptions, arrayOfStringBrands]);
 
-  // useEffect(() => {
-  //   const debouncedUpdate = debounce(() => {
-  //     let updatedQuery: any = { ...searchParams };
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
+      let updatedQuery: any = { ...searchParams };
 
-  //     if (selectedBrands.length !== 0) {
-  //       updatedQuery.brand = selectedBrands;
-  //     } else {
-  //       delete updatedQuery.brand;
-  //     }
-  //     router.push(`?${objectToQueryString(updatedQuery)}`);
-  //   }, 400);
+      if (selectedBrands.length !== 0) {
+        updatedQuery.brand = selectedBrands;
+      } else {
+        delete updatedQuery.brand;
+      } // Remove slug and lang parameters
+      delete updatedQuery.slug;
+      delete updatedQuery.lang;
 
-  //   debouncedUpdate();
-  //   return () => {
-  //     debouncedUpdate.cancel();
-  //   };
-  // }, [selectedBrands, searchParams]);
+      router.push(
+        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+      );
+    }, 400);
 
-  // useEffect(() => {
-  //   const debouncedUpdate = debounce(() => {
-  //     let updatedQuery: any = { ...searchParams };
-  //     console.log(updatedQuery);
+    debouncedUpdate();
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [selectedBrands, searchParams, router]);
 
-  //     if (selectedOptions.length !== 0) {
-  //       updatedQuery.options = selectedOptions;
-  //     } else {
-  //       delete updatedQuery.options;
-  //     }
-  //     router.push(`?${objectToQueryString(updatedQuery)}`);
-  //   }, 400);
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
+      let updatedQuery: any = { ...searchParams };
+      console.log(updatedQuery);
 
-  //   debouncedUpdate();
-  //   return () => {
-  //     debouncedUpdate.cancel();
-  //   };
-  // }, [selectedOptions, searchParams]);
+      if (selectedOptions.length !== 0) {
+        updatedQuery.options = selectedOptions;
+      } else {
+        delete updatedQuery.options;
+      }
+      router.push(
+        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+      );
+    }, 400);
 
-  // useEffect(() => {
-  //   const debouncedUpdate = debounce(() => {
-  //     let updatedQuery: any = { ...searchParams };
+    debouncedUpdate();
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [selectedOptions, searchParams, router]);
 
-  //     if (selectedRating.length !== 0) {
-  //       updatedQuery.ratings = selectedRating;
-  //     } else {
-  //       delete updatedQuery.ratings;
-  //     }
-  //     router.push(`?${objectToQueryString(updatedQuery)}`);
-  //   }, 400);
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
+      let updatedQuery: any = { ...searchParams };
 
-  //   debouncedUpdate();
-  //   return () => {
-  //     debouncedUpdate.cancel();
-  //   };
-  // }, [selectedRating, searchParams]);
+      if (selectedRating.length !== 0) {
+        updatedQuery.ratings = selectedRating;
+      } else {
+        delete updatedQuery.ratings;
+      }
+      router.push(
+        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+      );
+    }, 400);
+
+    debouncedUpdate();
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [selectedRating, searchParams, router]);
 
   return (
     <Card

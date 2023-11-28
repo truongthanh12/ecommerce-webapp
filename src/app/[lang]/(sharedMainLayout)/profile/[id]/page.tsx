@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import UserDashboardHeader from "@/components/header/UserDashboardHeader";
 import CustomerDashboardNavigation from "@/components/layouts/customer-dashboard/Navigations";
@@ -9,7 +10,7 @@ import { useParams } from "next/navigation";
 // ===========================================================
 
 const ProfileEditor = () => {
-  const params = useParams()
+  const params = useParams();
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
     <Link href={`/${params.lang}/profile`} passHref>

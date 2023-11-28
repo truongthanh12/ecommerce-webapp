@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import SEO from "@/components/SEO";
 import { serviceList } from "@/data/data";
 import FlashDeal from "@/page-sections/flash-deal";
@@ -9,7 +10,6 @@ import NewArrival from "@/page-sections/new-arrival";
 import Discount from "@/page-sections/discount";
 import BannerAds from "@/page-sections/banner";
 import Services from "@/page-sections/services";
-import { useEffect } from "react";
 import {
   fetchCategories,
   fetchParentCategories,

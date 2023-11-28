@@ -1,6 +1,11 @@
+"use client";
 import React from "react";
 import ProductsSearch from "@/page-sections/products";
 
-export default function ProductSearchResult() {
-  return <ProductsSearch />;
+interface PageProps {
+  searchParams: { [key: string]: string | undefined };
+}
+
+export default function ProductSearchResult({ searchParams }: PageProps) {
+  return <ProductsSearch searchParams={searchParams} />;
 }
