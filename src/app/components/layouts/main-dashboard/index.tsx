@@ -16,6 +16,7 @@ const MainLayout = async ({
   children?: React.ReactNode;
   dictionary: Ilang;
 }) => {
+
   return (
     <React.Fragment>
       <Topbar />

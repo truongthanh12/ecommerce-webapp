@@ -10,8 +10,10 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import db, { storage } from "@/firebase";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { ChatSharp } from "@mui/icons-material";
+import Pusher from "pusher-js";
+import { channelChatroom } from "../pusher/pusher";
 
 const Input = () => {
   const [text, setText] = useState<string>("");
@@ -20,52 +22,70 @@ const Input = () => {
   const data = useSelector((state: RootState) => state.chat);
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const handleSend = async () => {
-    try {
-      if (imageFile) {
-        const storageRef = ref(storage, uuidv4());
-        const uploadTask = uploadBytesResumable(storageRef, imageFile);
-        
-        const snapshot = await uploadTask;
-        const downloadURL = await getDownloadURL(snapshot.ref);
+    if (currentUser?.uid && data?.chatId && text) {
+      try {
+        if (imageFile) {
+          const storageRef = ref(storage, uuidv4());
+          const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
-        await updateDoc(doc(db, "messages", data.chatId), {
-          messages: arrayUnion({
-            id: uuidv4(),
+          const snapshot = await uploadTask;
+          const downloadURL = await getDownloadURL(snapshot.ref);
+
+          await updateDoc(doc(db, "messages", data.chatId), {
+            messages: arrayUnion({
+              id: uuidv4(),
+              text,
+              senderId: currentUser.uid,
+              date: Timestamp.now(),
+              img: downloadURL,
+            }),
+          });
+        } else {
+          await updateDoc(doc(db, "messages", data.chatId), {
+            messages: arrayUnion({
+              id: uuidv4(),
+              text,
+              senderId: currentUser.uid,
+              date: Timestamp.now(),
+            }),
+          });
+        }
+
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [data.chatId + ".lastMessage"]: {
             text,
-            senderId: currentUser.uid,
-            date: Timestamp.now(),
-            img: downloadURL,
-          }),
+          },
+          [data.chatId + ".date"]: serverTimestamp(),
         });
-      } else {
-        await updateDoc(doc(db, "messages", data.chatId), {
-          messages: arrayUnion({
-            id: uuidv4(),
+
+        await updateDoc(doc(db, "userChats", data.user.uid), {
+          [data.chatId + ".lastMessage"]: {
             text,
-            senderId: currentUser.uid,
-            date: Timestamp.now(),
-          }),
+          },
+          [data.chatId + ".date"]: serverTimestamp(),
         });
+
+        // pusher.trigger("my-channel", "my-event", {
+        //   message: arrayUnion({
+        //     id: uuidv4(),
+        //     text,
+        //     senderId: currentUser.uid,
+        //     date: Timestamp.now(),
+        //   }),
+        // });
+
+        channelChatroom.trigger("client-message", {
+          id: uuidv4(),
+          text,
+          senderId: currentUser.uid,
+          date: Timestamp.now(),
+        });
+
+        setText("");
+        setImg(null);
+      } catch (error) {
+        console.error("Error in handleSend:", error);
       }
-
-      await updateDoc(doc(db, "userChats", currentUser.uid), {
-        [data.chatId + ".lastMessage"]: {
-          text,
-        },
-        [data.chatId + ".date"]: serverTimestamp(),
-      });
-
-      await updateDoc(doc(db, "userChats", data.user.uid), {
-        [data.chatId + ".lastMessage"]: {
-          text,
-        },
-        [data.chatId + ".date"]: serverTimestamp(),
-      });
-
-      setText("");
-      setImg(null);
-    } catch (error) {
-      console.error("Error in handleSend:", error);
     }
   };
 

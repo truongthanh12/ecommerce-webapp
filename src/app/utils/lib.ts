@@ -220,3 +220,31 @@ export function calculateAverageRating(comments: any) {
 export const formatTimestamp = (): FieldValue => {
   return serverTimestamp();
 };
+
+export const formatMessageTime = (messageDate: Date): string => {
+  const now = new Date();
+  const diffInMilliseconds = now.getTime() - messageDate.getTime();
+  const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInSeconds < 60) {
+    return "just now";
+  }
+
+  if (diffInMinutes < 60) {
+    const plural = diffInMinutes > 1 ? "s" : "";
+    return `${diffInMinutes} minute${plural} ago`;
+  }
+
+  if (diffInHours < 24) {
+    const plural = diffInHours > 1 ? "s" : "";
+    return `${diffInHours} hour${plural} ago`;
+  }
+
+  const day = messageDate.getDate();
+  const month = messageDate.getMonth() + 1;
+  const year = messageDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};
