@@ -9,15 +9,11 @@ const nextConfig = {
     theme: "DEFAULT",
     currency: "VND",
   },
-  // api: {
-  //   externalResolver: true,
-  // },
   env: {
     SITE_URL: process.env.SITE_URL,
     API_URL: process.env.API_URL,
   },
   experimental: {
-    appDir: true,
     esmExternals: true,
     i18n: {
       localeDetection: true,

@@ -2,7 +2,7 @@
 import { Box, Button, Grid, styled } from "@mui/material";
 import { FlexBetween, FlexBox } from "@/components/flex-box";
 import { H2 } from "@/components/Typography";
-import { currency } from "@/utils/lib";
+import { currency, formatTimestamp } from "@/utils/lib";
 import TextFieldInput from "@/components/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -12,7 +12,6 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { addChargeAsync } from "@/redux/features/rechargeSlice";
-import { serverTimestamp } from "firebase/firestore";
 import { RootState } from "@/redux/store";
 
 const Wrapper = styled("form")(() => ({
@@ -45,7 +44,7 @@ export default function Recharge() {
     const data = {
       amount: Number(wallet),
       pending: false,
-      createdAt: serverTimestamp(),
+      createdAt: formatTimestamp(),
       userId: user.docId
     };
     const resultAction = await dispatch(addChargeAsync(data));

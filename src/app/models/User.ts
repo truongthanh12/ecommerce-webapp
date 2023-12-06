@@ -1,4 +1,5 @@
 export interface IUser {
+  isVendor: boolean;
   email: string;
   uid: number | string;
   displayName: string;

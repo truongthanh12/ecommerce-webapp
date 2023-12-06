@@ -125,7 +125,6 @@ const OrderDetails = ({ params }: OrderProps) => {
         : null,
     [order?.updatedDeliveredAt?.seconds]
   );
-  console.log(order);
 
   const formatDeliveredDate = useMemo(
     () => (deliveredDate ? calculateFutureDate(deliveredDate, 0) : ""),

@@ -1,6 +1,5 @@
 "use client";
 import { Box, styled } from "@mui/material";
-import clsx from "clsx";
 import React from "react";
 type TypePropsTypo = {
   children: React.ReactNode;
@@ -37,7 +36,7 @@ type TypePropsTypo = {
   sx: any;
   m: number;
   borderRadius: string;
-  bgcolor: string
+  bgcolor: string;
 };
 
 type TypeProp = {
@@ -69,9 +68,7 @@ export const H1: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="h1"
       mb={0}
       mt={0}
@@ -96,9 +93,7 @@ export const H2: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="h2"
       mb={0}
       mt={0}
@@ -128,9 +123,7 @@ export const H3: React.FC<Partial<TypePropsTypo>> = ({
       lineHeight="1.5"
       ellipsis={ellipsis ? 1 : undefined}
       textTransformStyle={textTransform}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       {...props}
     >
       {children}
@@ -154,9 +147,7 @@ export const H4: React.FC<Partial<TypePropsTypo>> = ({
       lineHeight="1.5"
       ellipsis={ellipsis ? 1 : undefined}
       textTransformStyle={textTransform}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       {...props}
     >
       {children}
@@ -174,9 +165,7 @@ export const H5: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="h5"
       mb={0}
       mt={0}
@@ -200,9 +189,7 @@ export const H6: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="h6"
       mb={0}
       mt={0}
@@ -226,9 +213,7 @@ export const Paragraph: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="p"
       mb={0}
       mt={0}
@@ -250,9 +235,7 @@ export const Small: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="small"
       fontSize="12px"
       lineHeight="1.5"
@@ -273,9 +256,7 @@ export const Span: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="span"
       lineHeight="1.5"
       {...props}
@@ -295,9 +276,7 @@ export const Tiny: React.FC<Partial<TypePropsTypo>> = ({
     <StyledBox
       textTransformStyle={textTransform}
       ellipsis={ellipsis ? 1 : undefined}
-      className={clsx({
-        [className || ""]: true,
-      })}
+      className={className || ""}
       component="small"
       fontSize="10px"
       lineHeight="1.5"

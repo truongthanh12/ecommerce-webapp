@@ -1,10 +1,8 @@
-import { Avatar, Box, IconButton, styled } from "@mui/material";
+import { Avatar, Box, IconButton, Rating, styled } from "@mui/material";
 import { FlexBox } from "@/components/flex-box";
-import Rating from "@/components/Rating";
 import { H5, Paragraph, Span } from "@/components/Typography";
 import { getDateDifference } from "@/utils/lib";
 import React from "react";
-import { IComments } from "@/app/models/Product";
 import { Delete } from "@mui/icons-material";
 
 // ===========================================================
@@ -24,14 +22,13 @@ const ProductComment: React.FC<any> = ({
   createdAt,
   comment,
   currentId,
-  onDelete,
-  id
+  onDelete
 }) => {
   return (
     <Box mb={4} maxWidth="600px">
       <FlexBox alignItems="center" mb={2}>
         <Avatar
-          src={user.photoURL}
+          src={user.photoURL || "/assets/images/avatars/001-man.svg"}
           sx={{
             width: 48,
             height: 48,
@@ -40,7 +37,7 @@ const ProductComment: React.FC<any> = ({
         <Box mx={2}>
           <H5 mb={0.5}>{user.displayName}</H5>
           <FlexBox alignItems="center">
-            <Rating productId={id || ""} />
+            <Rating value={rating} />
             <Span ml={2}>{getDateDifference(createdAt)}</Span>
           </FlexBox>
         </Box>

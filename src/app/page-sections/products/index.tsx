@@ -17,7 +17,6 @@ import CircularWithValueLabel from "@/components/loading/LoadingWithLabel";
 import { RootState } from "@/redux/store";
 import TablePagination from "@/app/components/data-table/TablePagination";
 import useMuiTable from "@/app/hooks/useMuiTable";
-import { useParams } from "next/navigation";
 
 interface PageProps {
   type?: "shop" | "product";
@@ -65,6 +64,7 @@ const ProductsSearch = ({ type, shopData, productsByUser, searchParams }: PagePr
     dispatch(fetchProducts({ isFetchByUser: true }));
   }, [dispatch]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(
     debounce(() => {
       if (products || productsByUser) {

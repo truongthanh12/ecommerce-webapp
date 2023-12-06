@@ -7,12 +7,12 @@ import {
   doc,
   getDocs,
   query,
-  serverTimestamp,
   setDoc,
   where,
 } from "firebase/firestore";
 import db from "@/firebase";
 import { IOrder } from "@/models/Order";
+import { formatTimestamp } from "@/app/utils/lib";
 
 interface OderState {
   orders: Partial<IOrder[]>;
@@ -48,9 +48,8 @@ export const updateAsync = createAsyncThunk(
         status: newStatus,
       };
 
-      // Check if the new status is "delivered" and add updatedDeliveredAt with serverTimestamp if true
       if (newStatus === "delivered") {
-        updateData.updatedDeliveredAt = serverTimestamp();
+        updateData.updatedDeliveredAt = formatTimestamp();
       }
 
       await setDoc(orderDocRef, updateData, { merge: true });

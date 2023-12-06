@@ -19,6 +19,7 @@ import Link from "next/link";
 import { ADMIN_ID } from "@/app/constant";
 import { RootState } from "@/redux/store";
 import useCustomRouter from "@/hooks/usePushRouter";
+import { changeUser, setMessages } from "@/redux/features/chatSlice";
 
 // styled components
 const Divider = styled(Box)(({ theme }) => ({
@@ -71,6 +72,9 @@ const AccountPopover = () => {
   const handleLogout = () => {
     dispatch(logout());
     pushRouter("/");
+    dispatch(changeUser({ chatId: "", user: {}, currentUserId: "" }));
+    dispatch(setMessages([]));
+
     // sign out function from firebase
     auth
       .signOut()
@@ -153,7 +157,7 @@ const AccountPopover = () => {
         <Box px={2} pt={1}>
           <H6>{displayName || "Not updated"}</H6>
           <Small color="grey.500">
-            {isVendor ? "Seller" : docId === ADMIN_ID ? "Admin" : "User"}
+            {isVendor ? (docId === ADMIN_ID ? "Admin" : "Seller") : "User"}
           </Small>
         </Box>
 

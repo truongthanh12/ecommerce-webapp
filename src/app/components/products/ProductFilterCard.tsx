@@ -187,7 +187,6 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
   useEffect(() => {
     const debouncedUpdate = debounce(() => {
       let updatedQuery: any = { ...searchParams };
-      console.log(updatedQuery);
 
       if (selectedOptions.length !== 0) {
         updatedQuery.options = selectedOptions;

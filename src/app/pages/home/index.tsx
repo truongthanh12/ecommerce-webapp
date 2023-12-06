@@ -55,7 +55,9 @@ export default function HomePage({
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getWishlistByUserId(user.docId));
+    if (user.docId) {
+      dispatch(getWishlistByUserId(user.docId));
+    }
   }, [dispatch, user.docId]);
 
   return (

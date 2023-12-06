@@ -17,6 +17,7 @@ import { storage } from "@/firebase";
 import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
 import { currency } from "@/utils/lib";
 import { RootState } from "@/redux/store";
+import { ADMIN_ID } from "@/app/constant";
 // upload button
 
 const phoneRegExp =
@@ -63,7 +64,7 @@ const AccountSettingForm = () => {
         email: user.email,
         photoURL: user.photoURL,
         phoneNumber: user.phoneNumber,
-        facebook: user.facebook,
+        facebook: user?.facebook,
         youtube: user.youtube,
         shipping: user.shipping,
         pictureCover: user.pictureCover,
@@ -133,12 +134,12 @@ const AccountSettingForm = () => {
         pictureCover: coverUrl || user.pictureCover || "",
         shipping: shipping || user.shipping || "",
         youtube: youtube || user.youtube || "",
-        facebook: facebook || user.facebook || "",
+        facebook: facebook || user?.facebook || "",
       };
 
       const resultAction = await dispatch(
         updateUserAsync({
-          updateUser: updateUserData(data, true),
+          updateUser: updateUserData(data, true, user, false),
           id: user?.docId,
         })
       );

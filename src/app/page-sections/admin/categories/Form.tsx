@@ -109,7 +109,6 @@ const CategoryForm = ({
   }) => {
     const { Name, Type, Parent } = value;
     if (files[0]?.name) {
-      console.log("first");
       const uploadTask = uploadBytesResumable(
         storageRef(`categories/${files[0]?.name}`),
         files[0]

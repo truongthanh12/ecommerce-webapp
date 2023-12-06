@@ -5,18 +5,16 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   query,
-  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import db from "@/firebase";
 import { IProducts } from "@/models/Product";
+import { formatTimestamp } from "@/app/utils/lib";
 
 // wishlist
-// comment actions
 export const addWishlistAsync = createAsyncThunk(
   "products/addWishlistAsync",
   async ({
@@ -28,9 +26,11 @@ export const addWishlistAsync = createAsyncThunk(
   }) => {
     try {
       const userRef = doc(collection(db, "users"), userId);
+      const createdAt = formatTimestamp();
+
       const wishlistData = {
         products,
-        createdAt: serverTimestamp(),
+        createdAt,
         userId,
       };
 
@@ -138,7 +138,7 @@ const initialState: InitialState = {
   isLoading: false,
   error: {},
   users: [],
-  wishlist: undefined,
+  wishlist: [],
 };
 
 export const userSlice: any = createSlice({
@@ -254,21 +254,42 @@ export const userData = ({ data, optionalData }: TypeUserData) => {
       }
     : {};
 
+  // Convert Timestamp to milliseconds for createdAt
+  const createdAt = data?.user?.createdAt
+    ? data.user.createdAt
+    : formatTimestamp();
   return {
     ...vendorData,
-    email: data.user.email || "",
-    uid: data.user.uid,
-    displayName: data.user.displayName || "",
-    photoURL: data.user.photoURL || "",
-    emailVerified: data.user.emailVerified,
-    phoneNumber: data.user.phoneNumber || "",
+    email: data?.user?.email || "",
+    uid: data?.user?.uid,
+    displayName: data?.user?.displayName || "",
+    photoURL: data?.user?.photoURL || "",
+    emailVerified: data?.user?.emailVerified,
+    phoneNumber: data?.user?.phoneNumber || "",
     birthDate: "",
     isVendor: isVendor || false,
-    docId: data.user.docId || "",
+    docId: data?.user?.docId || "",
     address: "",
-    createdAt: serverTimestamp(),
+    createdAt,
   };
 };
+
+export const updateUserWalletAsync = createAsyncThunk(
+  "users/updateUserWallet",
+  async ({ userId, amount }: { userId: string; amount: number }) => {
+    try {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, {
+        wallet: amount,
+      });
+
+      return { userId, amount };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const updateUserData = (
   data: any,
   isVendor?: boolean,
@@ -285,29 +306,30 @@ export const updateUserData = (
 
   const vendorData = isVendor
     ? {
-        facebook: currentUser.facebook || data.facebook || "",
-        youtube: currentUser.youtube || data.youtube || "",
-        description: currentUser.description || data.description || "",
-        shipping: currentUser.shipping || data.shipping || "",
-        pictureCover: currentUser.pictureCover || data.pictureCover || "",
-        wallet: Number(currentUser.wallet + data.wallet) || 0,
-        userType: data.userType || currentUser.userType,
+        facebook: data?.facebook || currentUser?.facebook || "",
+        youtube: data?.youtube || currentUser?.youtube || "",
+        description: data?.description || currentUser?.description || "",
+        shipping: data?.shipping || currentUser?.shipping || "",
+        pictureCover: data?.pictureCover || currentUser?.pictureCover || "",
+        wallet: Number(currentUser?.wallet + data?.wallet) || 0,
+        userType: data?.userType || currentUser?.userType,
         expiredPackage: isBuyPackage
-          ? data.expiredPackage || futureTimestamp
-          : currentUser.expiredPackage,
+          ? data?.expiredPackage || futureTimestamp
+          : currentUser?.expiredPackage,
+        updatedAt: currentDate.toISOString(),
       }
     : {};
 
   return {
     ...vendorData,
-    email: currentUser.email || data.email || "",
-    docId: currentUser.docId || data.docId || "",
-    displayName: currentUser.displayName || data.displayName || "",
-    photoURL: currentUser.photoURL || data.photoURL || "",
-    phoneNumber: currentUser.phoneNumber || data.phoneNumber || "",
-    birthDate: currentUser.birthDate || data.birthDate || "",
-    address: currentUser.address || data.address || "",
-    updatedAt: serverTimestamp(),
+    email: data?.email || currentUser?.email || "",
+    docId: data?.docId || currentUser?.docId || "",
+    displayName: data?.displayName || currentUser?.displayName || "",
+    photoURL: data?.photoURL || currentUser?.photoURL || "",
+    phoneNumber: data?.phoneNumber || currentUser?.phoneNumber || "",
+    birthDate: data?.birthDate || currentUser?.birthDate || "",
+    address: data?.address || currentUser?.address || "",
+    updatedAt: currentDate.toISOString(),
   };
 };
 

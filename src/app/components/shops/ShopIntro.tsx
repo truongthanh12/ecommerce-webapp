@@ -8,6 +8,8 @@ import YoutubeFilled from "@/components/icons/YoutubeFilled";
 import { H3, Small, Span } from "@/components/Typography";
 import React from "react";
 import { useParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { openChat } from "@/redux/features/chatSlice";
 
 // =======================================================
 
@@ -33,7 +35,13 @@ const ShopIntroCard = ({
   youtube,
   email,
 }: CardShops) => {
-  const params = useParams()
+  const params = useParams();
+  const dispatch = useDispatch();
+
+  const handleClickContact = () => {
+    dispatch(openChat());
+  };
+
   const socialLinks = [
     {
       icon: FacebookFilled,
@@ -114,7 +122,13 @@ const ShopIntroCard = ({
           <FlexBetween flexWrap="wrap">
             <Box>
               <FlexBox alignItems="center" gap={1} mb={2}>
-                <Rating color="warn" size="small" value={5} precision={0.5} readOnly />
+                <Rating
+                  color="warn"
+                  size="small"
+                  value={5}
+                  precision={0.5}
+                  readOnly
+                />
                 <Small color="grey.600" display="block">
                   (45)
                 </Small>
@@ -162,17 +176,16 @@ const ShopIntroCard = ({
               </FlexBox>
             </Box>
 
-            <a href={`mailto:${email}`}>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{
-                  my: 1.5,
-                }}
-              >
-                Contact Vendor
-              </Button>
-            </a>
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{
+                my: 1.5,
+              }}
+              onClick={handleClickContact}
+            >
+              Contact Vendor
+            </Button>
           </FlexBetween>
         </Box>
       </FlexBox>

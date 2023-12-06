@@ -9,13 +9,12 @@ import {
   getDoc,
   getDocs,
   query,
-  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { IComments, IProducts } from "@/models/Product";
 import { IUser } from "@/models/User";
-import { formatToSlug } from "@/utils/lib";
+import { formatTimestamp, formatToSlug } from "@/utils/lib";
 import { ADMIN_ID } from "@/app/constant";
 interface productstate {
   products: IProducts[];
@@ -55,7 +54,7 @@ export const addCommentAsync = createAsyncThunk(
       const commentData = {
         comment,
         rating,
-        createdAt: serverTimestamp(),
+        createdAt: formatTimestamp(),
         user,
       };
 
@@ -362,7 +361,7 @@ export const productDataForm = (
     indexOfImages: data.indexOfImages,
     shop: user,
     stock: data.stock || 0,
-    createdAt: serverTimestamp(),
+    createdAt: formatTimestamp(),
     userId: user.docId,
     tags: data.tags || [],
   };

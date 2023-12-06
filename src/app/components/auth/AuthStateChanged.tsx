@@ -31,12 +31,12 @@ const AuthStateChanged = ({ children }: { children: React.ReactNode }) => {
       (pathname.includes("admin/customer") ||
         pathname.includes("admin/sellers/recharge-requests") ||
         pathname === "/admin/sellers") &&
-      user?.uid !== ADMIN_ID
+      user?.docId !== ADMIN_ID
     ) {
       pushRouter("/");
       return;
     }
-  }, [user, pathname]);
+  }, [user, pathname, pushRouter]);
 
   return <>{children}</>;
 };

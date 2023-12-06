@@ -11,7 +11,10 @@ import {
 } from "@/redux/features/rechargeSlice";
 import { currency } from "@/utils/lib";
 import SwitchButton from "@/components/Switch";
-import { updateUserAsync, updateUserData } from "@/redux/features/authSlice";
+import {
+  updateUserAsync,
+  updateUserWalletAsync,
+} from "@/redux/features/authSlice";
 import { ADMIN_ID } from "@/app/constant";
 
 // ========================================================================
@@ -44,9 +47,9 @@ const RechargeRow = ({ recharge, user }: any) => {
           })
         );
         await dispatch(
-          updateUserAsync({
-            updateUser: updateUserData(data, true, user),
-            id: user?.docId,
+          updateUserWalletAsync({
+            userId: recharge.userId,
+            amount: data.wallet,
           })
         );
       }
@@ -107,7 +110,10 @@ const RechargeRow = ({ recharge, user }: any) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleDelete} disabled={user.docId !== ADMIN_ID}>
+        <StyledIconButton
+          onClick={handleDelete}
+          disabled={user.docId !== ADMIN_ID}
+        >
           <Delete />
         </StyledIconButton>
       </StyledTableCell>

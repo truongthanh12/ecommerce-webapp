@@ -16,18 +16,28 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import db, { auth } from "@/firebase";
 import { setMessage } from "@/redux/features/messageSlice";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Checkbox, FormControlLabel, FormGroup, styled } from "@mui/material";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { RootState } from "@/redux/store";
 import { clearPopup } from "@/redux/features/popupSlice";
 
 type FormValues = {
   Email: string;
   Password: string;
+  DisplayName: string;
 };
 interface FormProps {
   authType: "signin" | "signup" | string;
@@ -57,7 +67,7 @@ const FormAuth = ({
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
   const {
     handleSubmit,
-    control,
+    control,watch,
     formState: { isDirty, isValid },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -77,7 +87,7 @@ const FormAuth = ({
   }, []);
 
   const handleFormSubmit = async (value: FormValues) => {
-    const { Email, Password } = value || {};
+    const { Email, Password, DisplayName } = value || {};
     dispatch(loading());
 
     try {
@@ -87,6 +97,11 @@ const FormAuth = ({
           Email,
           Password
         );
+
+        // Set the display name
+        await updateProfile(userAuth.user, {
+          displayName: DisplayName,
+        });
 
         // Create the document in Firestore with the docId field
         const usersCollection = collection(db, "users");
@@ -99,7 +114,7 @@ const FormAuth = ({
 
         // Update the local data with the new docId
         userDataWithOptionalData.docId = docRef.id;
-
+        await setDoc(doc(db, "userChats", userAuth.user.uid), {});
         dispatch(login(userDataWithOptionalData));
         dispatch(setMessage({ message: "Register successfully!" }));
         dispatch(clearPopup());
@@ -168,6 +183,29 @@ const FormAuth = ({
       <H1 textAlign="center" mt={1} mb={4} fontSize={16}>
         Welcome To TapHoa
       </H1>
+      {authType === "signup" && (
+        <Controller
+          name="DisplayName"
+          control={control}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <TextFieldInput
+              mb={1.5}
+              onBlur={onBlur}
+              fullWidth
+              size="small"
+              type="text"
+              variant="outlined"
+              label="DisplayName"
+              placeholder="Your name..."
+              onChange={onChange}
+              helperText={!!error ? error.message : ""}
+              error={!!error?.message}
+              value={value || ""}
+              autoFocus
+            />
+          )}
+        />
+      )}
 
       <Controller
         name="Email"
@@ -243,7 +281,8 @@ const FormAuth = ({
         sx={{
           height: 44,
         }}
-        disabled={!isDirty || !isValid || isLoading}
+        disabled={!isDirty || !isValid || isLoading||
+          (authType === "login" && !watch("DisplayName"))}
       >
         {!isLoading &&
           !error.message &&

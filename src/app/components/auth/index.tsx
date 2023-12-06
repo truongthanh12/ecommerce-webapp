@@ -12,6 +12,7 @@ import { setMessage } from "@/redux/features/messageSlice";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { login, userData } from "@/redux/features/authSlice";
 import { useParams } from "next/navigation";
+import { clearPopup } from "@/redux/features/popupSlice";
 
 const fbStyle = {
   background: "#3B5998",
@@ -81,6 +82,7 @@ const AuthComp = () => {
       }
       dispatch(setMessage({ message: "Login with Google successfully." }));
       dispatch(login(userData({data: user})));
+      dispatch(clearPopup());
       return user;
     } catch (err) {
       throw err;
@@ -101,6 +103,7 @@ const AuthComp = () => {
       }
       dispatch(login(userData({data: user})));
       dispatch(setMessage({ message: "Login with Facebook successfully." }));
+      dispatch(clearPopup());
       return user;
     } catch (err) {
       throw err;

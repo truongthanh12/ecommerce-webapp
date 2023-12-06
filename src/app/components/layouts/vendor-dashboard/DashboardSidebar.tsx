@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/legacy/image";
 import { usePathname } from "next/navigation";
 import { Avatar, Box, useMediaQuery } from "@mui/material";
@@ -23,6 +23,7 @@ import {
 import useCustomRouter from "@/hooks/usePushRouter";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { ADMIN_ID } from "@/app/constant";
 const TOP_HEADER_AREA = 70;
 
 // -----------------------------------------------------------------------------
@@ -43,6 +44,10 @@ const DashboardSidebar = ({
   const downLg = useMediaQuery((theme: any) => theme.breakpoints.down("lg"));
   const { user } = useSelector((state: RootState) => state.auth);
   const { pushRouter } = useCustomRouter();
+  const isAdmin = useMemo(
+    () => user?.isVendor && user.docId === ADMIN_ID,
+    [user.docId, user?.isVendor]
+  );
 
   // side hover when side bar is compacted
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
@@ -134,7 +139,7 @@ const DashboardSidebar = ({
       }}
     >
       <NavWrapper compact={sidebarCompact}>
-        {renderLevels(user.isVendor ? navigationsVendor : navigations)}
+        {renderLevels(!isAdmin ? navigationsVendor : navigations)}
       </NavWrapper>
     </Scrollbar>
   );
@@ -173,9 +178,7 @@ const DashboardSidebar = ({
       >
         <Avatar
           src={
-            COMPACT
-              ? "/assets/images/taphoa.svg"
-              : "/assets/images/logo.png"
+            COMPACT ? "/assets/images/taphoa.svg" : "/assets/images/logo.png"
           }
           sx={{
             borderRadius: 0,

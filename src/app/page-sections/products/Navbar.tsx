@@ -43,14 +43,10 @@ interface PageProps {
   view: "grid" | "list" | string;
   productsLength: number;
 }
-const ProductsNavbar = ({
-  setView,
-  view,
-  productsLength,
-}: PageProps) => {
+const ProductsNavbar = ({ setView, view, productsLength }: PageProps) => {
   const downMd = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v: any) => () => setView(v), [setView]);
-  const searchParams = useParams()
+  const searchParams = useParams();
   const { query, orderBy, category, subcategory } = searchParams || {};
   const [selectedValue, setSelectedValue] = useState(
     orderBy || sortOptions[0].value
@@ -158,7 +154,7 @@ const ProductsNavbar = ({
                 </IconButton>
               }
             >
-              <ProductFilterCard />
+              <ProductFilterCard searchParams={{}} />
             </Sidenav>
           )}
         </FlexBox>

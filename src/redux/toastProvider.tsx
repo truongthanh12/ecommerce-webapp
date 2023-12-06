@@ -26,6 +26,9 @@ export default function ToastProvider({
     return () => {
       // Clear the timeout when the component unmounts
       clearTimeout(timerRef.current);
+      if (message) {
+        dispatch(clearMessage());
+      }
     };
   }, [dispatch, message]);
 

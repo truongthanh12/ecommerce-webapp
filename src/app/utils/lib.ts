@@ -6,18 +6,7 @@ import {
   differenceInMinutes,
   addDays,
 } from "date-fns";
-import { User } from "firebase/auth";
-import { Conversation, IMessage } from "@/models/Chats";
-import {
-  collection,
-  DocumentData,
-  orderBy,
-  query,
-  QueryDocumentSnapshot,
-  Timestamp,
-  where,
-} from "firebase/firestore";
-import db from "@/firebase";
+import { FieldValue, Timestamp, serverTimestamp } from "firebase/firestore";
 
 /**
  * GET THE DIFFERENCE DATE FORMAT
@@ -154,8 +143,11 @@ export function capitalizeStr(str = "") {
 }
 
 export function objectToQueryString(obj: any, isMulti = false) {
-  if (isMulti)
+  const excludedKeys = ["lang", "slug"];
+
+  if (isMulti) {
     return Object.keys(obj)
+      .filter((key) => !excludedKeys.includes(key))
       .map((key) => {
         const value = obj[key];
         if (Array.isArray(value)) {
@@ -167,8 +159,11 @@ export function objectToQueryString(obj: any, isMulti = false) {
         }
       })
       .join("&");
+  }
+
   return Object.keys(obj)
-    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]))
+    .filter((key) => !excludedKeys.includes(key))
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
     .join("&");
 }
 
@@ -206,7 +201,7 @@ export function formatNumberWithThousandSeparators(number: number) {
   } else if (number >= 10000) {
     return (number / 1000).toFixed(0) + "k";
   } else {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return number?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 }
 
@@ -221,29 +216,7 @@ export function calculateAverageRating(comments: any) {
   );
   return totalRating / comments.length;
 }
-// Chats
-export const getRecipientEmail = (
-  conversationUsers: Conversation["users"],
-  loggedInUser?: User | null
-) => conversationUsers.find((userEmail) => userEmail !== loggedInUser?.email);
 
-export const generateQueryGetMessages = (conversationId?: string) =>
-  query(
-    collection(db, "messages"),
-    where("conversation_id", "==", conversationId),
-    orderBy("sent_at", "asc")
-  );
-
-export const transformMessage = (
-  message: QueryDocumentSnapshot<DocumentData>
-) =>
-  ({
-    id: message.id,
-    ...message.data(), // spread out conversation_id, text, sent_at, user
-    sent_at: message.data().sent_at
-      ? convertFirestoreTimestampToString(message.data().sent_at as Timestamp)
-      : null,
-  } as IMessage);
-
-export const convertFirestoreTimestampToString = (timestamp: Timestamp) =>
-  new Date(timestamp?.toDate()?.getTime()).toLocaleString();
+export const formatTimestamp = (): FieldValue => {
+  return serverTimestamp();
+};

@@ -14,8 +14,8 @@ import { useSearch } from "@/hooks/useSearch";
 import isEmpty from "lodash/isEmpty";
 import NotFound from "@/components/not-found";
 import { fetchRecharge } from "@/redux/features/rechargeSlice";
-import { ADMIN_ID } from "@/constant";
 import { RootState } from "@/redux/store";
+import { ADMIN_ID } from "@/app/constant";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [

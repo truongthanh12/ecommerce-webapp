@@ -37,7 +37,7 @@ export const addCategoryAsync = createAsyncThunk(
       const id = docRef.id;
       return { ...categoryData, id };
     } catch (error) {
-      console.log(error);
+      throw error
     }
   }
 );

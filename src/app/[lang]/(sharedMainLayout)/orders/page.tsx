@@ -37,7 +37,6 @@ const Orders = () => {
   //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
   // .then((idToken) => {
   //   // Send the ID token to your server
-  //   console.log("User ID token: ", idToken);
   // })
   // .catch((error) => {
   //   console.error("Error getting user ID token: ", error);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatSharp, Close } from "@mui/icons-material";
 import {
   Box,
@@ -7,27 +7,18 @@ import {
   Tooltip,
   IconButton,
   ClickAwayListener,
+  Grid,
 } from "@mui/material";
 import { H6 } from "@/components/Typography";
-import { FlexBox } from "@/components/flex-box";
-import socketIOClient from "socket.io-client";
-import {
-  doc,
-  setDoc,
-  collection,
-  serverTimestamp,
-  query,
-  onSnapshot,
-  orderBy,
-  DocumentData,
-} from "firebase/firestore";
-import db from "@/firebase";
-import { useSelector } from "react-redux";
+import Sidebar from "../chat/Sidebar";
+import { closeChat, openChat } from "@/redux/features/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import Chat from "../chat";
 
 // custom styled components
 const MainContainer = styled(Box)(({ theme }) => ({
-  top: 50,
+  bottom: 120,
   right: 50,
   zIndex: 1501,
   position: "fixed",
@@ -56,106 +47,102 @@ const BodyWrapper = styled(Box, {
   borderRadius: "4px",
   backgroundColor: "white",
   opacity: showBody ? 1 : 0,
-  width: showBody ? 300 : 0,
+  width: showBody ? 600 : 0,
   padding: showBody ? 24 : 0,
   boxShadow: theme.shadows[3],
   transition: "transform 0.4s",
   maxHeight: showBody ? "calc(100vh - 100px)" : 0,
   transform: `translateY(${showBody ? 0 : "10px"})`,
+  height: 620,
 }));
 
-const Chats = () => {
-  const [showBody, setShowBody] = useState(false);
-  const { user } = useSelector((state: RootState) => state.auth);
+const StyledHeader = styled("div")({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  position: "sticky",
+  top: 0,
+  backgroundColor: "white",
+  zIndex: 1,
+  width: "100%",
+});
 
-  let socketio = socketIOClient("http://localhost:5001");
-  const [chats, setChats] = useState<DocumentData[]>([]);
-  const avatar = localStorage.getItem("avatar");
-  const chatsRef = collection(db, "messages");
-  const messagesEndRef = useRef<HTMLElement>(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+const StyledSearch = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  padding: "15px",
+  borderRadius: "2px",
+  border: "1px solid whitesmoke",
+  marginTop: "12px",
+  width: "100%",
+});
+
+const StyledSearchInput = styled("input")({
+  outline: "none",
+  border: "none",
+  width: "100%",
+  flex: 1,
+});
+
+const Chats = () => {
+  const { isOpen } = useSelector((state: RootState) => state.chat);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const handleOpenChat = () => {
+    dispatch(openChat());
+  };
+  const handleClickAway = () => {
+    if (isOpen) {
+      setTimeout(() => {
+        openChat();
+      }, 100);
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [chats]);
-
-  useEffect(() => {
-    socketio.on("chat", (senderChats) => {
-      setChats(senderChats);
-    });
-  }, [socketio]);
-
-  useEffect(() => {
-    const q = query(chatsRef, orderBy("createdAt", "asc"));
-
-    const unsub = onSnapshot(q, (querySnapshot) => {
-      const fireChats: DocumentData[] = [];
-      querySnapshot.forEach((doc) => {
-        fireChats.push(doc.data());
-      });
-      setChats(fireChats);
-    });
     return () => {
-      unsub();
+      if (isOpen) {
+        dispatch(closeChat());
+      }
     };
-  }, []);
+  }, [dispatch, isOpen]);
 
-  function addToFirrebase(chat: any) {
-    const newChat = {
-      avatar,
-      createdAt: serverTimestamp(),
-      user,
-      message: chat.message,
-    };
-
-    const chatRef = doc(chatsRef);
-    setDoc(chatRef, newChat)
-      .then(() => console.log("Chat added succesfully"))
-      .catch(console.log);
-  }
-
-  function sendChatToSocket(chat: any) {
-    socketio.emit("chat", chat);
-  }
-
-  function addMessage(chat: any) {
-    const newChat = { ...chat, user: localStorage.getItem("user"), avatar };
-    addToFirrebase(chat);
-    setChats([...chats, newChat]);
-    sendChatToSocket([...chats, newChat]);
-  }
-
-  function logout() {
-    localStorage.removeItem("user");
-    localStorage.removeItem("avatar");
-  }
-
+  if (!user?.uid) return null;
   return (
-    <ClickAwayListener onClickAway={() => setShowBody(false)}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <MainContainer>
         <Tooltip title="Chats" placement="left">
-          <StyledIconButton onClick={() => setShowBody((state) => !state)}>
-            {!showBody && <ChatSharp />}
-            {showBody && <Close />}
+          <StyledIconButton onClick={() => handleOpenChat()}>
+            {!isOpen && <ChatSharp />}
+            {isOpen && <Close />}
           </StyledIconButton>
         </Tooltip>
 
-        <BodyWrapper showBody={showBody ? 1 : 0}>
-          <FlexBox gap={2}></FlexBox>
-
-          <Divider
-            sx={{
-              my: 3,
-            }}
-          />
-
+        <BodyWrapper showBody={isOpen ? 1 : 0}>
           <H6 textAlign="center" mb={2}>
             Chats
           </H6>
-
-          <FlexBox gap={2} flexWrap="wrap"></FlexBox>
+          <Divider />
+          {/* <StyledHeader>
+            <StyledSearch>
+              <SearchIcon style={{ marginRight: "8px" }} />
+              <StyledSearchInput placeholder="Search in conversations" />
+            </StyledSearch>
+          </StyledHeader>
+          <Grid container spacing={2} mt={2}>
+            <Grid item xs={3} borderRight={"1px solid whitesmoke"}>
+              <Sidebar setUserSelected={setUserSelected} />
+            </Grid>
+            <Grid item xs={9} px={1}>
+              <ConversationScreen userSelected={userSelected} />
+            </Grid>
+          </Grid> */}
+          <article className="home">
+            <div className="container">
+              <Sidebar />
+              <Chat />
+            </div>
+          </article>
         </BodyWrapper>
       </MainContainer>
     </ClickAwayListener>

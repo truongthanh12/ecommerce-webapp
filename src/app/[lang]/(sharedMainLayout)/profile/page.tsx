@@ -122,7 +122,7 @@ export default function Profile() {
                 }}
               >
                 <Avatar
-                  src={user.photoURL}
+                  src={user.photoURL || "/assets/images/avatars/001-man.svg"}
                   sx={{
                     height: 64,
                     width: 64,
@@ -136,7 +136,7 @@ export default function Profile() {
                       <FlexBox alignItems="center">
                         <Typography color="grey.600">Balance:</Typography>
                         <Typography ml={0.5} color="primary.main">
-                          {currency(500)}
+                          {currency(user?.wallet || 0)}
                         </Typography>
                       </FlexBox>
                     </div>
