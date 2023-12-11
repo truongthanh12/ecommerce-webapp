@@ -25,7 +25,12 @@ interface PageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-const ProductsSearch = ({ type, shopData, productsByUser, searchParams }: PageProps) => {
+const ProductsSearch = ({
+  type,
+  shopData,
+  productsByUser,
+  searchParams,
+}: PageProps) => {
   const { products } = useSelector((state: RootState) => state.products);
   const [view, setView] = useState("grid");
   const [loadingLayout, setLoadingLayout] = useState(true);
@@ -42,7 +47,7 @@ const ProductsSearch = ({ type, shopData, productsByUser, searchParams }: PagePr
     subcategory,
     tag,
   } = searchParams || {};
-  
+
   const timerRef = useRef<NodeJS.Timeout | undefined>();
 
   const { rowsPerPage, handleChangePage, filteredList } = useMuiTable({
@@ -160,6 +165,7 @@ const ProductsSearch = ({ type, shopData, productsByUser, searchParams }: PagePr
     youtube,
     email,
     description,
+    uid
   } = shopData || {};
 
   return (
@@ -181,6 +187,7 @@ const ProductsSearch = ({ type, shopData, productsByUser, searchParams }: PagePr
           phone={phoneNumber || "Phone not updated"}
           coverPicture={pictureCover || ""}
           profilePicture={photoURL || ""}
+          uid={uid || ""}
         />
       ) : (
         <ProductNavbar

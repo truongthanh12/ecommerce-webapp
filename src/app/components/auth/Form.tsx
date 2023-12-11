@@ -67,7 +67,8 @@ const FormAuth = ({
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
   const {
     handleSubmit,
-    control,watch,
+    control,
+    watch,
     formState: { isDirty, isValid },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -156,6 +157,8 @@ const FormAuth = ({
           message:
             err.message === "Firebase: Error (auth/email-already-in-use)."
               ? "Email existed, please try login with this email."
+              : err?.code
+              ? "Email or password is wrong!"
               : "An error occurred! Please try again.",
           type: "error",
         })
@@ -164,6 +167,8 @@ const FormAuth = ({
       setErrorMessage(
         err.message === "Firebase: Error (auth/email-already-in-use)."
           ? "Email existed, please try login with this email."
+          : err?.code
+          ? "Email or password is wrong!"
           : "An error occurred! Please try again."
       );
     }
@@ -281,8 +286,12 @@ const FormAuth = ({
         sx={{
           height: 44,
         }}
-        disabled={!isDirty || !isValid || isLoading||
-          (authType === "login" && !watch("DisplayName"))}
+        disabled={
+          !isDirty ||
+          !isValid ||
+          isLoading ||
+          (authType === "login" && !watch("DisplayName"))
+        }
       >
         {!isLoading &&
           !error.message &&

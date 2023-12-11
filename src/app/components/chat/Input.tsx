@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   arrayUnion,
   doc,
@@ -12,8 +12,7 @@ import { RootState } from "@/redux/store";
 import db, { storage } from "@/firebase";
 import { v4 as uuidv4 } from "uuid";
 import { ChatSharp } from "@mui/icons-material";
-import Pusher from "pusher-js";
-import { channelChatroom } from "../pusher/pusher";
+// import { channelChatroom } from "../../../../pusher";
 
 const Input = () => {
   const [text, setText] = useState<string>("");
@@ -21,7 +20,8 @@ const Input = () => {
 
   const data = useSelector((state: RootState) => state.chat);
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const handleSend = async () => {
+  const handleSend = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (currentUser?.uid && data?.chatId && text) {
       try {
         if (imageFile) {
@@ -74,12 +74,12 @@ const Input = () => {
         //   }),
         // });
 
-        channelChatroom.trigger("client-message", {
-          id: uuidv4(),
-          text,
-          senderId: currentUser.uid,
-          date: Timestamp.now(),
-        });
+        // channelChatroom.trigger("client-message", {
+        //   id: uuidv4(),
+        //   text,
+        //   senderId: currentUser.uid,
+        //   date: Timestamp.now(),
+        // });
 
         setText("");
         setImg(null);
@@ -100,7 +100,7 @@ const Input = () => {
   };
 
   return (
-    <div className="input">
+    <form onSubmit={handleSend} className="input">
       <input
         type="text"
         placeholder="Type something..."
@@ -117,9 +117,9 @@ const Input = () => {
         <label htmlFor="file">
           <ChatSharp />
         </label>
-        <button onClick={handleSend}>Send</button>
+        <button type="button">Send</button>
       </div>
-    </div>
+    </form>
   );
 };
 

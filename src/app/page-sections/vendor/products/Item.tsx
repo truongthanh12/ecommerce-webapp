@@ -63,7 +63,7 @@ const FieldItem = ({
       pushRouter(renderInfo?.link);
       return;
     }
-  }, [renderInfo]);
+  }, [pushRouter, renderInfo]);
 
   return (
     <TextField

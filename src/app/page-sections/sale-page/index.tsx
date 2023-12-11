@@ -68,7 +68,6 @@ interface PageProps {
 }
 export default function SalePage({ searchParams }: PageProps) {
   const { type } = searchParams;
-
   const categoryRef = useRef(null);
   const { isFixedHeader } = useScroller(categoryRef);
   const { products } = useSelector((state: RootState) => state.products);

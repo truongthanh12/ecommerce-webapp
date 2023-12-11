@@ -118,12 +118,13 @@ const Chats = () => {
           </StyledIconButton>
         </Tooltip>
 
-        <BodyWrapper showBody={isOpen ? 1 : 0}>
-          <H6 textAlign="center" mb={2}>
-            Chats
-          </H6>
-          <Divider />
-          {/* <StyledHeader>
+        {isOpen && (
+          <BodyWrapper showBody={isOpen ? 1 : 0}>
+            <H6 textAlign="center" mb={2}>
+              Chats
+            </H6>
+            <Divider />
+            {/* <StyledHeader>
             <StyledSearch>
               <SearchIcon style={{ marginRight: "8px" }} />
               <StyledSearchInput placeholder="Search in conversations" />
@@ -137,13 +138,14 @@ const Chats = () => {
               <ConversationScreen userSelected={userSelected} />
             </Grid>
           </Grid> */}
-          <article className="home">
-            <div className="container">
-              <Sidebar />
-              <Chat />
-            </div>
-          </article>
-        </BodyWrapper>
+            <article className="home">
+              <div className="container">
+                <Sidebar />
+                <Chat />
+              </div>
+            </article>
+          </BodyWrapper>
+        )}
       </MainContainer>
     </ClickAwayListener>
   );

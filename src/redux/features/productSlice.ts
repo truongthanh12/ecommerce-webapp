@@ -309,7 +309,7 @@ export const { setLoading, setProducts, setError, setHasMorePages } =
 
 export const fetchProducts =
   ({ isFetchByUser, userId }: { isFetchByUser?: boolean; userId?: string }) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
 

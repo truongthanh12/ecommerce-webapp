@@ -16,6 +16,7 @@ import { RootState } from "@/redux/store";
 import db from "@/firebase";
 import { changeUser } from "@/redux/features/chatSlice";
 import Image from "../Image";
+import { Box } from "@mui/material";
 
 interface User {
   uid: string;
@@ -29,13 +30,13 @@ const Search: React.FC = () => {
   const [err, setErr] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const data = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
 
   const handleSearch = async () => {
     const q = query(
       collection(db, "users"),
-      where("displayName", "==", username)
+      where("displayName", "==", username),
+      where("isVendor", "==", true)
     );
 
     try {
@@ -51,8 +52,18 @@ const Search: React.FC = () => {
 
   const handleKey = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.code === "Enter") {
+      if (!username) {
+        setUser(null);
+        setErr(true);
+        return;
+      }
       handleSearch();
     }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    setErr(false);
   };
 
   const handleSelect = async () => {
@@ -98,6 +109,8 @@ const Search: React.FC = () => {
           currentUserId: currentUser.uid,
         })
       );
+      setUser(null);
+      setUsername("");
     } catch (err) {
       console.error(err);
     }
@@ -108,15 +121,17 @@ const Search: React.FC = () => {
       <div className="searchForm">
         <input
           type="text"
-          placeholder="Find a user"
+          placeholder="Find a shop to chat"
           onKeyDown={handleKey}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setUsername(e.target.value)
-          }
+          onChange={handleChange}
           value={username}
         />
       </div>
-      {err && <span>User not found!</span>}
+      {err && (
+        <Box color="red" px={2}>
+          User not found!
+        </Box>
+      )}
       {user && (
         <div className="userChat" onClick={handleSelect}>
           <Image

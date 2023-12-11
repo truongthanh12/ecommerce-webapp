@@ -40,18 +40,12 @@ export default function HomePage({
   const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    let isCancelled = false;
-    if (!isCancelled) {
-      dispatch(fetchCategories(true));
-      dispatch(fetchBanners(true));
-      dispatch(fetchBrands(true));
-      dispatch(fetchProducts({ isFetchByUser: true }));
-      dispatch(fetchParentCategories());
-      dispatch(fetchUsers({ isVendor: true }));
-    }
-    return () => {
-      isCancelled = true;
-    };
+    dispatch(fetchCategories(true));
+    dispatch(fetchBanners(true));
+    dispatch(fetchBrands(true));
+    dispatch(fetchProducts({ isFetchByUser: true }));
+    dispatch(fetchParentCategories());
+    dispatch(fetchUsers({ isVendor: true }));
   }, [dispatch]);
 
   useEffect(() => {

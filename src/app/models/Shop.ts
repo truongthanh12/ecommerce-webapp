@@ -1,5 +1,6 @@
 export interface IShop {
   id?: string;
+  uid?: string;
   slug?: string;
   user?: User;
   email?: string;

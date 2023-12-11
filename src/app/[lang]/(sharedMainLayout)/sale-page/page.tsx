@@ -1,3 +1,8 @@
-import SalePage from "@/page-sections/sale-page";
+import SalePage from "@/app/page-sections/sale-page";
 
-export default SalePage
+interface PageProps {
+  searchParams: { [key: string]: string | undefined };
+}
+export default function SalePageContainer({ searchParams }: PageProps) {
+  return <SalePage searchParams={searchParams} />;
+}

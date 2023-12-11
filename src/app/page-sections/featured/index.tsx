@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { Box, Container, Grid, Skeleton } from "@mui/material";
 import RankBadge from "@/components/icons/RankBadge";
@@ -18,11 +18,11 @@ import { Ilang } from "@/app/models/Lang";
 type TypeProps = {
   products: IProducts[];
   brands: IBrand[];
-  dictionary: Ilang
+  dictionary: Ilang;
 };
 const Featured: React.FC<TypeProps> = ({ brands, dictionary }) => {
   const [products, setProducts] = useState<IProducts[]>([]);
-  const params = useParams()
+  const params = useParams();
 
   const featuredBrand = useMemo(() => {
     return brands.filter((item) => item.image);
@@ -82,7 +82,9 @@ const Featured: React.FC<TypeProps> = ({ brands, dictionary }) => {
                   products.map((item: IProducts) => (
                     <Grid item md={3} sm={6} xs={6} key={item.id}>
                       <Link
-                        href={`/${params.lang}/product/${formatToSlug(item.slug)}`}
+                        href={`/${params.lang}/product/${formatToSlug(
+                          item.slug
+                        )}`}
                         passHref
                       >
                         <ProductCard

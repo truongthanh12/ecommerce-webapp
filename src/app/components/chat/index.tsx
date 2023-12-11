@@ -8,7 +8,7 @@ import { Box, styled } from "@mui/material";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import db from "@/firebase";
 import { setMessages } from "@/redux/features/chatSlice";
-import { channelChatroom, pusher } from "../pusher/pusher";
+// import { channelChatroom, pusher } from "../pusher/pusher";
 
 const Avatar = styled(Box)(() => ({
   width: 32,
@@ -26,22 +26,19 @@ const Chat = () => {
   const data = useSelector((state: RootState) => state.chat);
   const { user } = useSelector((state: RootState) => state.auth);
   const messages = useSelector((state: RootState) => state.chat.messages);
-  
-  useEffect(() => {
-    channelChatroom.bind("pusher:subscription_succeeded", () => {
-      console.log("pusher:subscription_succeeded");
-    });
+  // useEffect(() => {
+  //   channelChatroom.bind("pusher:subscription_succeeded", () => {
+  //     console.log("pusher:subscription_succeeded");
+  //   });
 
-    channelChatroom.bind("pusher:subscription_error", (error: never) => {
-      console.error("pusher:subscription_error", error);
-    });
+  //   channelChatroom.bind("pusher:subscription_error", (error: never) => {
+  //     console.error("pusher:subscription_error", error);
+  //   });
 
-    channelChatroom.bind('client-message', (data: unknown) => {
-      console.log('message', data)
-    })
-  }, []);
-
-
+  //   channelChatroom.bind('client-message', (data: unknown) => {
+  //     console.log('message', data)
+  //   })
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,11 +71,11 @@ const Chat = () => {
         <Avatar>
           <Image
             style={{ width: "100%" }}
-            src={user?.photoURL || "/assets/images/avatars/001-man.svg"}
-            alt={user?.displayName}
+            src={data?.user?.photoURL || "/assets/images/avatars/001-man.svg"}
+            alt={data?.user?.displayName}
           />
         </Avatar>
-        <span>{user?.displayName}</span>
+        <span>{data?.user?.displayName}</span>
       </div>
       <Messages messages={messages} />
       <Input />

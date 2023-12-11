@@ -8,8 +8,18 @@ import YoutubeFilled from "@/components/icons/YoutubeFilled";
 import { H3, Small, Span } from "@/components/Typography";
 import React from "react";
 import { useParams } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { openChat } from "@/redux/features/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { changeUser, openChat } from "@/redux/features/chatSlice";
+import { RootState } from "@/redux/store";
+import {
+  DocumentSnapshot,
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import db from "@/firebase";
 
 // =======================================================
 
@@ -23,6 +33,7 @@ interface CardShops {
   facebook: string;
   youtube: string;
   email: string;
+  uid: string;
 }
 const ShopIntroCard = ({
   name,
@@ -33,13 +44,54 @@ const ShopIntroCard = ({
   description,
   facebook,
   youtube,
-  email,
+  uid,
 }: CardShops) => {
   const params = useParams();
   const dispatch = useDispatch();
-
-  const handleClickContact = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const handleClickContact = async () => {
+    if (!user?.uid && uid) return;
     dispatch(openChat());
+    const combinedId = user.uid > uid ? user.uid + uid : uid + user.uid;
+
+    try {
+      const res: DocumentSnapshot = await getDoc(
+        doc(db, "messages", combinedId)
+      );
+
+      if (!res.exists()) {
+        await setDoc(doc(db, "messages", combinedId), { messages: [] });
+
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [combinedId + ".userInfo"]: {
+            uid,
+            displayName: name,
+            photoURL: profilePicture,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+
+        await updateDoc(doc(db, "userChats", uid), {
+          [combinedId + ".userInfo"]: {
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+      }
+
+      dispatch(
+        changeUser({
+          uid,
+          displayName: name,
+          photoURL: profilePicture,
+          currentUserId: user.uid,
+        })
+      );
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const socialLinks = [

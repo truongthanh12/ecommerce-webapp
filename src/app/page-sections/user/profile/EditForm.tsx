@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { CameraEnhance } from "@mui/icons-material";
 import { Avatar, Box, Button, Grid, TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { DatePicker } from "@mui/x-date-pickers";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Card from "@/components/Card";
 import { FlexBox } from "@/components/flex-box";
 import { Controller, useForm } from "react-hook-form";
@@ -26,14 +26,12 @@ const schema = yup.object().shape({
     .length(10, "Phone must be exactly 10 characters")
     .matches(phoneRegExp, "Phone number is not valid"),
   email: yup.string().email("invalid email"),
-  // birthDate: yup.date(),
 });
 interface FormValues {
   displayName: string;
   phoneNumber: number;
   email: string;
   photoURL: string;
-  // birthDate: any;
   address: string;
 }
 
@@ -53,7 +51,6 @@ const EditForm = () => {
         displayName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        // birthDate: new Date(user.birthDate.seconds * 1000 || ""),
         phoneNumber: user.phoneNumber,
         address: user.address,
       });
@@ -67,7 +64,6 @@ const EditForm = () => {
 
   const handleFormSubmit = async (value: Partial<FormValues>) => {
     const { displayName, phoneNumber, email, address } = value || {};
-    // const date = birthDate ? new Date(birthDate || "") : birthDate || "";
 
     if (file) {
       const uploadTask = uploadBytesResumable(

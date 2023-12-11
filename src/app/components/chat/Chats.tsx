@@ -17,7 +17,8 @@ const Chats: React.FC = () => {
   const dispatch = useDispatch();
   const chats = useSelector((state: RootState) => state.chat.chats);
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  // const [chats, setChats] = useState<any>();
+  const data = useSelector((state: RootState) => state.chat);
+
   useEffect(() => {
     const getChats = () => {
       if (!currentUser?.uid) {
@@ -59,7 +60,7 @@ const Chats: React.FC = () => {
     const data = { ...user, currentUserId: currentUser?.uid };
     dispatch(changeUser(data));
   };
-  
+  console.log(chats, data);
   return (
     <div className="chats">
       {!isEmpty(chats) &&
@@ -69,7 +70,6 @@ const Chats: React.FC = () => {
             <div
               className="userChat"
               key={chat[0]}
-              onClick={() => handleSelect((chat[1] as ChatType)?.userInfo)}
             >
               <Image
                 src={

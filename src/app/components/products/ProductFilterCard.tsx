@@ -16,13 +16,14 @@ import { useSelector } from "react-redux";
 import { IBrand } from "@/models/Brand";
 import { colors } from "@/data/data";
 import { RootState } from "@/redux/store";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 interface TypeProps {
   searchParams: { [key: string]: string | undefined };
 }
 const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
   const { minPrice, maxPrice, brand, options, ratings, color } =
     searchParams || {};
+    console.log(searchParams)
   const { brands } = useSelector((state: RootState) => state.brands);
   const router = useRouter();
 
@@ -69,7 +70,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
 
     const debouncedFunction = debounce(() => {
       router.push(
-        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+        `?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 
@@ -102,7 +103,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
         delete updatedQuery.lang;
 
         router.push(
-          `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+          `?${objectToQueryString(updatedQuery, true)}`
         );
       }, 50);
 
@@ -174,7 +175,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
       delete updatedQuery.lang;
 
       router.push(
-        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+        `?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 
@@ -194,7 +195,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
         delete updatedQuery.options;
       }
       router.push(
-        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+        `?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 
@@ -214,7 +215,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
         delete updatedQuery.ratings;
       }
       router.push(
-        `/en/product/search/products?${objectToQueryString(updatedQuery)}`
+        `?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 

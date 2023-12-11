@@ -143,11 +143,8 @@ export function capitalizeStr(str = "") {
 }
 
 export function objectToQueryString(obj: any, isMulti = false) {
-  const excludedKeys = ["lang", "slug"];
-
-  if (isMulti) {
+  if (isMulti)
     return Object.keys(obj)
-      .filter((key) => !excludedKeys.includes(key))
       .map((key) => {
         const value = obj[key];
         if (Array.isArray(value)) {
@@ -159,11 +156,8 @@ export function objectToQueryString(obj: any, isMulti = false) {
         }
       })
       .join("&");
-  }
-
   return Object.keys(obj)
-    .filter((key) => !excludedKeys.includes(key))
-    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]))
     .join("&");
 }
 
