@@ -194,6 +194,7 @@ const ProductsSearch = ({
           productsLength={searchItems?.length}
           view={view}
           setView={setView}
+          searchParams={searchParams}
         />
       )}
 

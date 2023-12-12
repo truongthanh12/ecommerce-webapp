@@ -70,7 +70,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
 
     const debouncedFunction = debounce(() => {
       router.push(
-        `?${objectToQueryString(updatedQuery)}`
+        `/product/search/products?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 
@@ -103,7 +103,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
         delete updatedQuery.lang;
 
         router.push(
-          `?${objectToQueryString(updatedQuery, true)}`
+          `/product/search/products?${objectToQueryString(updatedQuery, true)}`
         );
       }, 50);
 
@@ -175,7 +175,7 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
       delete updatedQuery.lang;
 
       router.push(
-        `?${objectToQueryString(updatedQuery)}`
+        `/product/search/products?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 
@@ -194,8 +194,10 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
       } else {
         delete updatedQuery.options;
       }
+      delete updatedQuery.slug;
+      delete updatedQuery.lang;
       router.push(
-        `?${objectToQueryString(updatedQuery)}`
+        `/product/search/products?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 
@@ -214,8 +216,10 @@ const ProductFilterCard: React.FC<TypeProps> = ({ searchParams }) => {
       } else {
         delete updatedQuery.ratings;
       }
+      delete updatedQuery.slug;
+      delete updatedQuery.lang;
       router.push(
-        `?${objectToQueryString(updatedQuery)}`
+        `/product/search/products?${objectToQueryString(updatedQuery)}`
       );
     }, 400);
 

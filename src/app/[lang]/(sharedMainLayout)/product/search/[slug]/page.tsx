@@ -7,5 +7,6 @@ interface PageProps {
 }
 
 export default function ProductSearchResult({ searchParams }: PageProps) {
+  console.log(searchParams, "searchParams");
   return <ProductsSearch searchParams={searchParams} />;
 }
