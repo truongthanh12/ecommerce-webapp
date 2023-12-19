@@ -95,7 +95,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
   const params = useParams()
   const lang = ((Array.isArray(params.lang)
     ? first(params.lang)
-    : params.lang) || "vi") as "en" | "vi";
+    : params.lang) || "en") as "en" | "vi";
   const renderNestedNav = ({ list = [], isRoot = false }: TypeProps) => {
     return list[lang].map((nav: any) => {
       if (isRoot) {

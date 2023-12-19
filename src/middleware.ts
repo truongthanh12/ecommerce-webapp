@@ -2,39 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const defaultLocale = "en";
 export const locales = ["en", "vi"];
+
 export function middleware(request: NextRequest) {
   // Check if there is any supported locale in the pathname
   const pathname = request.nextUrl.pathname;
 
-  // Check if the default locale is in the pathname
-  if (
-    pathname.startsWith(`/${defaultLocale}/`) ||
-    pathname === `/${defaultLocale}`
-  ) {
-    // e.g. incoming request is /en/about
-    // The new URL is now /about
-    return NextResponse.redirect(
-      new URL(
-        pathname.replace(
-          `/${defaultLocale}`,
-          pathname === `/${defaultLocale}` ? "/" : ""
-        ),
-        request.url
-      )
-    );
-  }
-
+  console.log("====================================");
+  console.log("pathname", pathname);
+  console.log("====================================");
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
 
+  console.log("pathnameIsMissingLocale", pathnameIsMissingLocale);
+
   if (pathnameIsMissingLocale) {
-    // e.g. incoming request is /about
-    // Tell Next.js it should pretend it's /en/about
-    return NextResponse.rewrite(
-      new URL(`/${defaultLocale}${pathname}`, request.url)
+    return NextResponse.redirect(
+      new URL(
+        `/${defaultLocale}${request.nextUrl.pathname}${request.nextUrl.search}`,
+        request.url
+      )
     );
   }
+  return NextResponse.next();
 }
 
 export const config = {
