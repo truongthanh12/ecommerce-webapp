@@ -83,6 +83,7 @@ const Analytics = () => {
       <ReactApexChart
         type="bar"
         height={300}
+        width={"100%"}
         series={series}
         options={analyticsChartOptions(theme, categories)}
       />

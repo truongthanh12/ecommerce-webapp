@@ -7,14 +7,9 @@ export function middleware(request: NextRequest) {
   // Check if there is any supported locale in the pathname
   const pathname = request.nextUrl.pathname;
 
-  console.log("====================================");
-  console.log("pathname", pathname);
-  console.log("====================================");
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
-
-  console.log("pathnameIsMissingLocale", pathnameIsMissingLocale);
 
   if (pathnameIsMissingLocale) {
     return NextResponse.redirect(

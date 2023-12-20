@@ -1,9 +1,9 @@
 import NextImage from "next/legacy/image";
 import { Box, Card } from "@mui/material";
-import { H3, H5, Paragraph } from "@/components/Typography";
-import { currency } from "@/utils/lib";
 import React from "react";
-const WishCard = () => {
+import Info from "./Info";
+import { IUser } from "@/app/models/User";
+const WishCard = ({ user }: { user: Partial<IUser> }) => {
   return (
     <Card
       sx={{
@@ -15,19 +15,7 @@ const WishCard = () => {
         justifyContent: "center",
       }}
     >
-      <H5 color="info.main" mb={0.5}>
-        Good Morning, Maruf!
-      </H5>
-      <Paragraph color="grey.600">
-        Here's what happening with your store today!
-      </Paragraph>
-
-      <H3 mt={3}>15,350.25</H3>
-      <Paragraph color="grey.600">Today's Visit</Paragraph>
-
-      <H3 mt={1.5}>{currency(10360.66)}</H3>
-      <Paragraph color="grey.600">Today's total sales</Paragraph>
-
+      <Info user={user} />
       <Box
         sx={{
           right: 24,

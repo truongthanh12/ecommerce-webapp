@@ -1,5 +1,3 @@
-import { ICategory } from "@/models/Category";
-
 export const weeklyChartOptions = (theme: any) => ({
   grid: {
     show: false,

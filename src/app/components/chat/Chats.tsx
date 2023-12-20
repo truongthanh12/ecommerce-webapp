@@ -60,7 +60,7 @@ const Chats: React.FC = () => {
     const data = { ...user, currentUserId: currentUser?.uid };
     dispatch(changeUser(data));
   };
-  console.log(chats, data);
+
   return (
     <div className="chats">
       {!isEmpty(chats) &&

@@ -10,7 +10,6 @@ import useScroller from "@/hooks/useScroller";
 import { IProducts } from "@/models/Product";
 import { useSelector } from "react-redux";
 import { CategoryIcon } from "@/common";
-import { useRouter } from "next/navigation";
 import debounce from "lodash/debounce";
 import { RootState } from "@/redux/store";
 import useMuiTable from "@/app/hooks/useMuiTable";
@@ -79,7 +78,6 @@ export default function SalePage({ searchParams }: PageProps) {
   );
 
   const [searchItems, setSearchItems] = useState(products);
-
   const { rowsPerPage, handleChangePage, filteredList } = useMuiTable({
     listData: searchItems,
     rowsPerPage: 9,

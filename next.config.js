@@ -7,7 +7,7 @@ const nextConfig = {
   publicRuntimeConfig: {
     // Available on both server and client
     theme: "DEFAULT",
-    currency: "VND",
+    currency: "USD",
   },
   env: {
     SITE_URL: process.env.SITE_URL,
