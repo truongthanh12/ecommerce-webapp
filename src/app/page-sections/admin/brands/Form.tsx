@@ -133,7 +133,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
             }
             reset();
             handleFileDelete(files);
-            pushRouter("/admin/brands");
+            pushRouter("admin/brands");
             dispatch(
               setMessage({
                 message:
@@ -174,7 +174,7 @@ const BrandForm = ({ id = "", brand }: { id?: string; brand?: any }) => {
     }
     reset();
     handleFileDelete(files);
-    pushRouter("/admin/brands");
+    pushRouter("admin/brands");
     dispatch(
       setMessage({
         message:

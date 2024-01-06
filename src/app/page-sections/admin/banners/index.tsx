@@ -22,7 +22,7 @@ const BannerRow = ({ banner }: { banner: Partial<ICarouselCard> }) => {
   const [featured, setFeatured] = useState(published);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const handleNavigate = () => pushRouter(`/admin/banners/${id}`);
+  const handleNavigate = () => pushRouter(`admin/banners/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleChangeStatus = async () => {

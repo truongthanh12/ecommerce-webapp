@@ -26,7 +26,7 @@ const VoucherRow = ({ voucher }: any) => {
   } = voucher || {};
   const { pushRouter } = useCustomRouter();
 
-  const handleNavigate = () => pushRouter(`/vendor/vouchers/${id}`);
+  const handleNavigate = () => pushRouter(`vendor/vouchers/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

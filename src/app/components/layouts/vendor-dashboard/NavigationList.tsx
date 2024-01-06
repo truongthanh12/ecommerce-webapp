@@ -7,7 +7,7 @@ export const navigations = [
   {
     name: "Dashboard",
     icon: duotone.Dashboard,
-    path: "/vendor/dashboard",
+    path: "vendor/dashboard",
   },
   {
     name: "Categories",
@@ -15,11 +15,11 @@ export const navigations = [
     children: [
       {
         name: "Category List",
-        path: "/admin/categories",
+        path: "admin/categories",
       },
       {
         name: "Create Category",
-        path: "/admin/categories/create",
+        path: "admin/categories/create",
       },
     ],
   },
@@ -29,11 +29,11 @@ export const navigations = [
     children: [
       {
         name: "Brand List",
-        path: "/admin/brands",
+        path: "admin/brands",
       },
       {
         name: "Create Brand",
-        path: "/admin/brands/create",
+        path: "admin/brands/create",
       },
     ],
   },
@@ -43,18 +43,18 @@ export const navigations = [
     children: [
       {
         name: "Banner List",
-        path: "/admin/banners",
+        path: "admin/banners",
       },
       {
         name: "Create Banner",
-        path: "/admin/banners/create",
+        path: "admin/banners/create",
       },
     ],
   },
   {
     name: "Customers",
     icon: duotone.Customers,
-    path: "/admin/customers",
+    path: "admin/customers",
   },
   {
     name: "Sellers",
@@ -62,19 +62,19 @@ export const navigations = [
     children: [
       {
         name: "Seller List",
-        path: "/admin/sellers",
+        path: "admin/sellers",
       },
       {
         name: "Package",
-        path: "/admin/sellers/package",
+        path: "admin/sellers/package",
       },
       {
         name: "Recharge",
-        path: "/admin/sellers/recharge",
+        path: "admin/sellers/recharge",
       },
       {
         name: "Recharge Requests",
-        path: "/admin/sellers/recharge-requests",
+        path: "admin/sellers/recharge-requests",
       }
     ],
   },
@@ -88,11 +88,11 @@ export const navigations = [
     children: [
       {
         name: "Product List",
-        path: "/vendor/products",
+        path: "vendor/products",
       },
       {
         name: "Create Product",
-        path: "/vendor/products/create",
+        path: "vendor/products/create",
       },
     ],
   },
@@ -102,18 +102,18 @@ export const navigations = [
     children: [
       {
         name: "Order List",
-        path: "/vendor/orders",
+        path: "vendor/orders",
       },
       {
         name: "Order Details",
-        path: "/vendor/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8",
+        path: "vendor/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8",
       },
     ],
   },
   {
     name: "Reviews",
     icon: duotone.ElementHub,
-    path: "/vendor/reviews",
+    path: "vendor/reviews",
   },
   {
     name: "Vouchers",
@@ -121,28 +121,28 @@ export const navigations = [
     children: [
       {
         name: "Voucher List",
-        path: "/vendor/vouchers",
+        path: "vendor/vouchers",
       },
       {
         name: "Create Voucher",
-        path: "/vendor/vouchers/create",
+        path: "vendor/vouchers/create",
       },
     ],
   },
   {
     name: "Support Tickets",
     icon: duotone.ElementHub,
-    path: "/vendor/support-tickets",
+    path: "vendor/support-tickets",
   },
   {
     name: "Account Setting",
     icon: duotone.AccountSetting,
-    path: "/vendor/account-setting",
+    path: "vendor/account-setting",
   },
   {
     name: "Logout",
     icon: duotone.Session,
-    path: "/",
+    path: "",
   },
 ];
 export const navigationsVendor = [
@@ -153,7 +153,7 @@ export const navigationsVendor = [
   {
     name: "Dashboard",
     icon: duotone.Dashboard,
-    path: "/vendor/dashboard",
+    path: "dashboard",
   },
   {
     name: "Categories",
@@ -161,11 +161,11 @@ export const navigationsVendor = [
     children: [
       {
         name: "Category List",
-        path: "/admin/categories",
+        path: "admin/categories",
       },
       {
         name: "Create Category",
-        path: "/admin/categories/create",
+        path: "admin/categories/create",
       },
     ],
   },
@@ -175,11 +175,11 @@ export const navigationsVendor = [
     children: [
       {
         name: "Brand List",
-        path: "/admin/brands",
+        path: "admin/brands",
       },
       {
         name: "Create Brand",
-        path: "/admin/brands/create",
+        path: "admin/brands/create",
       },
     ],
   },
@@ -189,11 +189,11 @@ export const navigationsVendor = [
     children: [
       {
         name: "Banner List",
-        path: "/admin/banners",
+        path: "admin/banners",
       },
       {
         name: "Create Banner",
-        path: "/admin/banners/create",
+        path: "admin/banners/create",
       },
     ],
   },
@@ -203,11 +203,11 @@ export const navigationsVendor = [
     children: [
       {
         name: "Package",
-        path: "/admin/sellers/package",
+        path: "admin/sellers/package",
       },
       {
         name: "Recharge",
-        path: "/admin/sellers/recharge",
+        path: "admin/sellers/recharge",
       },
     ],
   },
@@ -217,11 +217,11 @@ export const navigationsVendor = [
     children: [
       {
         name: "Product List",
-        path: "/vendor/products",
+        path: "vendor/products",
       },
       {
         name: "Create Product",
-        path: "/vendor/products/create",
+        path: "vendor/products/create",
       },
     ],
   },
@@ -231,11 +231,11 @@ export const navigationsVendor = [
     children: [
       {
         name: "Order List",
-        path: "/vendor/orders",
+        path: "vendor/orders",
       },
       {
         name: "Order Details",
-        path: "/vendor/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8",
+        path: "vendor/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8",
       },
     ],
   },
@@ -245,22 +245,22 @@ export const navigationsVendor = [
     children: [
       {
         name: "Voucher List",
-        path: "/vendor/vouchers",
+        path: "vendor/vouchers",
       },
       {
         name: "Create Voucher",
-        path: "/vendor/vouchers/create",
+        path: "vendor/vouchers/create",
       },
     ],
   },
   {
     name: "Account Setting",
     icon: duotone.AccountSetting,
-    path: "/vendor/account-setting",
+    path: "vendor/account-setting",
   },
   {
     name: "Logout",
     icon: duotone.Session,
-    path: "/",
+    path: "",
   },
 ];

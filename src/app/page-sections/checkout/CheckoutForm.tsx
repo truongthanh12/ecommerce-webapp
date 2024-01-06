@@ -23,7 +23,6 @@ import TextFieldInput from "@/components/TextField";
 import { IUser } from "@/models/User";
 import { useAppDispatch } from "@/redux/hooks";
 import { setMessage } from "@/redux/features/messageSlice";
-import { useParams } from "next/navigation";
 import { clearItemsInCart } from "@/redux/features/cartSlice";
 import { ICart, IOrder } from "@/models/Order";
 import { addOrdersSync } from "@/redux/features/orderSlice";
@@ -55,7 +54,6 @@ const CheckoutForm = ({
   user: IUser;
 }) => {
   const dispatch: any = useAppDispatch();
-  const params = useParams()
   const { pushRouter } = useCustomRouter();
 
   const getIdList = useMemo(() => cartList.map((cart: any) => cart.product.id), [cartList])
@@ -100,7 +98,7 @@ const CheckoutForm = ({
         cartList,
       };
       dispatch(addOrdersSync(mergedData));
-      pushRouter("/order-complete");
+      pushRouter("order-complete");
       dispatch(setMessage({ message: "Your order is successfully!", type: "success" }));
       dispatch(clearItemsInCart(user.docId || ""));
       dispatch(updateProductQuantities(getIdList, getQuantityList))
@@ -190,7 +188,7 @@ const CheckoutForm = ({
             />
             <FormControl sx={{ width: "100%" }}>
               <FormLabel sx={{ color: "black" }} id="radio-buttons-group-label">
-                Do you want delivery inside or outside the city?
+                Do you want delivery inside the city?
               </FormLabel>
               <Controller
                 name="isInCity"
@@ -284,7 +282,7 @@ const CheckoutForm = ({
 
       <Grid container spacing={6}>
         <Grid item sm={6} xs={12}>
-          <Link href={`/${params.lang}/cart`} passHref>
+          <Link href={`/cart`} passHref>
             <Button variant="outlined" color="primary" type="button" fullWidth>
               Back to Cart
             </Button>

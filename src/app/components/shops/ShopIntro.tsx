@@ -156,7 +156,7 @@ const ShopIntroCard = ({
             <FlexBox my={1} gap={1.5}>
               {socialLinks.map((item, ind) => (
                 <a
-                  href={`/${params.lang}${item.url}`}
+                  href={`${item.url}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   key={ind}

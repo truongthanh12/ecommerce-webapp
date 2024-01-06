@@ -158,7 +158,7 @@ const CategoryForm = ({
             }
             reset();
             handleFileDelete(files);
-            pushRouter("/admin/categories");
+            pushRouter("admin/categories");
             dispatch(
               setMessage({
                 message:
@@ -202,7 +202,7 @@ const CategoryForm = ({
     }
     reset();
     handleFileDelete(files);
-    pushRouter("/admin/categories");
+    pushRouter("admin/categories");
     dispatch(
       setMessage({
         message:

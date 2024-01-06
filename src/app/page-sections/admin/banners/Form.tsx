@@ -148,7 +148,7 @@ const BannerForm = ({
             }
             reset();
             handleFileDelete(files);
-            pushRouter("/admin/banners");
+            pushRouter("admin/banners");
             dispatch(
               setMessage({
                 message:
@@ -194,7 +194,7 @@ const BannerForm = ({
     }
     reset();
     handleFileDelete(files);
-    pushRouter("/admin/banners");
+    pushRouter("admin/banners");
     dispatch(
       setMessage({
         message:

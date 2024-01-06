@@ -230,7 +230,7 @@ const ProductIntro = ({
               {(sizes || []).map((size: string, index: number) => (
                 <Link
                   key={size + index}
-                  href={`/${params.lang}?${new URLSearchParams({
+                  href={`?${new URLSearchParams({
                     size,
                     color: selectedColor,
                   })}`}
@@ -255,7 +255,7 @@ const ProductIntro = ({
               {(colors || []).map((color: string, index: number) => (
                 <Link
                   key={color + index}
-                  href={`/${params.lang}?${new URLSearchParams({
+                  href={`?${new URLSearchParams({
                     color,
                     size: selectedSize,
                   })}`}
@@ -398,7 +398,7 @@ const ProductIntro = ({
                 return (
                   <Link
                     key={tag + ind}
-                    href={`/${params.lang}/product/search/products?tag=${tag}`}
+                    href={`/product/search/products?tag=${tag}`}
                     passHref
                   >
                     <H6 ml={1}>{tag + (isLastItem ? "" : ", ")}</H6>
@@ -410,7 +410,7 @@ const ProductIntro = ({
 
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>
-            <Link href={`/${params.lang}/shops/${shop?.uid || shop?.id}`} passHref>
+            <Link href={`/shops/${shop?.uid || shop?.id}`} passHref>
               <H6 ml={1}>{shop?.displayName || "Not updated"}</H6>
             </Link>
           </FlexBox>

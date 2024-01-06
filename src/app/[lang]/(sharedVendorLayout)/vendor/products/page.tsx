@@ -83,7 +83,7 @@ export default function ProductList() {
   });
 
   const handleButtonClick = () => {
-    pushRouter("/vendor/products/create");
+    pushRouter("vendor/products/create");
   };
 
   return (

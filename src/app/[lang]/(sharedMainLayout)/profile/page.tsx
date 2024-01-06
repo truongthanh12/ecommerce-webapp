@@ -82,7 +82,7 @@ export default function Profile() {
   }, [dispatch, user.docId]);
 
   const HEADER_LINK = (
-    <Link href={`/${params.lang}/profile/${user.docId}`}>
+    <Link href={`/profile/${user.docId}`}>
       <Button
         color="primary"
         sx={{

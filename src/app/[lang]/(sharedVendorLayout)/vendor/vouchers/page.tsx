@@ -82,7 +82,7 @@ export default function VoucherList() {
   });
 
   const handleButtonClick = () => {
-    pushRouter("/vendor/vouchers/create");
+    pushRouter("vendor/vouchers/create");
   };
 
   return (

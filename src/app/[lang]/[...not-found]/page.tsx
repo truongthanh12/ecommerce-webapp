@@ -31,7 +31,7 @@ const Error404 = () => {
           Go Back
         </Button>
 
-        <Link href={`/${params.lang}`} passHref legacyBehavior>
+        <Link href="/" passHref legacyBehavior>
           <Button
             variant="contained"
             color="primary"

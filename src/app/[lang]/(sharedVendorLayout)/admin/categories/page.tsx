@@ -85,7 +85,7 @@ export default function CategoriesList() {
   });
 
   const handleButtonClick = () => {
-    pushRouter("/admin/categories/create");
+    pushRouter("admin/categories/create");
   };
 
   return (

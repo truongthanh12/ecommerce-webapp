@@ -64,7 +64,7 @@ const ProductRow = ({ product }: any) => {
     }
   };
 
-  const handleNavigate = () => pushRouter(`/vendor/products/${id}`);
+  const handleNavigate = () => pushRouter(`vendor/products/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

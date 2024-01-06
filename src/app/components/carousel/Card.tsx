@@ -75,7 +75,7 @@ const CarouselCard = ({
             {description}
           </Paragraph>
 
-          <Link href={`/${params.lang}${buttonLink}`}>
+          <Link href={`/${buttonLink}`}>
             <Button
               size="large"
               color={buttonColor}

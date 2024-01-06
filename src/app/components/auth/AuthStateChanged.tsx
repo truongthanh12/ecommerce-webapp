@@ -23,7 +23,7 @@ const AuthStateChanged = ({ children }: { children: React.ReactNode }) => {
       pathname.includes("wishlist")
     ) {
       if (!user?.uid) {
-        pushRouter("/");
+        pushRouter("");
         return;
       }
     }
@@ -33,7 +33,7 @@ const AuthStateChanged = ({ children }: { children: React.ReactNode }) => {
         pathname === "/admin/sellers") &&
       user?.docId !== ADMIN_ID
     ) {
-      pushRouter("/");
+      pushRouter("");
       return;
     }
   }, [user, pathname, pushRouter]);

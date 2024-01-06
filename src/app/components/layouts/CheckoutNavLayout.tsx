@@ -50,13 +50,13 @@ const CheckoutNavLayout = ({ children }: { children: React.ReactNode }) => {
   const handleStepChange = (step: string | number) => {
     switch (step) {
       case 0:
-        pushRouter("/cart");
+        pushRouter("cart");
         break;
       case 1:
-        pushRouter("/checkout")
+        pushRouter("checkout")
         break;
       case 2:
-        pushRouter("/orders");
+        pushRouter("orders");
         break;
       default:
         break;

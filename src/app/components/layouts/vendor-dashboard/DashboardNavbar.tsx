@@ -78,7 +78,7 @@ const DashboardNavbar = ({ handleDrawerToggle }: any) => {
           )}
 
           <CustomButton
-            onClick={() => pushRouter("/")}
+            onClick={() => pushRouter("")}
             startIcon={
               <Globe
                 sx={{

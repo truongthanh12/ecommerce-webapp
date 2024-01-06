@@ -123,7 +123,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
             >
               <CartAction isIncludeBtnAdd product={product} />
 
-              <Link href={`/${params.lang}/product/${product.id}`}>
+              <Link href={`/product/${product.id}`}>
                 <Avatar
                   alt={product.title}
                   src={product.thumbnail}
@@ -143,7 +143,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
                   textOverflow: "ellipsis",
                 }}
               >
-                <Link href={`/${params.lang}/product/${product.slug}`}>
+                <Link href={`/product/${product.slug}`}>
                   <H5 ellipsis fontSize="14px" className="title">
                     {product.title}
                   </H5>
@@ -187,7 +187,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
 
       {cartList.length > 0 && (
         <Box p={2.5}>
-          <Link href={`/${params.lang}/checkout`} passHref>
+          <Link href={`/checkout`} passHref>
             <Button
               fullWidth
               color="primary"
@@ -202,7 +202,7 @@ const MiniCart: FC<TypeMinicart> = ({ toggleSidenav, cartList }) => {
             </Button>
           </Link>
 
-          <Link href={`/${params.lang}/cart`} passHref>
+          <Link href={`/cart`} passHref>
             <Button
               fullWidth
               color="primary"

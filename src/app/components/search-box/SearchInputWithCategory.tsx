@@ -60,7 +60,7 @@ const SearchInputWithCategory = () => {
       }
       let updatedQuery = { ...searchParams };
       delete updatedQuery.query;
-      pushRouter(`/product/search/products?${objectToQueryString(updatedQuery)}`);
+      pushRouter(`product/search/products?${objectToQueryString(updatedQuery)}`);
     }
   };
 
@@ -79,7 +79,7 @@ const SearchInputWithCategory = () => {
         };
 
         // Serialize the updated query object into a query string
-        pushRouter(`/product/search/products?${objectToQueryString(updatedQuery)}`);
+        pushRouter(`product/search/products?${objectToQueryString(updatedQuery)}`);
       }
     }, 400),
     [query]

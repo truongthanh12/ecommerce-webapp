@@ -67,7 +67,7 @@ export default function EditOrder({ params }: TypeProps) {
             type: "success",
           })
         );
-        pushRouter("/vendor/orders");
+        pushRouter("vendor/orders");
       })
       .catch((error: any) => {
         dispatch(

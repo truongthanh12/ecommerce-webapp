@@ -186,7 +186,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
               type: "error",
             })
           );
-          pushRouter("/vendor/products");
+          pushRouter("vendor/products");
         } else {
           dispatch(
             setMessage({
@@ -213,7 +213,7 @@ const ProductForm = ({ id = "", product }: { id?: string; product?: any }) => {
               type: "error",
             })
           );
-          pushRouter("/vendor/products");
+          pushRouter("vendor/products");
         } else {
           dispatch(
             setMessage({

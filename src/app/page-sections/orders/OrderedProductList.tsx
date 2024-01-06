@@ -114,7 +114,7 @@ const OrderedProductList = ({
                 </a>
               ) : (
                 <Link
-                  href={`/${params.lang}/product/${formatToSlug(
+                  href={`/product/${formatToSlug(
                     item.product.title
                   )}`}
                 >

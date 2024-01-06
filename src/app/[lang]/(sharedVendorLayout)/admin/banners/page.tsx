@@ -83,7 +83,7 @@ export default function BannerList() {
   });
 
   const handleButtonClick = () => {
-    pushRouter("/admin/banners/create");
+    pushRouter("admin/banners/create");
   };
 
   return (

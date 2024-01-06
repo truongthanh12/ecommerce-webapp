@@ -141,7 +141,7 @@ const ResetPassword = () => {
 
           <FlexRowCenter mt="1.25rem" justifyContent="center" width="100%">
             <Box>Back to</Box>
-            <Link href={`/${params.lang}`} passHref>
+            <Link href={``} passHref>
               <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
                 Home
               </H6>

@@ -57,7 +57,7 @@ const CategoryRow = ({ category }: { category: Partial<ICategory> }) => {
     }
   };
 
-  const handleNavigate = () => pushRouter(`/admin/categories/${id}`);
+  const handleNavigate = () => pushRouter(`admin/categories/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

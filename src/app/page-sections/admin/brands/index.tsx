@@ -48,7 +48,7 @@ const BrandRow = ({ brand }: { brand: Partial<IBrand> }) => {
       }
     }
   };
-  const handleNavigate = () => pushRouter(`/admin/brands/${id}`);
+  const handleNavigate = () => pushRouter(`admin/brands/${id}`);
   const dispatch: any = useAppDispatch();
 
   const handleDelete = useCallback(() => {

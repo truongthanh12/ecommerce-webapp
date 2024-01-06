@@ -74,7 +74,7 @@ export default function BrandList() {
   });
 
   const handleButtonClick = () => {
-    pushRouter("/admin/brands/create");
+    pushRouter("admin/brands/create");
   };
 
   return (

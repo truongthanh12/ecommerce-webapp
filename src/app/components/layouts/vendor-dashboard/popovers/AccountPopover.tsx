@@ -71,7 +71,7 @@ const AccountPopover = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    pushRouter("/");
+    pushRouter("");
     dispatch(changeUser({ chatId: "", user: {}, currentUserId: "" }));
     dispatch(setMessages([]));
 
@@ -163,18 +163,18 @@ const AccountPopover = () => {
 
         <Divider />
         {isVendor ? (
-          <Link href={`/${params.lang}/dashboard`}>
+          <Link href={`/dashboard`}>
             <MenuItem>Dashboard</MenuItem>
           </Link>
         ) : (
           <Box>
-            <Link href={`/${params.lang}/profile`}>
+            <Link href={`/profile`}>
               <MenuItem>Profile</MenuItem>
             </Link>
-            <Link href={`/${params.lang}/orders`}>
+            <Link href={`/orders`}>
               <MenuItem>My Orders</MenuItem>
             </Link>
-            <Link href={`/${params.lang}/wish-list`}>
+            <Link href={`/wish-list`}>
               <MenuItem>My Wishlist</MenuItem>
             </Link>
           </Box>

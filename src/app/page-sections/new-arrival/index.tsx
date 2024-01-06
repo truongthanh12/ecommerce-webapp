@@ -38,7 +38,7 @@ const NewArrivals: React.FC<TypeProps> = ({ products, dictionary }) => {
           {newArrivalsList.map(
             ({ id, title, price, thumbnail, slug, stock, discount, shop }) => (
               <Grid item lg={2} md={3} sm={4} xs={6} key={id}>
-                <Link href={`/${params.lang}/product/${formatToSlug(slug)}`}>
+                <Link href={`/product/${formatToSlug(slug)}`}>
                   <ProductCard
                     isBasicCard
                     thumbnail={thumbnail}

@@ -32,7 +32,7 @@ const OrderRow = ({
   const formattedDate = order?.createdAt ? tryFormatDate(order?.createdAt) : "";
 
   return (
-    <Link href={`/${params.lang}${isSeller ? "/vendor" : ""}/orders/${order.id}`} passHref>
+    <Link href={`${isSeller ? "/vendor" : ""}/orders/${order.id}`} passHref>
       <TableRow
         sx={{
           my: "1rem",

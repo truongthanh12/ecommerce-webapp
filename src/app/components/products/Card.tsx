@@ -324,7 +324,7 @@ const ProductCard = ({
               </Tooltip>
             </HoverIconWrapper>
 
-            <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
+            <Link href={`/product/${formattedSlug}`} passHref>
               <LazyImage
                 src={thumbnail}
                 width={0}
@@ -341,7 +341,7 @@ const ProductCard = ({
             <FlexBox>
               <Box flex="1 1 0" minWidth="0px" mr={1}>
                 <Link
-                  href={`/${params.lang}/product/${formattedSlug}`}
+                  href={`/product/${formattedSlug}`}
                   passHref
                 >
                   <H3
@@ -394,7 +394,7 @@ const ProductCard = ({
                 justifyContent={isInShop ? "center" : "flex-start"}
               >
                 <Link
-                  href={`/${params.lang}/product/${formattedSlug}`}
+                  href={`/product/${formattedSlug}`}
                   passHref
                 >
                   <Button
