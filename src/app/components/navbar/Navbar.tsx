@@ -105,7 +105,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
 
         if (nav.url) {
           return (
-            <StyledNavLink href={`/${lang}/${nav.url}`} key={nav.title}>
+            <StyledNavLink href={`/${lang}${nav.url}`} key={nav.title}>
               {nav.title}
             </StyledNavLink>
           );
