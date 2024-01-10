@@ -29,6 +29,7 @@ import { addOrdersSync } from "@/redux/features/orderSlice";
 import { updateProductQuantities } from "@/redux/features/productSlice";
 import useCustomRouter from "@/hooks/usePushRouter";
 import { formatTimestamp } from "@/app/utils/lib";
+import { useParams } from "next/navigation";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -55,6 +56,7 @@ const CheckoutForm = ({
 }) => {
   const dispatch: any = useAppDispatch();
   const { pushRouter } = useCustomRouter();
+  const params = useParams()
 
   const getIdList = useMemo(() => cartList.map((cart: any) => cart.product.id), [cartList])
   const getQuantityList = useMemo(() => cartList.map((cart: any) => cart.quantity), [cartList])
@@ -282,7 +284,7 @@ const CheckoutForm = ({
 
       <Grid container spacing={6}>
         <Grid item sm={6} xs={12}>
-          <Link href={`/cart`} passHref>
+          <Link href={`/${params.lang}/cart`} passHref>
             <Button variant="outlined" color="primary" type="button" fullWidth>
               Back to Cart
             </Button>

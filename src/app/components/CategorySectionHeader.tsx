@@ -30,7 +30,7 @@ const CategorySectionHeader = ({
       </FlexBox>
 
       {seeMoreLink && (length || 0) > 4 ? (
-        <Link href={`${params.lang}/${seeMoreLink}`}>
+        <Link href={`/${params.lang}/${seeMoreLink}`}>
           <FlexBox alignItems="center" color="grey.600">
             View all
             <ArrowRight fontSize="small" color="inherit" />

@@ -52,7 +52,7 @@ const Footer = ({ dictionary }: { dictionary: Ilang }) => {
           <Box py={10} overflow="hidden">
             <Grid container spacing={3}>
               <Grid item lg={4} md={6} sm={6} xs={12}>
-                <Link href="/">
+                <Link href={"/" + params.lang}>
                   <Image
                     width={205}
                     height={50}
@@ -82,7 +82,7 @@ const Footer = ({ dictionary }: { dictionary: Ilang }) => {
 
                 <div>
                   {aboutLinks.map((item, ind) => (
-                    <Link href="/" key={ind} passHref>
+                    <Link href={"/" + params.lang} key={ind} passHref>
                       <StyledLink>{item}</StyledLink>
                     </Link>
                   ))}
@@ -102,7 +102,7 @@ const Footer = ({ dictionary }: { dictionary: Ilang }) => {
 
                 <div>
                   {customerCareLinks.map((item, ind) => (
-                    <Link href="/" key={ind} passHref>
+                    <Link href={"/" + params.lang} key={ind} passHref>
                       <StyledLink>{item}</StyledLink>
                     </Link>
                   ))}

@@ -163,18 +163,18 @@ const AccountPopover = () => {
 
         <Divider />
         {isVendor ? (
-          <Link href={`/dashboard`}>
+          <Link href={`/${params.lang}/dashboard`}>
             <MenuItem>Dashboard</MenuItem>
           </Link>
         ) : (
           <Box>
-            <Link href={`/profile`}>
+            <Link href={`/${params.lang}/profile`}>
               <MenuItem>Profile</MenuItem>
             </Link>
-            <Link href={`/orders`}>
+            <Link href={`/${params.lang}/orders`}>
               <MenuItem>My Orders</MenuItem>
             </Link>
-            <Link href={`/wish-list`}>
+            <Link href={`/${params.lang}/wish-list`}>
               <MenuItem>My Wishlist</MenuItem>
             </Link>
           </Box>

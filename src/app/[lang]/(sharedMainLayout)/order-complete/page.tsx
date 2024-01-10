@@ -46,7 +46,7 @@ const OrderConfirmation = () => {
             You will be receiving confirmation email with order details.
           </Paragraph>
 
-          <Link href="/" passHref>
+          <Link href={"/" + params.lang} passHref>
             <StyledButton
               color="primary"
               disableElevation

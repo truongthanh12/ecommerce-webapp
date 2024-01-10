@@ -82,7 +82,7 @@ const Featured: React.FC<TypeProps> = ({ brands, dictionary }) => {
                   products.map((item: IProducts) => (
                     <Grid item md={3} sm={6} xs={6} key={item.id}>
                       <Link
-                        href={`/product/${formatToSlug(
+                        href={`/${params.lang}/${params.lang}/product/${formatToSlug(
                           item.slug
                         )}`}
                         passHref
@@ -151,7 +151,7 @@ const Featured: React.FC<TypeProps> = ({ brands, dictionary }) => {
                 {featuredBrand.slice(0, 2).map(({ id, name, image }) => (
                   <Grid item sm={6} xs={12} key={id}>
                     <Link
-                      href={`/product/search/products?brand=${name}`}
+                      href={`/${params.lang}/product/search/products?brand=${name}`}
                       passHref
                     >
                       <ProductCard isFeatured title={name} thumbnail={image} />

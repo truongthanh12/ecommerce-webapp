@@ -41,7 +41,7 @@ const TopCategories: React.FC<TypeCategory> = ({ categories, dictionary }) => {
       <Carousel visibleSlides={visibleSlides}>
         {categoriesData.map((item) => (
           <Link
-            href={`/${
+            href={`/${params.lang}/${
               params.lang
             }/product/search/cate?subcategory=${formatToSlug(item.slug)}`}
             key={item.id}

@@ -190,7 +190,7 @@ const Cart = () => {
                       flexDirection="column"
                     >
                       <Link
-                        href={`/product/${formatToSlug(title)}`}
+                        href={`/${params.lang}/product/${formatToSlug(title)}`}
                       >
                         <Span ellipsis fontWeight="600" fontSize={18}>
                           {title}
@@ -249,7 +249,7 @@ const Cart = () => {
                   }}
                 />
 
-                <Link href={`/checkout`} passHref legacyBehavior>
+                <Link href={`/${params.lang}/checkout`} passHref legacyBehavior>
                   <Button variant="contained" color="primary" fullWidth>
                     Checkout Now
                   </Button>

@@ -13,7 +13,7 @@ const ProfileEditor = () => {
   const params = useParams();
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href='/profile' passHref>
+    <Link href={`/${params.lang}/profile`} passHref>
       <Button
         color="primary"
         sx={{

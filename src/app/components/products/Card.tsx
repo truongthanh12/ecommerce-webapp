@@ -34,26 +34,26 @@ import { popupName } from "@/app/utils/constants";
 
 // ========================================================
 interface TypeProps {
-  id?: string;
-  slug?: string;
-  title?: string;
-  price?: number;
-  thumbnail?: string;
-  hoverEffect?: boolean;
-  discount?: number;
-  showProductSize?: boolean;
-  images?: string[];
-  isCategoryCard?: boolean;
-  subtitle?: string;
-  isBasicCard?: boolean;
-  reviewCount?: number;
-  isFeatured?: boolean;
-  isTopCategory?: boolean;
-  sx?: any;
-  children?: React.ReactNode;
-  isInShop?: boolean;
-  stock?: string;
-  shop?: any;
+  id: string;
+  slug: string;
+  title: string;
+  price: number;
+  thumbnail: string;
+  hoverEffect: boolean;
+  discount: number;
+  showProductSize: boolean;
+  images: string[];
+  isCategoryCard: boolean;
+  subtitle: string;
+  isBasicCard: boolean;
+  reviewCount: number;
+  isFeatured: boolean;
+  isTopCategory: boolean;
+  sx: any;
+  children: React.ReactNode;
+  isInShop: boolean;
+  stock: string;
+  shop: any;
 }
 const ProductCard = ({
   id,
@@ -324,7 +324,7 @@ const ProductCard = ({
               </Tooltip>
             </HoverIconWrapper>
 
-            <Link href={`/product/${formattedSlug}`} passHref>
+            <Link href={`/${params.lang}/product/${formattedSlug}`} passHref>
               <LazyImage
                 src={thumbnail}
                 width={0}
@@ -341,7 +341,7 @@ const ProductCard = ({
             <FlexBox>
               <Box flex="1 1 0" minWidth="0px" mr={1}>
                 <Link
-                  href={`/product/${formattedSlug}`}
+                  href={`/${params.lang}/product/${formattedSlug}`}
                   passHref
                 >
                   <H3
@@ -394,7 +394,7 @@ const ProductCard = ({
                 justifyContent={isInShop ? "center" : "flex-start"}
               >
                 <Link
-                  href={`/product/${formattedSlug}`}
+                  href={`/${params.lang}/product/${formattedSlug}`}
                   passHref
                 >
                   <Button

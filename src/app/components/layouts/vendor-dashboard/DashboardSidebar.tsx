@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import Image from "next/legacy/image";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { Avatar, Box, useMediaQuery } from "@mui/material";
 import LayoutDrawer from "../LayoutDrawer";
 import Scrollbar from "@/components/Scrollbar";
@@ -48,6 +48,8 @@ const DashboardSidebar = ({
     () => user?.isVendor && user.docId === ADMIN_ID,
     [user.docId, user?.isVendor]
   );
+  const params = useParams();
+  const { lang } = params || {};
 
   // side hover when side bar is compacted
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
@@ -77,7 +79,7 @@ const DashboardSidebar = ({
         return (
           <ExternalLink
             key={index}
-            href={item.path}
+            href={lang + "/" + item.path}
             rel="noopener noreferrer"
             target="_blank"
           >

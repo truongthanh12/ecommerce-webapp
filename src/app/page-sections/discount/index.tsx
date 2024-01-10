@@ -51,7 +51,7 @@ const Discount: React.FC<TypeProps> = ({ products, dictionary }) => {
                     p: "1rem",
                   }}
                 >
-                  <Link href={`/product/${formatToSlug(slug)}`} passHref>
+                  <Link href={`/${params.lang}/product/${formatToSlug(slug)}`} passHref>
                     <ProductCard
                       isBasicCard
                       title={title}

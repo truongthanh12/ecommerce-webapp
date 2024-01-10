@@ -158,7 +158,7 @@ const AuthComp = () => {
       >
         Forgot your password?
         <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-          <Link href={`/reset-password`} passHref legacyBehavior>
+          <Link href={`/${params.lang}/reset-password`} passHref legacyBehavior>
             Reset It
           </Link>
         </H6>

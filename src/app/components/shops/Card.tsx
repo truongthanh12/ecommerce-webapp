@@ -104,7 +104,7 @@ const ShopCard = ({
             borderColor: "grey.100",
           }}
         />
-        <Link href={`/shops/${id}`}>
+        <Link href={`/${params.lang}/shops/${id}`}>
           <IconButton
             sx={{
               my: 0.5,

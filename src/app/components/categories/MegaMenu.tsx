@@ -3,12 +3,16 @@ import React from "react";
 import StyledMegaMenu from "./StyledMegaMenu";
 import CategoryMenuItem from "./CategoryMenuItem";
 import { removeAccents } from "@/utils/lib";
+import { useParams } from "next/navigation";
 
 type TypeProps = {
   data: any;
   parent?: any;
 };
 const MegaMenu: React.FC<TypeProps> = ({ data }) => {
+  const params = useParams();
+  const { lang } = params || {};
+
   return (
     <StyledMegaMenu>
       <CardComp
@@ -21,13 +25,12 @@ const MegaMenu: React.FC<TypeProps> = ({ data }) => {
         {data?.map((item: any, ind: number) => {
           return (
             <CategoryMenuItem
-              href={`/product/search/cate?${new URLSearchParams({
+              href={`/${lang}/product/search/cate?${new URLSearchParams({
                 subCategory: removeAccents(item.slug),
               })}`}
               key={ind}
               title={item.name}
-            >
-            </CategoryMenuItem>
+            ></CategoryMenuItem>
           );
         })}
       </CardComp>

@@ -105,7 +105,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
 
         if (nav.url) {
           return (
-            <StyledNavLink href={`${nav.url}`} key={nav.title}>
+            <StyledNavLink href={`/${lang}/${nav.url}`} key={nav.title}>
               {nav.title}
             </StyledNavLink>
           );
@@ -153,7 +153,7 @@ const Navbar: React.FC<TypeNavbar> = ({ navListOpen, elevation }) => {
       } else {
         if (nav.url) {
           return (
-            <NavLink href={`${nav.url}`} key={nav.title}>
+            <NavLink href={`${lang}/${nav.url}`} key={nav.title}>
               <MenuItem>{nav.title}</MenuItem>
             </NavLink>
           );

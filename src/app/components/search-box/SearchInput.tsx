@@ -72,7 +72,7 @@ const SearchInput = () => {
         <SearchResultCard elevation={2}>
           {resultList.map((item) => (
             <Link
-              href={`/product/search/${item}`}
+              href={`/${params.lang}/product/search/${item}`}
               key={item}
               passHref
             >

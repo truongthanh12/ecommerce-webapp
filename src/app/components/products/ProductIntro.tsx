@@ -398,7 +398,7 @@ const ProductIntro = ({
                 return (
                   <Link
                     key={tag + ind}
-                    href={`/product/search/products?tag=${tag}`}
+                    href={`/${params.lang}/product/search/products?tag=${tag}`}
                     passHref
                   >
                     <H6 ml={1}>{tag + (isLastItem ? "" : ", ")}</H6>
@@ -410,7 +410,7 @@ const ProductIntro = ({
 
           <FlexBox alignItems="center" mb={2}>
             <Box>Sold By:</Box>
-            <Link href={`/shops/${shop?.uid || shop?.id}`} passHref>
+            <Link href={`/${params.lang}/shops/${shop?.uid || shop?.id}`} passHref>
               <H6 ml={1}>{shop?.displayName || "Not updated"}</H6>
             </Link>
           </FlexBox>

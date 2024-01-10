@@ -105,7 +105,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
             </Box>
 
             {/* MIDDLE CONTENT - LOGO */}
-            <Link href={`/`}>
+            <Link href={`/${params.lang}`}>
               <Image
                 src="/assets/images/logo2.png"
                 alt="logo"
@@ -179,7 +179,7 @@ const Header: React.FC<TypeHeader> = ({ className, searchInput }) => {
       <StyledContainer>
         {/* LEFT CONTENT - LOGO AND CATEGORY */}
         <FlexBox mr={2} minWidth="170px" alignItems="center">
-          <Link href={`/`}>
+          <Link href={`/${params.lang}`}>
             <Image
               width={205}
               height={50}
